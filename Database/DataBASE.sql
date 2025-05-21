@@ -227,3 +227,25 @@ INSERT INTO productos (id_subcategoria, nombre, descripcion, precio, estado) VAL
 (6, 'Velas aromáticas', 'Pack de 3 velas de vainilla', 69.90, 'activo'),
 (6, 'Macetero colgante', 'Ideal para plantas pequeñas', 49.90, 'activo'),
 (6, 'Organizador de pared', 'Con ganchos para llaves y cartas', 59.00, 'activo');
+
+
+-- Insertando roles 
+
+INSERT INTO roles (nombre) VALUES 
+('cliente'),
+('admin');
+-- Insertando direcciones
+
+INSERT INTO direcciones (direccion, ciudad, provincia, codigo_postal, pais) VALUES
+('Av. Arequipa 1234', 'Lima', 'Lima', '15046', 'Perú'),
+('Jr. Ayacucho 456', 'Cusco', 'Cusco', '08002', 'Perú'),
+('Av. Bolognesi 789', 'Arequipa', 'Arequipa', '04001', 'Perú'),
+('Calle Bolívar 321', 'Trujillo', 'La Libertad', '13001', 'Perú'),
+('Av. Grau 654', 'Piura', 'Piura', '20001', 'Perú'),
+('Calle Tarapacá 987', 'Iquitos', 'Loreto', '16001', 'Perú'),
+('Av. Alfonso Ugarte 111', 'Chiclayo', 'Lambayeque', '14001', 'Perú'),
+('Jr. Junín 222', 'Puno', 'Puno', '21001', 'Perú'),
+('Av. Universitaria 333', 'Huancayo', 'Junín', '12001', 'Perú'),
+('Calle Los Olivos 444', 'Tacna', 'Tacna', '23001', 'Perú');
+
+--
