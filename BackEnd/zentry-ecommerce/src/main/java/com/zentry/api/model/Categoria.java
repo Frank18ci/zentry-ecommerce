@@ -28,8 +28,7 @@ public class Categoria {
 	@Column(unique = true)
 	private String nombre;
 	private String descripcion;
-	//Quitar despyues
-	@JsonIgnore
+	
 	@OneToMany(mappedBy = "categoria")
 	private List<SubCategoria> subCategorias;
 	

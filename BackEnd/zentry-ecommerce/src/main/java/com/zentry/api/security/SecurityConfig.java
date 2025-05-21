@@ -3,29 +3,51 @@ package com.zentry.api.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.zentry.api.security.filters.JwtAuthenticationFilter;
+import com.zentry.api.security.filters.JwtAuthorizationFilter;
+import com.zentry.api.security.jwt.JwtUtils;
+import com.zentry.api.service.impl.UsuarioServiceImpl;
+
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+	
+	private final UsuarioServiceImpl usuarioServiceImpl;
+	private final JwtUtils jwtUtils;
+	private final JwtAuthorizationFilter jwtAuthorizationFilter;
 	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception{
+		JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils);
+		jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
+		jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+		
 		return httpSecurity
 				.csrf(config -> config.disable())
 				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeHttpRequests(auth -> {
-					auth.requestMatchers("/**").permitAll();
+					auth.requestMatchers("/usuario/saveCliente", "/usuario/saveAdmin").permitAll();
+					auth.requestMatchers("/producto/**").hasAuthority("ROLE_cliente");
+					auth.requestMatchers("/usuario/**").hasAuthority("ROLE_admin");
 					auth.anyRequest().authenticated();
 				})
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.addFilter(jwtAuthenticationFilter)
+				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
 	
@@ -37,6 +59,14 @@ public class SecurityConfig {
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	DaoAuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
+	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+	    authProvider.setUserDetailsService(usuarioServiceImpl);
+	    authProvider.setPasswordEncoder(passwordEncoder);
+	    return authProvider;
 	}
 	
 	@Bean

@@ -26,7 +26,7 @@ public class ProductoController {
 	public ResponseEntity<?> getUsersPage(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size,
-			@RequestParam(defaultValue = "numeroTarjeta") String sortBy,
+			@RequestParam(defaultValue = "nombre") String sortBy,
 			@RequestParam(defaultValue = "asc") String direction,
 			@RequestParam(defaultValue = "") String nombre
 			) {

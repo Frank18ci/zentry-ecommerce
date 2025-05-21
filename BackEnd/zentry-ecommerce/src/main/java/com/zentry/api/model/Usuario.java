@@ -13,9 +13,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,7 +34,8 @@ public class Usuario {
 	
 	private String nombre;
 	private String apellido;
-	private String correo_electronico;
+	@Column(name = "correo_electronico", unique = true)
+	private String correoElectronico;
 	private String contraseña;
 	private String telefono;
 	

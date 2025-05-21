@@ -10,9 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +28,8 @@ public class Direccion {
 	private String direccion;
 	private String ciudad;
 	private String provincia;
-	private String codigo_postal;
+	@Column(name = "codigo_postal")
+	private String codigoPostal;
 	private String pais;
 	@OneToMany(mappedBy = "direccion")
 	private List<Usuario> usuarios;
