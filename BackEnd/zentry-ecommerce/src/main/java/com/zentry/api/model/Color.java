@@ -1,35 +1,35 @@
 package com.zentry.api.model;
 
+import java.util.List;
 
+import com.zentry.api.dto.RolDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "imagenes_productos")
-public class ImagenProducto {
+@Builder
+@Table(name = "colores")
+public class Color {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_imagen")
+	@Column(name = "id_color")
 	private Long id;
-	@ManyToOne
-	@JoinColumn(name = "id_producto")
-	private Producto producto;
-	private String urlImagen;
-	private int principal;
+	private String nombre;
+	private String codigoHex;
 	//
+	@OneToMany(mappedBy = "color")
+	private List<ProductoVariante> productoVariantes;
 }

@@ -20,16 +20,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "imagenes_productos")
-public class ImagenProducto {
+@Table(name = "orden_items")
+public class OrdenItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_imagen")
+	@Column(name = "id_item")
 	private Long id;
 	@ManyToOne
-	@JoinColumn(name = "id_producto")
-	private Producto producto;
-	private String urlImagen;
-	private int principal;
-	//
+	@JoinColumn(name = "id_orden")
+	private Orden orden;
+	@ManyToOne
+	@JoinColumn(name = "id_variante")
+	private ProductoVariante productoVariante;
+	private int cantidad;
+	@Column(name = "precio_unitario")
+	private double precioUnitario;
 }

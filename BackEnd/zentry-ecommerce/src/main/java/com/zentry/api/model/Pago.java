@@ -1,5 +1,6 @@
 package com.zentry.api.model;
 
+import java.sql.Date;
 
 
 import jakarta.persistence.Column;
@@ -20,16 +21,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "imagenes_productos")
-public class ImagenProducto {
+@Table(name = "pagos")
+public class Pago {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_imagen")
+	@Column(name = "id_pago")
 	private Long id;
 	@ManyToOne
-	@JoinColumn(name = "id_producto")
-	private Producto producto;
-	private String urlImagen;
-	private int principal;
-	//
+	@JoinColumn(name = "id_orden")
+	private Orden orden;
+	@ManyToOne
+	@JoinColumn(name = "id_metodo")
+	private MetodoPago metodoPago;
+	@ManyToOne
+	@JoinColumn(name = "id_estado")
+	private EstadoPago estadoPago;
+	
+	private double monto;
+	@Column(name = "fecha_pago")
+	private Date fechaPago; 
 }

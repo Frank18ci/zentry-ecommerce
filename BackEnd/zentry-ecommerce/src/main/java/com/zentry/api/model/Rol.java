@@ -1,5 +1,6 @@
 package com.zentry.api.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -7,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,6 @@ public class Rol {
 	@Column(unique = true)
 	private String nombre;
 	
-	@OneToMany(mappedBy = "rol")
-	private List<Usuario> usuarios; 
+	 @ManyToMany(mappedBy = "rol")
+	 private List<Usuario> usuarios;
 }

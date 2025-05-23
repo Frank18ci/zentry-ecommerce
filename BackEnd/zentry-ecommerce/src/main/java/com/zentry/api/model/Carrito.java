@@ -1,6 +1,7 @@
 package com.zentry.api.model;
 
-
+import java.sql.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,16 +22,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "imagenes_productos")
-public class ImagenProducto {
+@Table(name = "carritos")
+public class Carrito {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_imagen")
+	@Column(name = "id_carrito")
 	private Long id;
 	@ManyToOne
-	@JoinColumn(name = "id_producto")
-	private Producto producto;
-	private String urlImagen;
-	private int principal;
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
+	@ManyToOne
+	@JoinColumn(name = "id_estado")
+	private EstadoCarrito estadoCarrito;
+	private Date fechaCreacion;
 	//
+	@OneToMany(mappedBy = "carrito")
+	private List<CarritoItems> carritoItems;
 }
