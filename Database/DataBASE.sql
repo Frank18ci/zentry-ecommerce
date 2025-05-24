@@ -195,7 +195,7 @@ CREATE TABLE comentarios_productos (
     id_comentario BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_usuario BIGINT NOT NULL,
     id_producto BIGINT NOT NULL,
-    calificacion TINYINT NOT NULL CHECK (calificacion BETWEEN 1 AND 5),
+    calificacion INT NOT NULL CHECK (calificacion BETWEEN 1 AND 5),
     comentario TEXT,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
