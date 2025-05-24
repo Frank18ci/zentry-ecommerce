@@ -1,6 +1,7 @@
 package com.zentry.api.model;
 
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -12,6 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +37,10 @@ public class Carrito {
 	@ManyToOne
 	@JoinColumn(name = "id_estado")
 	private EstadoCarrito estadoCarrito;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaCreacion;
+	//private LocalDateTime fechaCreacion;
 	//
 	@OneToMany(mappedBy = "carrito")
 	private List<CarritoItems> carritoItems;

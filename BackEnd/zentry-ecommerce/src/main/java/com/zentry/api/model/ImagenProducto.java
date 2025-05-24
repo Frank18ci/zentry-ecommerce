@@ -29,7 +29,9 @@ public class ImagenProducto {
 	@ManyToOne
 	@JoinColumn(name = "id_producto")
 	private Producto producto;
+	@Column(name = "url_imagen")
 	private String urlImagen;
-	private int principal;
+	@Column(name = "es_principal")
+	private boolean principal;
 	//
 }

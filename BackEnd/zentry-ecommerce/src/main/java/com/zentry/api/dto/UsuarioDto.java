@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.zentry.api.model.Rol;
 import com.zentry.api.model.Usuario;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UsuarioDto {
 	private Long id;
-	private RolDto rol;
+	private List<RolDto> rol;
 	private String nombre;
 	private String apellido;
 	private String correoElectronico;
@@ -29,7 +30,7 @@ public class UsuarioDto {
 	public static UsuarioDto usuarioToUsuarioDto(Usuario usuario) {
 		return UsuarioDto.builder()
 				.id(usuario.getId())
-				.rol(RolDto.rolToRolDto(usuario.getRol()))
+				.rol(RolDto.listRolToListRolDto(usuario.getRol()))
 				.nombre(usuario.getNombre())
 				.apellido(usuario.getApellido())
 				.correoElectronico(usuario.getCorreoElectronico())

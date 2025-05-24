@@ -1,6 +1,7 @@
 package com.zentry.api.model;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -33,5 +34,5 @@ public class ComentarioProducto {
 	private Producto producto;
 	private int calificacion;
 	private String comentario;
-	private Date fecha;
+	private LocalDateTime fecha;
 }

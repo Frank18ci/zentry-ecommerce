@@ -19,5 +19,5 @@ public interface ProductoVarianteRepository extends JpaRepository<ProductoVarian
     Page<ProductoVariante> findProductoVarianteByStockGreaterThan(int cantidad, Pageable pageable);
 
     // Buscar todas las variantes (paginado)
-    Page<ProductoVariante> findProductoVarianteAll(Pageable pageable);
+    //Page<ProductoVariante> findProductoVariante(Pageable pageable);
 }

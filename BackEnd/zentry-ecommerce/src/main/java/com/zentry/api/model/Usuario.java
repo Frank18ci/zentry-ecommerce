@@ -1,6 +1,7 @@
 package com.zentry.api.model;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -28,9 +31,13 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_usuario")
 	private Long id;
-	@ManyToOne
-	@JoinColumn(name = "id_rol")
-	private Rol rol;
+	@ManyToMany
+	@JoinTable(
+	        name = "usuario_roles",
+	        joinColumns = @JoinColumn(name = "id_usuario"),
+	        inverseJoinColumns = @JoinColumn(name = "id_rol")
+	    )
+	private List<Rol> rol;
 	
 	private String nombre;
 	private String apellido;

@@ -26,6 +26,9 @@ public class RolDto {
 	public static List<RolDto> listRolToListRolDto(List<Rol> roles){
 		return roles.stream().map(RolDto::rolToRolDto).collect(Collectors.toList());
 	}
+	public static List<Rol> listRolDTOToListRol(List<RolDto> rolesDto){
+		return rolesDto.stream().map(RolDto::rolDtoToRol).collect(Collectors.toList());
+	}
 	public static Rol rolDtoToRol(RolDto rolDto) {
 		return Rol.builder()
 				.id(rolDto.getId())

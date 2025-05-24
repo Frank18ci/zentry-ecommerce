@@ -1,7 +1,8 @@
 package com.zentry.api.model;
 
+import java.math.BigDecimal;
 import java.sql.Date;
-
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +38,7 @@ public class Pago {
 	@JoinColumn(name = "id_estado")
 	private EstadoPago estadoPago;
 	
-	private double monto;
+	private BigDecimal monto;
 	@Column(name = "fecha_pago")
-	private Date fechaPago; 
+	private LocalDateTime fechaPago; 
 }

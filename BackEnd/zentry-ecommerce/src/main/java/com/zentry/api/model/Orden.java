@@ -1,6 +1,8 @@
 package com.zentry.api.model;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -34,9 +36,9 @@ public class Orden {
 	@ManyToOne
 	@JoinColumn(name = "id_estado")
 	private EstadoOrden estadoOrden;
-	private Double total;
+	private BigDecimal total;
 	@Column(name = "fecha_orden")
-	private Date fechaOrden;
+	private LocalDateTime fechaOrden;
 	@Column(name = "direccion_envio")
 	private String direccionEmvio;
 	//

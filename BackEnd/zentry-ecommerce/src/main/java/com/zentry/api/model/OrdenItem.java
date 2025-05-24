@@ -2,6 +2,8 @@ package com.zentry.api.model;
 
 
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,5 +36,5 @@ public class OrdenItem {
 	private ProductoVariante productoVariante;
 	private int cantidad;
 	@Column(name = "precio_unitario")
-	private double precioUnitario;
+	private BigDecimal precioUnitario;
 }

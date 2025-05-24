@@ -30,7 +30,7 @@ public class CarritoItems {
 	private Carrito carrito;
 	@ManyToOne
 	@JoinColumn(name = "id_variante")
-	private ProductoVariante variante;
+	private ProductoVariante productoVariante;
 	private int cantidad;
 	
 }
