@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 import com.zentry.api.model.ProductoVariante;
+import java.util.List;
+
 
 public interface ProductoVarianteRepository extends JpaRepository<ProductoVariante, Long> {
 	Optional<ProductoVariante> findProductoVarianteByProductoIdAndTallaIdAndColorId(Long productoId, Long tallaId, Long colorId);
@@ -20,4 +22,6 @@ public interface ProductoVarianteRepository extends JpaRepository<ProductoVarian
 
     // Buscar todas las variantes (paginado)
     //Page<ProductoVariante> findProductoVariante(Pageable pageable);
+    Page<ProductoVariante> findByProducto_NombreContainingIgnoreCase(String nombre, Pageable pageable);
+    ProductoVariante findProductoVarianteById(Long id);
 }

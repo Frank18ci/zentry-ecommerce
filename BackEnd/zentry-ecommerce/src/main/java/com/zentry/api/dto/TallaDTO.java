@@ -20,7 +20,7 @@ public class TallaDTO {
 
 	private Long id;
 	private String nombre;
-	
+	//
 	public static TallaDTO tallaToTallaDto(Talla talla) {
 		return TallaDTO.builder()
 				.id(talla.getId())
