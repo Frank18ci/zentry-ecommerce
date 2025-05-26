@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -35,7 +36,12 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		Usuario usuario = usuarioRepository.findUsuarioByCorreoElectronico(username)
 				.orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado " + username));
 		return User.builder().username(usuario.getCorreoElectronico()).password(usuario.getContraseña())
-				.authorities(List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().stream().map(r -> r.getNombre().toUpperCase())))).build();
+				  .authorities(
+					        usuario.getRol().stream()
+					            .map(r -> new SimpleGrantedAuthority("ROLE_" + r.getNombre().toUpperCase()))
+					            .collect(Collectors.toList())
+					    )
+				.build();
 	}
 
 	@Override
