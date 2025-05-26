@@ -3,6 +3,8 @@ package com.zentry.api.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zentry.api.dto.UsuarioDto;
+import com.zentry.api.model.Usuario;
 import com.zentry.api.service.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
@@ -46,5 +49,10 @@ public class UsuarioController {
 	@PutMapping
 	public ResponseEntity<?> updateTarjeta(@RequestBody UsuarioDto usuarioDto){
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.update(usuarioDto));
+	}
+	@GetMapping("/session")
+	public ResponseEntity<?> getPerfilUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.status(HttpStatus.OK).body(authentication.getPrincipal());
 	}
 }
