@@ -35,7 +35,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		Usuario usuario = usuarioRepository.findUsuarioByCorreoElectronico(username)
 				.orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado " + username));
 		return User.builder().username(usuario.getCorreoElectronico()).password(usuario.getContraseña())
-				.authorities(List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre()))).build();
+				.authorities(List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().stream().map(r -> r.getNombre().toUpperCase())))).build();
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	public UsuarioDto saveCliente(UsuarioDto usuarioDto) {
 		Usuario usuario = Usuario.builder()
 				// Cambiar a un filtrado mas adelante
-				.rol(Rol.builder().id(1L).build())
+				.rol(List.of(Rol.builder().id(1L).build()))
 				.nombre(usuarioDto.getNombre())
 				.apellido(usuarioDto.getApellido())
 				.correoElectronico(usuarioDto.getCorreoElectronico())
@@ -67,7 +67,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	public UsuarioDto saveAdmin(UsuarioDto usuarioDto) {
 		Usuario usuario = Usuario.builder()
 				// Cambiar a un filtrado mas adelante
-				.rol(Rol.builder().id(2L).build())
+				.rol(List.of(Rol.builder().id(1L).build(),Rol.builder().id(2L).build()))
 				.nombre(usuarioDto.getNombre())
 				.apellido(usuarioDto.getApellido())
 				.correoElectronico(usuarioDto.getCorreoElectronico())
@@ -85,7 +85,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 			throw new BadRequestParam("Falta el paremetro id");
 		}
 		Usuario usuario = Usuario.builder()
-				.rol(RolDto.rolDtoToRol(usuarioDto.getRol()))
+				.rol(RolDto.listRolDTOToListRol(usuarioDto.getRol()))
 				.nombre(usuarioDto.getNombre())
 				.apellido(usuarioDto.getApellido())
 				.correoElectronico(usuarioDto.getCorreoElectronico())

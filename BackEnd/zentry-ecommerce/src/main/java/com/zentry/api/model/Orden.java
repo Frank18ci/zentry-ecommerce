@@ -1,5 +1,8 @@
 package com.zentry.api.model;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -21,20 +24,26 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "subcategorias")
-public class SubCategoria {
+@Table(name = "ordenes")
+public class Orden {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_subcategoria")
+	@Column(name = "id_orden")
 	private Long id;
-	
 	@ManyToOne
-	@JoinColumn(name = "id_categoria")
-	private Categoria categoria;
-	
-	private String nombre;
-	private String descripcion;
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
+	@ManyToOne
+	@JoinColumn(name = "id_estado")
+	private EstadoOrden estadoOrden;
+	private BigDecimal total;
+	@Column(name = "fecha_orden")
+	private LocalDateTime fechaOrden;
+	@Column(name = "direccion_envio")
+	private String direccionEmvio;
 	//
-	@OneToMany(mappedBy = "subCategoria")
-	private List<Producto> productos;
+	@OneToMany(mappedBy = "orden")
+	private List<Pago> pagos;
+	@OneToMany(mappedBy = "orden")
+	private List<OrdenItem> ordenItems;
 }

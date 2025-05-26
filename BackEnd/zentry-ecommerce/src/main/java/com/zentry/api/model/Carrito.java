@@ -1,5 +1,6 @@
 package com.zentry.api.model;
 
+
 import java.util.Date;
 import java.util.List;
 
@@ -9,9 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -25,32 +25,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "usuarios")
-public class Usuario {
+@Table(name = "carritos")
+public class Carrito {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_usuario")
+	@Column(name = "id_carrito")
 	private Long id;
-	@ManyToMany
-	@JoinTable(
-	        name = "usuario_roles",
-	        joinColumns = @JoinColumn(name = "id_usuario"),
-	        inverseJoinColumns = @JoinColumn(name = "id_rol")
-	    )
-	private List<Rol> rol;
-	
-	private String nombre;
-	private String apellido;
-	@Column(name = "correo_electronico", unique = true)
-	private String correoElectronico;
-	private String contraseña;
-	private String telefono;
+	@ManyToOne
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
+	@ManyToOne
+	@JoinColumn(name = "id_estado")
+	private EstadoCarrito estadoCarrito;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaCreacion;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_direccion")
-	private Direccion direccion;
-	
+	//private LocalDateTime fechaCreacion;
+	//
+	@OneToMany(mappedBy = "carrito")
+	private List<CarritoItems> carritoItems;
 }
