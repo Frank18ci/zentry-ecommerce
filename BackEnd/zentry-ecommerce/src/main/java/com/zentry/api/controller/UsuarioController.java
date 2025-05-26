@@ -1,6 +1,9 @@
 package com.zentry.api.controller;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zentry.api.dto.UsuarioDto;
-import com.zentry.api.model.Usuario;
 import com.zentry.api.service.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
@@ -53,6 +55,8 @@ public class UsuarioController {
 	@GetMapping("/session")
 	public ResponseEntity<?> getPerfilUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.status(HttpStatus.OK).body(authentication.getPrincipal());
+		Map<String, Object> mapeo = new HashMap<>();
+		mapeo.put("User", authentication.getPrincipal());
+        return ResponseEntity.status(HttpStatus.OK).body(mapeo);
 	}
 }
