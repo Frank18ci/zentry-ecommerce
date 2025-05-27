@@ -230,33 +230,6 @@ INSERT INTO direcciones (direccion, ciudad, provincia, codigo_postal, pais) VALU
 ('Mahatma Gandhi Rd', 'Mumbai', 'Maharashtra', '400001', 'India'),
 ('Av. Reforma 350', 'Ciudad de México', 'CDMX', '06600', 'México');
 
-INSERT INTO usuarios (id_direccion, nombre, apellido, correo_electronico, contraseña, telefono, direccion) VALUES 
-(1, 'Juan', 'Pérez', 'juan.perez@example.com', '12345678', '+34123456789', 'Av. Siempre Viva 742'),
-(2, 'Ana', 'López', 'ana.lopez@example.com', 'clave123', '+34987654321', 'Calle Falsa 123'),
-(3, 'Carlos', 'Santos', 'carlos.santos@example.com', 'passw0rd', '+351912345678', 'Rua das Flores 45'),
-(4, 'Emily', 'Johnson', 'emily.johnson@example.com', 'securepwd', '+12125551234', 'Main Street 101'),
-(5, 'Maria', 'Gomez', 'maria.gomez@example.com', 'qwerty123', '+571234567890', 'Calle 8 #45'),
-(6, 'Pedro', 'Silva', 'pedro.silva@example.com', 'silva2025', '+5511998765432', 'Av. Paulista 1500'),
-(7, 'Claire', 'Dupont', 'claire.dupont@example.com', 'bonjour123', '+33123456789', 'Boulevard Haussmann 20'),
-(8, 'Takeshi', 'Kobayashi', 'takeshi.k@example.com', 'nipponpass', '+819012345678', 'Shibuya 1-2-3'),
-(9, 'Hans', 'Schmidt', 'hans.schmidt@example.com', 'berlin123', '+4930123456', 'Alexanderplatz 3'),
-(10, 'Lucy', 'Brown', 'lucy.brown@example.com', 'londonpwd', '+442012345678', 'Oxford Street 200'),
-(11, 'Diego', 'Martínez', 'diego.martinez@example.com', 'diegopass', '+34123400001', 'Plaza Mayor 1'),
-(12, 'Sofia', 'Fernández', 'sofia.fernandez@example.com', 'fernandez22', '+541134567890', 'Las Heras 1234'),
-(13, 'Luca', 'Rossi', 'luca.rossi@example.com', 'italiapass', '+39061234567', 'Vía Roma 24'),
-(14, 'Jean', 'Martin', 'jean.martin@example.com', 'paris2024', '+33122334455', 'Rue de Rivoli 5'),
-(15, 'Emma', 'Wilson', 'emma.wilson@example.com', 'canadapass', '+14161234567', 'Queen St 88'),
-(16, 'Liam', 'Smith', 'liam.smith@example.com', 'aussie2025', '+61298765432', 'George St 101'),
-(17, 'Erik', 'Hansen', 'erik.hansen@example.com', 'norwaypass', '+4741234567', 'Karl Johans gate 10'),
-(18, 'Sara', 'Andersson', 'sara.andersson@example.com', 'swedenpass', '+46812345678', 'Norr Mälarstrand 15'),
-(19, 'Arjun', 'Patel', 'arjun.patel@example.com', 'indiapass', '+912212345678', 'Mahatma Gandhi Rd'),
-(20, 'Luis', 'Ramírez', 'luis.ramirez@example.com', 'mexicopass', '+525512345678', 'Av. Reforma 350');
-
-INSERT INTO usuario_roles (id_usuario, id_rol) VALUES 
-(1, 1), (2, 1), (3, 1), (4, 2), (5, 3),
-(6, 2), (7, 4), (8, 1), (9, 3), (10, 1),
-(11, 5), (12, 6), (13, 1), (14, 1), (15, 7),
-(16, 2), (17, 8), (18, 1), (19, 1), (20, 2);
 
 INSERT INTO estados_productos (nombre) VALUES 
 ('disponible'),
@@ -377,33 +350,18 @@ INSERT INTO producto_variantes (id_producto, id_talla, id_color, stock) VALUES
 (6, 2, 4, 4);   
 
 INSERT INTO imagenes_productos (id_producto, url_imagen, es_principal) VALUES
-(1, 'https://cdn.zentry.com/products/1a.jpg', TRUE),
-(1, 'https://cdn.zentry.com/products/1b.jpg', FALSE),
-(2, 'https://cdn.zentry.com/products/2a.jpg', TRUE),
-(3, 'https://cdn.zentry.com/products/3a.jpg', TRUE),
-(4, 'https://cdn.zentry.com/products/4a.jpg', TRUE),
-(5, 'https://cdn.zentry.com/products/5a.jpg', TRUE),
-(6, 'https://cdn.zentry.com/products/6a.jpg', TRUE);
+(1, '/images/a1.webp', TRUE),
+(1, '/images/1b.webp', FALSE),
+(2, '/images/2a.webp', TRUE),
+(3, '/images/3a.webp', TRUE),
+(4, '/images/4a.webp', TRUE),
+(5, '/images/5a.webp', TRUE),
+(6, '/images/6a.webp', TRUE);
 
 INSERT INTO estados_carritos (nombre) VALUES 
 ('activo'),
 ('procesado');
 
-INSERT INTO carritos (id_usuario, id_estado) VALUES 
-(1, 1),
-(2, 1),
-(3, 2),
-(4, 1),
-(5, 2);
-
-INSERT INTO carrito_items (id_carrito, id_variante, cantidad) VALUES
-(1, 1, 2),
-(1, 2, 1),
-(2, 4, 3),
-(3, 3, 1),
-(4, 5, 2),
-(4, 6, 1),
-(5, 7, 1);
 
 INSERT INTO estados_ordenes (nombre) VALUES 
 ('pendiente'),
@@ -412,20 +370,6 @@ INSERT INTO estados_ordenes (nombre) VALUES
 ('entregado'),
 ('cancelado');
 
-INSERT INTO ordenes (id_usuario, id_estado, total, direccion_envio) VALUES 
-(1, 2, 199.98, 'Calle Luna 123, Lima, Perú'),
-(2, 3, 89.90, 'Av. Sol 456, Arequipa, Perú'),
-(3, 5, 59.99, 'Jr. Mar 789, Cusco, Perú'),
-(4, 1, 120.00, 'Calle Río 321, Trujillo, Perú'),
-(5, 4, 45.50, 'Av. Bosque 222, Chiclayo, Perú');
-
-INSERT INTO orden_items (id_orden, id_variante, cantidad, precio_unitario) VALUES
-(1, 1, 2, 49.99),
-(1, 2, 1, 99.99),
-(2, 4, 1, 89.90),
-(3, 3, 1, 59.99),
-(4, 5, 2, 60.00),
-(5, 6, 1, 45.50);
 
 INSERT INTO metodos_pago (nombre) VALUES 
 ('tarjeta_credito'),
@@ -438,21 +382,3 @@ INSERT INTO estados_pago (nombre) VALUES
 ('fallido'),
 ('pendiente');
 
-INSERT INTO pagos (id_orden, id_metodo, id_estado, monto) VALUES 
-(1, 1, 1, 199.98),
-(2, 2, 1, 89.90),
-(3, 3, 2, 59.99),
-(4, 4, 3, 120.00),
-(5, 1, 1, 45.50);
-
-INSERT INTO comentarios_productos (id_usuario, id_producto, calificacion, comentario) VALUES 
-(1, 1, 5, 'Muy buena calidad, recomendado.'),
-(2, 2, 4, 'Buena prenda, aunque un poco ajustada.'),
-(3, 3, 3, 'Cumple lo que promete.'),
-(4, 4, 5, 'Perfecta para el clima.'),
-(5, 5, 4, 'Bonito diseño, volvería a comprar.'),
-(6, 6, 2, 'No me gustó el material.'),
-(7, 1, 4, 'Buena compra en general.'),
-(8, 2, 5, 'Excelente, talla perfecta.'),
-(9, 3, 5, 'Recomendado para correr.'),
-(10, 4, 3, 'Esperaba más del producto.');
