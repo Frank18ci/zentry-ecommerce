@@ -10,13 +10,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.zentry.api.dto.ProductoVarianteDTO;
-import com.zentry.api.model.Producto;
+import com.zentry.api.dto.ProductoVarianteDto;
 import com.zentry.api.model.ProductoVariante;
-import com.zentry.api.repository.ColorRepository;
-import com.zentry.api.repository.ProductoRepository;
 import com.zentry.api.repository.ProductoVarianteRepository;
-import com.zentry.api.repository.TallaRepository;
 import com.zentry.api.service.ProductoVarianteService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,13 +24,13 @@ public class ProductoVarianteServiceImpl implements ProductoVarianteService {
 	public final ProductoVarianteRepository productoVarianteRepository;
 	
 	@Override
-	public List<ProductoVarianteDTO> list() {
+	public List<ProductoVarianteDto> list() {
 		// TODO Auto-generated method stub
-		return ProductoVarianteDTO.listProductoVarianteToListProductoVarianteDto(productoVarianteRepository.findAll());
+		return ProductoVarianteDto.listProductoVarianteToListProductoVarianteDto(productoVarianteRepository.findAll());
 	}
 
 	@Override
-	public Page<ProductoVarianteDTO> listFiltro(int page, int size, String direction, String producto) {
+	public Page<ProductoVarianteDto> listFiltro(int page, int size, String direction, String producto) {
 		Direction sortDirection = Direction.ASC;
 		if(direction != null && "desc".equalsIgnoreCase(direction.trim())) {
 			sortDirection = Direction.DESC;
@@ -42,13 +38,13 @@ public class ProductoVarianteServiceImpl implements ProductoVarianteService {
 		Sort sort = Sort.by(sortDirection, producto);
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<ProductoVariante> resultado = productoVarianteRepository.findByProducto_NombreContainingIgnoreCase(direction, pageable);
-		return resultado.map(ProductoVarianteDTO::productoVarienteToProductoVarienteDto);
+		return resultado.map(ProductoVarianteDto::productoVarienteToProductoVarienteDto);
 	}
 
 	@Override
-	public ProductoVarianteDTO findById(Long id) {
+	public ProductoVarianteDto findById(Long id) {
 		// TODO Auto-generated method stub
-		return ProductoVarianteDTO.productoVarienteToProductoVarienteDto(productoVarianteRepository.findProductoVarianteById(id));
+		return ProductoVarianteDto.productoVarienteToProductoVarienteDto(productoVarianteRepository.findProductoVarianteById(id));
 	}
 
 	/*@Override
@@ -58,12 +54,12 @@ public class ProductoVarianteServiceImpl implements ProductoVarianteService {
 	}*/
 
 	@Override
-	public ProductoVarianteDTO save(ProductoVarianteDTO productoVarianteDTO) {
-		return ProductoVarianteDTO.productoVarienteToProductoVarienteDto(productoVarianteRepository.save(Objects.requireNonNull(ProductoVarianteDTO.productoVarienteDtoToProductoVariente(productoVarianteDTO))));
+	public ProductoVarianteDto save(ProductoVarianteDto productoVarianteDTO) {
+		return ProductoVarianteDto.productoVarienteToProductoVarienteDto(productoVarianteRepository.save(Objects.requireNonNull(ProductoVarianteDto.productoVarienteDtoToProductoVariente(productoVarianteDTO))));
 	}
 
 	@Override
-	public ProductoVarianteDTO update(ProductoVarianteDTO productoVarianteDTO) {
+	public ProductoVarianteDto update(ProductoVarianteDto productoVarianteDTO) {
 		// TODO Auto-generated method stub
 		return save(productoVarianteDTO);
 	}

@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import com.zentry.api.dto.ColorDTO;
+import com.zentry.api.dto.ColorDto;
 
 
 public interface ColorService {
-	public List<ColorDTO> list();
-	public Page<ColorDTO> listFiltro(int page, int size, String direction, String nombre);
-	public ColorDTO findById(Long id);
+	public List<ColorDto> list();
+	public Page<ColorDto> listFiltro(int page, int size, String direction, String nombre);
+	public ColorDto findById(Long id);
 	//public ColorDTO findByAll(Long id);
-	public ColorDTO save(ColorDTO colorDTO);
-	public ColorDTO update(ColorDTO colorDTO);
+	public ColorDto save(ColorDto colorDTO);
+	public ColorDto update(ColorDto colorDTO);
 	public String delete(Long id);
 	
 	//

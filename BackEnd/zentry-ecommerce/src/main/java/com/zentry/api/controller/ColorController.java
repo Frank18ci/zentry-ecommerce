@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zentry.api.dto.ColorDTO;
+import com.zentry.api.dto.ColorDto;
 import com.zentry.api.service.ColorService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/color")
@@ -34,23 +37,25 @@ public class ColorController {
 			) {
 		return ResponseEntity.status(200).body(colorService.listFiltro(page, size, direction,  Color));
 	}
-	@GetMapping("/buscar/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getColorById(@PathVariable Long id) {
 		return ResponseEntity.status(200).body(colorService.findById(id));
 	}
 	@PostMapping
-	public ResponseEntity<?> createColor(@RequestBody ColorDTO colorDTO  ){
-		ColorDTO u = colorService.save(colorDTO);
+	public ResponseEntity<?> createColor(@RequestBody ColorDto colorDTO  ){
+		ColorDto u = colorService.save(colorDTO);
 		return ResponseEntity.status(201).body(u);
 	}
 	@PutMapping
-	public ResponseEntity<?> updateColor(@RequestBody ColorDTO colorDTO){
-		ColorDTO u = colorService.update(colorDTO);
+	public ResponseEntity<?> updateColor(@RequestBody ColorDto colorDTO){
+		ColorDto u = colorService.update(colorDTO);
 		return ResponseEntity.status(200).body(u);
 	}
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteColor(@PathVariable Long id){
 		String mensaje = colorService.delete(id);
-		return ResponseEntity.status(200).body(mensaje);
+		Map<String, Object> mapper = new HashMap<>();
+		mapper.put("message", mensaje);
+		return ResponseEntity.status(200).body(mapper);
 	}
 }

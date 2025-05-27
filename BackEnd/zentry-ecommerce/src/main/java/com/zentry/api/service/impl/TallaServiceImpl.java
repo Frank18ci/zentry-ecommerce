@@ -3,6 +3,7 @@ package com.zentry.api.service.impl;
 import java.util.List;
 import java.util.Objects;
 
+import com.zentry.api.excepcion.BadRequestParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 
-import com.zentry.api.dto.TallaDTO;
+import com.zentry.api.dto.TallaDto;
 
 import com.zentry.api.model.Talla;
 
@@ -25,13 +26,13 @@ import lombok.RequiredArgsConstructor;
 public class TallaServiceImpl implements TallaService {
 	public final TallaRepository tallaRepository;
 	@Override
-	public List<TallaDTO> list() {
+	public List<TallaDto> list() {
 		// TODO Auto-generated method stub
-		return TallaDTO.listTallaToListTallaDto(tallaRepository.findAll());
+		return TallaDto.listTallaToListTallaDto(tallaRepository.findAll());
 	}
 
 	@Override
-	public Page<TallaDTO> listFiltro(int page, int size, String direction, String nombre) {
+	public Page<TallaDto> listFiltro(int page, int size, String direction, String nombre) {
 		Direction sortDirection = Direction.ASC;
 		if(direction != null && "desc".equalsIgnoreCase(direction.trim())) {
 			sortDirection = Direction.DESC;
@@ -39,12 +40,12 @@ public class TallaServiceImpl implements TallaService {
 		Sort sort = Sort.by(sortDirection, nombre);
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<Talla> tallaPage = tallaRepository.findByNombre(nombre, pageable);
-	    return tallaPage.map(TallaDTO::tallaToTallaDto);
+	    return tallaPage.map(TallaDto::tallaToTallaDto);
 	}
 
 	@Override
-	public TallaDTO findById(Long id) {
-		return TallaDTO.tallaToTallaDto(tallaRepository.findTallaById(id));
+	public TallaDto findById(Long id) {
+		return TallaDto.tallaToTallaDto(tallaRepository.findTallaById(id));
 	}
 
 	/*@Override
@@ -54,21 +55,27 @@ public class TallaServiceImpl implements TallaService {
 	}*/
 
 	@Override
-	public TallaDTO save(TallaDTO tallaDTO) {
-		
-		return TallaDTO.tallaToTallaDto(tallaRepository.save(Objects.requireNonNull(TallaDTO.tallaDtoToTalla(tallaDTO))));
+	public TallaDto save(TallaDto tallaDTO) {
+		Talla talla = Objects.requireNonNull(TallaDto.tallaDtoToTalla(tallaDTO));
+		return TallaDto.tallaToTallaDto(tallaRepository.save(talla));
 	}
 
 	@Override
-	public TallaDTO update(TallaDTO tallaDTO) {
-		// TODO Auto-generated method stub
-		return save(tallaDTO);
+	public TallaDto update(TallaDto tallaDTO) {
+		if(tallaDTO.getId() == null){
+			throw new BadRequestParam("Falta el dato id");
+		}
+		Talla talla = Objects.requireNonNull(TallaDto.tallaDtoToTalla(tallaDTO));
+		return TallaDto.tallaToTallaDto(tallaRepository.save(talla));
 	}
 
 	@Override
 	public String delete(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		if(id == null){
+			throw new BadRequestParam("Falta el dato id");
+		}
+		tallaRepository.deleteById(id);
+		return "Talla Eliminado";
 	}
 
 }

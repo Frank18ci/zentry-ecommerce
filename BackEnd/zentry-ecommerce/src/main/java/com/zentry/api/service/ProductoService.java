@@ -11,4 +11,7 @@ public interface ProductoService {
 	public List<ProductoDto> list();
 	public Page<ProductoDto> listFiltro(int page, int size, String sortBy, String direction, String nombre);
 	public ProductoDto findById(Long id);
+	public ProductoDto saveProducto(ProductoDto productoDto);
+	public ProductoDto updateProducto(ProductoDto productoDto);
+	public String deleteProductoById(Long id);
 }

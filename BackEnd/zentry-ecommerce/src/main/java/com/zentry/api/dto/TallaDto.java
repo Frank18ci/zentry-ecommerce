@@ -16,25 +16,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TallaDTO {
+public class TallaDto {
 
 	private Long id;
 	private String nombre;
 	//
-	public static TallaDTO tallaToTallaDto(Talla talla) {
-		return TallaDTO.builder()
+	public static TallaDto tallaToTallaDto(Talla talla) {
+		return TallaDto.builder()
 				.id(talla.getId())
 				.nombre(talla.getNombre())
 				.build();
 	}
-	public static Talla tallaDtoToTalla(TallaDTO tallaDTO) {
+	public static Talla tallaDtoToTalla(TallaDto tallaDTO) {
 		return Talla.builder()
 				.id(tallaDTO.getId())
 				.nombre(tallaDTO.getNombre())
 				.build();
 	}
-	public static List<TallaDTO> listTallaToListTallaDto(List<Talla> tallas)
+	public static List<TallaDto> listTallaToListTallaDto(List<Talla> tallas)
 	{
-		return tallas.stream().map(TallaDTO::tallaToTallaDto).collect(Collectors.toList());
+		return tallas.stream().map(TallaDto::tallaToTallaDto).collect(Collectors.toList());
 	}
 }
