@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zentry.api.dto.TallaDTO;
+import com.zentry.api.dto.TallaDto;
 import com.zentry.api.service.TallaService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/talla")
@@ -38,19 +41,21 @@ public class TallaController {
 		return ResponseEntity.status(200).body(tallaService.findById(numeroTarjeta));
 	}
 	@PostMapping
-	public ResponseEntity<?> createProductoVariante(@RequestBody TallaDTO tallaDTO  ){
-		TallaDTO u = tallaService.save(tallaDTO);
+	public ResponseEntity<?> createProductoVariante(@RequestBody TallaDto tallaDTO  ){
+		TallaDto u = tallaService.save(tallaDTO);
 		return ResponseEntity.status(201).body(u);
 	}
 	@PutMapping
-	public ResponseEntity<?> updateTalla(@RequestBody TallaDTO tallaDTO ){
-		TallaDTO u = tallaService.update(tallaDTO);
+	public ResponseEntity<?> updateTalla(@RequestBody TallaDto tallaDTO ){
+		TallaDto u = tallaService.update(tallaDTO);
 		return ResponseEntity.status(200).body(u);
 	}
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteTalla(@PathVariable Long id){
 		String mensaje = tallaService.delete(id);
-		return ResponseEntity.status(200).body(mensaje);
+		Map<String, Object> mapper = new HashMap<>();
+		mapper.put("message", mensaje);
+		return ResponseEntity.status(200).body(mapper);
 	}
 	
 }

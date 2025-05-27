@@ -1,7 +1,11 @@
 package com.zentry.api.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
+import com.zentry.api.dto.EstadoProductoDto;
+import com.zentry.api.dto.SubCategoriaDto;
+import com.zentry.api.excepcion.BadRequestParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,5 +47,35 @@ public class ProductoServiceImpl implements ProductoService{
 		return ProductoDto.productoToProductoDTO(productoRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFound("Producto no encontrado con id" + id)));
 	}
-	
+
+	@Override
+	public ProductoDto saveProducto(ProductoDto productoDto) {
+		Producto producto = ProductoDto.productoDtoToProducto(productoDto);
+		producto.setFechaCreacion(new Date());
+		Producto productoCreated = productoRepository.save(producto);
+		return ProductoDto.productoToProductoDTO(productoCreated);
+	}
+
+	@Override
+	public ProductoDto updateProducto(ProductoDto productoDto) {
+		Producto producto = productoRepository.findById(productoDto.getId())
+				.orElseThrow(() -> new ResourceNotFound("Producto no encontrado con id" + productoDto.getId()));
+		producto.setSubCategoria(SubCategoriaDto.subCategoriaDtoToSubCategoria(productoDto.getSubCategoria()));
+		producto.setEstadoProducto(EstadoProductoDto.estadoProductoDtoToEstadoProducto(productoDto.getEstadoProducto()));
+		producto.setNombre(productoDto.getNombre());
+		producto.setDescripcion(productoDto.getDescripcion());
+		producto.setPrecio(productoDto.getPrecio());
+
+		Producto productoUpdated = productoRepository.save(producto);
+		return ProductoDto.productoToProductoDTO(productoUpdated);
+	}
+
+	@Override
+	public String deleteProductoById(Long id) {
+		if(id == null){
+			throw new BadRequestParam("Falta el dato id");
+		}
+		productoRepository.deleteById(id);
+		return "Producto con id " + id + " eliminado";
+	}
 }

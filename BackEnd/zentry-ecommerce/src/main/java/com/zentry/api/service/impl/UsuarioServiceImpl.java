@@ -87,26 +87,26 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
 	@Override
 	public UsuarioDto update(UsuarioDto usuarioDto) {
-		if(Objects.isNull(usuarioDto.getId())) {
-			throw new BadRequestParam("Falta el paremetro id");
-		}
-		Usuario usuario = Usuario.builder()
-				.rol(RolDto.listRolDTOToListRol(usuarioDto.getRol()))
-				.nombre(usuarioDto.getNombre())
-				.apellido(usuarioDto.getApellido())
-				.correoElectronico(usuarioDto.getCorreoElectronico())
-				.contraseña(usuarioDto.getContraseña())
-				.telefono(usuarioDto.getTelefono())
-				.fechaCreacion(new Date())
-				.direccion(DireccionDto.direccionDtoToDireccion(usuarioDto.getDireccion())).build();
-		Usuario usuarioSaved = usuarioRepository.save(usuario);
+		Usuario usuarioFound = usuarioRepository.findById(usuarioDto.getId()).orElseThrow(() -> new ResourceNotFound("Usuario no encontrado " + usuarioDto.getId()));
+
+		usuarioFound.setRol(RolDto.listRolDTOToListRol(usuarioDto.getRol()));
+		usuarioFound.setApellido(usuarioDto.getApellido());
+		usuarioFound.setCorreoElectronico(usuarioDto.getCorreoElectronico());
+		usuarioFound.setContraseña(usuarioDto.getContraseña());
+		usuarioFound.setTelefono(usuarioDto.getTelefono());
+		usuarioFound.setDireccion(DireccionDto.direccionDtoToDireccion(usuarioDto.getDireccion()));
+
+		Usuario usuarioSaved = usuarioRepository.save(usuarioFound);
 		return UsuarioDto.usuarioToUsuarioDto(usuarioSaved);
 	}
 
 	@Override
 	public String delete(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		if(id == null){
+			throw new BadRequestParam("Falta el dato id");
+		}
+		usuarioRepository.deleteById(id);
+		return "Usuario Eliminado";
 	}
 
 }

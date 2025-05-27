@@ -9,13 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.zentry.api.dto.UsuarioDto;
 import com.zentry.api.service.UsuarioService;
@@ -49,7 +43,8 @@ public class UsuarioController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.saveAdmin(usuarioDto));
 	}
 	@PutMapping
-	public ResponseEntity<?> updateTarjeta(@RequestBody UsuarioDto usuarioDto){
+	public ResponseEntity<?> updateUsuario(@RequestBody UsuarioDto usuarioDto){
+		usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.update(usuarioDto));
 	}
 	@GetMapping("/session")
@@ -58,5 +53,12 @@ public class UsuarioController {
 		Map<String, Object> mapeo = new HashMap<>();
 		mapeo.put("User", authentication.getPrincipal());
         return ResponseEntity.status(HttpStatus.OK).body(mapeo);
+	}
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteUsuario(@PathVariable Long id){
+		String mensaje = usuarioService.delete(id);
+		Map<String, Object> mapper = new HashMap<>();
+		mapper.put("message", mensaje);
+		return ResponseEntity.status(200).body(mapper);
 	}
 }

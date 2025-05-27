@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zentry.api.dto.ProductoVarianteDTO;
+import com.zentry.api.dto.ProductoVarianteDto;
 import com.zentry.api.service.ProductoVarianteService;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -37,24 +39,26 @@ public class ProductoVarianteController {
 			) {
 		return ResponseEntity.status(200).body(productoVarianteService.listFiltro(page, size, direction,  producto));
 	}
-	@GetMapping("/buscar/{id}")
-	public ResponseEntity<?> getTarjetaByNumero(@PathVariable Long numeroTarjeta) {
-		return ResponseEntity.status(200).body(productoVarianteService.findById(numeroTarjeta));
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getTarjetaByNumero(@PathVariable Long id) {
+		return ResponseEntity.status(200).body(productoVarianteService.findById(id));
 	}
 	@PostMapping
-	public ResponseEntity<?> createProductoVariante(@RequestBody ProductoVarianteDTO productoVarianteDTO  ){
-		ProductoVarianteDTO u = productoVarianteService.save(productoVarianteDTO);
+	public ResponseEntity<?> createProductoVariante(@RequestBody ProductoVarianteDto productoVarianteDTO  ){
+		ProductoVarianteDto u = productoVarianteService.save(productoVarianteDTO);
 		return ResponseEntity.status(201).body(u);
 	}
 	@PutMapping
-	public ResponseEntity<?> updateProductoVariante(@RequestBody ProductoVarianteDTO productoVarianteDTO){
-		ProductoVarianteDTO u = productoVarianteService.update(productoVarianteDTO);
+	public ResponseEntity<?> updateProductoVariante(@RequestBody ProductoVarianteDto productoVarianteDTO){
+		ProductoVarianteDto u = productoVarianteService.update(productoVarianteDTO);
 		return ResponseEntity.status(200).body(u);
 	}
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteProductoVariante(@PathVariable Long id){
 		String mensaje = productoVarianteService.delete(id);
-		return ResponseEntity.status(200).body(mensaje);
+		Map<String, Object> mapper = new HashMap<>();
+		mapper.put("message", mensaje);
+		return ResponseEntity.status(200).body(mapper);
 	}
 	
 }
