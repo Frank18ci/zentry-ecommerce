@@ -3,8 +3,7 @@ import { actionGetProductById } from '@/features/productos/actions'
 import ProductExtraInfo from '@/features/productos/components/detail/product-extra-info'
 import ProductGallery from '@/features/productos/components/detail/product-gallery'
 import ProductHeader from '@/features/productos/components/detail/product-header'
-import ProductQuantity from '@/features/productos/components/detail/product-quantity'
-import ProductVariants from '@/features/productos/components/detail/product-variants'
+import ProductVariantSelector from '@/features/productos/components/detail/product-variant-selector'
 
 interface ProductDetailProps {
   id: string
@@ -37,11 +36,8 @@ export default async function ProductDetail ({ id }: ProductDetailProps) {
 
         <Separator />
 
-        {/* Variantes del producto (TALLA Y COLOR) */}
-        <ProductVariants producto={producto} />
-
-        {/* Cantidad */}
-        <ProductQuantity />
+        {/* Selector de variantes y cantidad */}
+        <ProductVariantSelector producto={producto} />
 
         {/* Información adicional */}
         <ProductExtraInfo />
