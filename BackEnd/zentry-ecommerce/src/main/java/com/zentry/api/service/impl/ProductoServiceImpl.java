@@ -32,14 +32,29 @@ public class ProductoServiceImpl implements ProductoService{
 		return ProductoDto.listProductoToListProductoDto(productoRepository.findAll());
 	}
 	@Override
-	public Page<ProductoDto> listFiltro(int page, int size, String sortBy, String direction, String nombre) {
+	public Page<ProductoDto> listFiltro(int page, int size, String sortBy, String direction, String nombre, Long idCategoria, Long idSubCategoria) {
 		Direction sortDirection = Direction.ASC;
 		if(direction != null && "desc".equalsIgnoreCase(direction.trim())) {
 			sortDirection = Direction.DESC;
 		}
 		Sort sort = Sort.by(sortDirection, sortBy);
 		Pageable pageable = PageRequest.of(page, size, sort);
-		Page<Producto> pageProducto = productoRepository.findProductoByNombreContaining(nombre, pageable); 
+		Page<Producto> pageProducto;
+		System.out.println("idCategoria" + idCategoria);
+		System.out.println("idSubCategoria" + idSubCategoria);
+		if(idCategoria != 0L && idSubCategoria != 0L) {
+			System.out.println("condicion 1");
+			pageProducto= productoRepository.findProductoByNombreContainingAndSubCategoria_IdAndSubCategoria_Categoria_Id(nombre, idSubCategoria, idCategoria, pageable);
+		} else if(idCategoria != 0L){
+			System.out.println("condicion 2");
+			pageProducto= productoRepository.findProductoByNombreContainingAndSubCategoria_Categoria_Id(nombre, idCategoria, pageable);
+		} else if(idSubCategoria != 0L){
+			System.out.println("condicion 3");
+			pageProducto= productoRepository.findProductoByNombreContainingAndSubCategoria_Id(nombre, idSubCategoria, pageable);
+		} else{
+			System.out.println("condicion 4");
+			pageProducto = productoRepository.findProductoByNombreContaining(nombre, pageable);
+		}
 		return pageProducto.map(ProductoDto::productoToProductoDTO);
 	}
 	@Override

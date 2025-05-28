@@ -30,9 +30,11 @@ public class ProductoController {
 			@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "nombre") String sortBy,
 			@RequestParam(defaultValue = "asc") String direction,
-			@RequestParam(defaultValue = "") String nombre
+			@RequestParam(defaultValue = "") String nombre,
+			@RequestParam(defaultValue = "0") Long idCategoria,
+			@RequestParam(defaultValue = "0") Long idSubCategoria
 			) {
-		return ResponseEntity.status(HttpStatus.OK).body(productoService.listFiltro(page, size, sortBy, direction, nombre));
+		return ResponseEntity.status(HttpStatus.OK).body(productoService.listFiltro(page, size, sortBy, direction, nombre, idCategoria, idSubCategoria));
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getProductoById(@PathVariable Long id){

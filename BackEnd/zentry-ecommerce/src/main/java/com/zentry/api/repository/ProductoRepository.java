@@ -10,4 +10,7 @@ import com.zentry.api.model.Producto;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long>{
 	Page<Producto> findProductoByNombreContaining(String nombre, Pageable pageable);
+	Page<Producto> findProductoByNombreContainingAndSubCategoria_Id(String nombre, Long subcategoriaId, Pageable pageable);
+	Page<Producto> findProductoByNombreContainingAndSubCategoria_Categoria_Id(String nombre, Long categoriaId, Pageable pageable);
+	Page<Producto> findProductoByNombreContainingAndSubCategoria_IdAndSubCategoria_Categoria_Id(String nombre, Long subcategoriaId, Long categoriaId, Pageable pageable);
 }
