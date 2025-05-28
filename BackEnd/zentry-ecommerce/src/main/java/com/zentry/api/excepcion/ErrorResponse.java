@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class ErrorResponse {
-	private int status;
-    private String message;
-    private LocalDateTime time;
+	private int status; // 200, 400, 404, etc.
+    private String message; // error message
+    private LocalDateTime time; // timestamp
 }

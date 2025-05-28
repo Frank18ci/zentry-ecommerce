@@ -24,9 +24,9 @@ public class UsuarioDto {
 	private String correoElectronico;
 	private String contraseña;
 	private String telefono;
-	private Date fechaCreacion;
 	private DireccionDto direccion;
-	
+	private Date fechaCreacion;
+
 	public static UsuarioDto usuarioToUsuarioDto(Usuario usuario) {
 		return UsuarioDto.builder()
 				.id(usuario.getId())
