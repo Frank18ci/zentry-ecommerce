@@ -110,11 +110,12 @@ CREATE TABLE imagenes_productos (
 );
 
 -- Estados de carrito
-CREATE TABLE estados_carritos (
+/*CREATE TABLE estados_carritos (
     id_estado BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(20) NOT NULL UNIQUE
 );
-
+*/
+/*
 -- Carritos (1:1 con usuarios)
 CREATE TABLE carritos (
     id_carrito BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -124,7 +125,8 @@ CREATE TABLE carritos (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_estado) REFERENCES estados_carritos(id_estado)
 );
-
+*/
+/*
 -- Items del carrito
 CREATE TABLE carrito_items (
     id_item BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -135,7 +137,7 @@ CREATE TABLE carrito_items (
     FOREIGN KEY (id_variante) REFERENCES producto_variantes(id_variante),
     UNIQUE (id_carrito, id_variante)
 );
-
+*/
 -- Estados de órdenes
 CREATE TABLE estados_ordenes (
     id_estado BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -407,11 +409,11 @@ INSERT INTO imagenes_productos (id_producto, url_imagen, es_principal) VALUES
 (15, '/images/15_CasacaRompevientos_Negro.webp', FALSE);
 
 
-
+/*
 INSERT INTO estados_carritos (nombre) VALUES 
 ('activo'),
 ('procesado');
-
+*/
 
 INSERT INTO estados_ordenes (nombre) VALUES 
 ('pendiente'),
