@@ -13,9 +13,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +26,7 @@ public class ComentarioProducto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_comentario")
-	private Long Id;
+	private Long id;
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;

@@ -203,10 +203,7 @@ CREATE TABLE comentarios_productos (
 );
 
 INSERT INTO roles (nombre) VALUES 
-('cliente'), ('admin'), ('vendedor'), ('soporte'), ('superadmin'),
-('marketing'), ('finanzas'), ('logistica'), ('analista'), ('editor'),
-('moderador'), ('revisor'), ('gerente'), ('comprador'), ('tester'),
-('invitado'), ('desarrollador'), ('auditor'), ('recursos humanos'), ('asistente');
+('cliente'), ('admin');
 
 INSERT INTO direcciones (direccion, ciudad, provincia, codigo_postal, pais) VALUES 
 ('Av. Siempre Viva 742', 'Springfield', 'Massachusetts', '01101', 'USA'),
@@ -237,89 +234,98 @@ INSERT INTO estados_productos (nombre) VALUES
 ('en oferta'),
 ('nuevo'),
 ('descontinuado'),
-('preventa'),
 ('próximamente'),
 ('liquidación'),
-('destacado'),
-('reservado'),
 ('en revisión'),
-('bloqueado'),
-('error de stock'),
-('borrador'),
-('reacondicionado'),
-('en devolución'),
-('retirado'),
-('por confirmar'),
-('con defecto'),
 ('edición limitada');
 
 INSERT INTO categorias (nombre, descripcion) VALUES 
-('Ropa', 'Prendas de vestir para todas las edades y géneros'),
-('Tecnología', 'Gadgets, dispositivos electrónicos y accesorios'),
-('Hogar', 'Productos para el hogar y decoración'),
-('Deportes', 'Equipamiento y ropa deportiva'),
-('Belleza', 'Cosméticos y productos de cuidado personal'),
-('Juguetes', 'Juguetes y juegos para niños'),
-('Libros', 'Literatura y libros educativos'),
-('Alimentos', 'Productos comestibles y bebidas'),
-('Automóviles', 'Accesorios y herramientas para vehículos'),
-('Mascotas', 'Productos para el cuidado de mascotas'),
-('Salud', 'Artículos médicos y de bienestar'),
-('Oficina', 'Material de oficina y útiles escolares'),
-('Videojuegos', 'Juegos, consolas y accesorios'),
-('Fotografía', 'Cámaras y equipos fotográficos'),
-('Moda', 'Ropa y accesorios de moda'),
-('Música', 'Instrumentos y discos'),
-('Jardinería', 'Herramientas y productos para el jardín'),
-('Electrodomésticos', 'Pequeños y grandes aparatos'),
-('Bebés', 'Productos para recién nacidos y bebés'),
-('Ferretería', 'Herramientas y materiales de construcción');
+('Ropa para Hombre', 'Prendas de vestir para hombre'),
+('Ropa para Mujer', 'Prendas de vestir para mujer'),
+('Ropa para Niños', 'Prendas de vestir para niños y bebés'),
+('Calzado', 'Zapatillas, zapatos y botas'),
+('Accesorios', 'Accesorios de vestir para todas las edades'),
+('Ropa Deportiva', 'Prendas deportivas para diferentes actividades'),
+('Ropa Interior', 'Ropa interior para hombre, mujer y niños'),
+('Abrigos y Chaquetas', 'Prendas para climas fríos y de entretiempo'),
+('Pijamas', 'Prendas para dormir y descanso');
 
 INSERT INTO subcategorias (id_categoria, nombre, descripcion) VALUES 
-(1, 'Camisas', 'Camisas formales e informales para hombre y mujer'),
-(1, 'Pantalones', 'Pantalones de vestir, jeans y más'),
-(2, 'Smartphones', 'Teléfonos móviles inteligentes de distintas marcas'),
-(2, 'Laptops', 'Portátiles para oficina, estudio y gaming'),
-(3, 'Muebles', 'Sillas, mesas, armarios y más'),
-(4, 'Calzado deportivo', 'Zapatillas y calzado para deporte'),
-(5, 'Maquillaje', 'Bases, labiales, sombras, etc.'),
-(6, 'Muñecos', 'Muñecos y figuras coleccionables'),
-(7, 'Novelas', 'Libros de ficción y entretenimiento'),
-(8, 'Snacks', 'Galletas, papas, barras energéticas'),
-(9, 'Herramientas', 'Llaves, taladros, destornilladores'),
-(10, 'Accesorios para perros', 'Collares, correas, juguetes'),
-(11, 'Vitaminas', 'Suplementos alimenticios'),
-(12, 'Papelería', 'Cuadernos, hojas, carpetas'),
-(13, 'Consolas', 'Consolas de videojuegos'),
-(14, 'Cámaras', 'Cámaras réflex, compactas y drones'),
-(15, 'Bolsos', 'Carteras, mochilas y bolsos de mano'),
-(16, 'Guitarras', 'Guitarras acústicas, eléctricas y bajos'),
-(17, 'Macetas', 'Macetas de barro, plástico y decorativas'),
-(18, 'Licuadoras', 'Licuadoras, batidoras y exprimidores'),
-(19, 'Pañales', 'Pañales desechables y ecológicos'),
-(20, 'Pinturas', 'Pintura para interiores y exteriores');
+-- ROPA PARA HOMBRE
+(1, 'Polos', 'Polos de algodón, casuales y formales'),
+(1, 'Chalecos', 'Chalecos de vestir y casuales'),
+(1, 'Ropa de playa', 'Bañadores y camisas hawaianas'),
+(1, 'Ropa casual', 'Prendas para uso diario'),
+(1, 'Ropa formal', 'Sacos, trajes y camisas elegantes'),
+
+-- ROPA PARA MUJER
+(2, 'Tops', 'Camisetas cortas, crop tops y más'),
+(2, 'Monos', 'Monos y enterizos de moda'),
+(2, 'Ropa de playa', 'Bikinis, trajes de baño y pareos'),
+(2, 'Ropa casual', 'Ropa cómoda y moderna para diario'),
+(2, 'Ropa formal', 'Prendas para eventos y oficina'),
+
+-- ROPA PARA NIÑOS
+(3, 'Ropa Escolar', 'Uniformes, camisas y pantalones escolares'),
+(3, 'Bebés (0-24m)', 'Bodies, enterizos y accesorios'),
+(3, 'Niños (2-8 años)', 'Prendas para niños pequeños'),
+(3, 'Pre-adolescentes (9-12 años)', 'Moda para chicos y chicas'),
+(3, 'Ropa de invierno', 'Prendas abrigadoras y cómodas'),
+
+-- CALZADO
+(4, 'Tenis', 'Tenis casuales y deportivos'),
+(4, 'Botines', 'Botines de moda para hombre y mujer'),
+(4, 'Sandalias', 'Sandalias planas, con taco y de playa'),
+(4, 'Zapatos escolares', 'Calzado para niños en edad escolar'),
+
+-- ACCESORIOS
+(5, 'Bufandas', 'Bufandas de lana y moda'),
+(5, 'Lentes de sol', 'Lentes de sol de varias marcas'),
+(5, 'Relojes', 'Relojes análogos y digitales'),
+(5, 'Joyas', 'Collares, aretes y pulseras'),
+
+-- ROPA DEPORTIVA
+(6, 'Tops deportivos', 'Tops para gym, yoga y running'),
+(6, 'Pantalones deportivos', 'Joggers, pants y shorts'),
+(6, 'Ropa térmica', 'Ropa especial para climas fríos'),
+(6, 'Sudaderas deportivas', 'Sudaderas con y sin gorro'),
+
+-- ROPA INTERIOR
+(7, 'Ropa interior térmica', 'Interior especial para invierno'),
+(7, 'Lencería', 'Conjuntos sensuales y cómodos'),
+(7, 'Ropa interior infantil', 'Interior para niños y niñas'),
+(7, 'Medias y calcetines', 'Deportivos, casuales y de vestir'),
+
+-- ABRIGOS Y CHAQUETAS
+(8, 'Casacas de cuero', 'Abrigos elegantes y modernos'),
+(8, 'Abrigos largos', 'Prendas largas para frío extremo'),
+(8, 'Cazadoras', 'Chaquetas ligeras y modernas'),
+(8, 'Impermeables', 'Ropa resistente al agua y viento'),
+
+-- PIJAMAS
+(9, 'Batas', 'Batas suaves para invierno o spa'),
+(9, 'Pijamas infantiles', 'Conjuntos para niños y bebés'),
+(9, 'Pijamas de dos piezas', 'Camiseta y pantalón o short'),
+(9, 'Pijamas tipo mono', 'Prendas completas y divertidas');
+
 
 INSERT INTO productos (id_subcategoria, id_estado, nombre, descripcion, precio) VALUES 
 (1, 1, 'Camisa blanca formal', 'Camisa de algodón para oficina', 29.99),
-(2, 3, 'Jeans Slim Fit', 'Pantalón de mezclilla azul oscuro', 39.90),
-(3, 1, 'iPhone 14 Pro', 'Smartphone de alta gama, 128GB', 1099.00),
-(4, 6, 'Laptop ASUS Zenbook', 'Portátil ultraligera con SSD de 512GB', 899.99),
-(5, 5, 'Silla ergonómica', 'Ideal para oficina o estudio en casa', 120.00),
+(2, 1, 'Jeans Slim Fit', 'Pantalón de mezclilla azul oscuro', 39.90),
 (6, 1, 'Zapatillas Nike Air Max', 'Comodidad y estilo para correr', 85.00),
-(7, 1, 'Kit de maquillaje L’Oréal', 'Incluye base, rubor y sombras', 49.90),
-(8, 4, 'Muñeco de acción Marvel', 'Figura de colección edición limitada', 25.00),
-(9, 1, 'Libro: El Alquimista', 'Novela de Paulo Coelho', 15.99),
-(10, 1, 'Barra de cereal natural', 'Ideal para merienda o deporte', 1.99),
-(11, 1, 'Set de destornilladores', '10 piezas con mango ergonómico', 14.50),
-(12, 2, 'Collar de cuero para perro', 'Tamaño mediano, resistente al agua', 12.00),
-(13, 1, 'Multivitamínico Centrum', 'Complejo vitamínico completo', 19.99),
-(14, 1, 'Cuaderno de anillas', '100 hojas rayadas, tamaño A4', 2.99),
-(15, 1, 'Nintendo Switch', 'Consola híbrida para juegos', 299.00),
-(16, 1, 'Cámara Canon EOS', 'Cámara réflex digital para principiantes', 450.00),
-(17, 1, 'Bolso de cuero', 'Modelo cruzado color marrón', 69.90),
-(18, 1, 'Guitarra eléctrica Fender', 'Incluye funda y correa', 320.00),
-(19, 1, 'Maceta de cerámica', 'Decorada a mano, 25cm', 18.50),
-(20, 1, 'Licuadora Oster 10v', 'Vaso de vidrio y motor potente', 75.00);
+(15, 1, 'Bolso de cuero', 'Modelo cruzado color marrón', 69.90),
+(8, 1, 'Sudadera estampada', 'Sudadera con diseño urbano', 45.00),
+(1, 1, 'Camisa Oxford Azul', 'Camisa formal de algodón', 32.50),
+(2, 1, 'Pantalón Chino Beige', 'Pantalón casual de gabardina', 40.00),
+(6, 1, 'Zapatillas Adidas Run', 'Zapatillas deportivas para correr', 79.90),
+(15, 1, 'Mochila Urbana Negra', 'Mochila de tela impermeable', 55.00),
+(8, 1, 'Casaca Denim Hombre', 'Chaqueta de mezclilla azul', 65.00),
+(1, 1, 'Camisa Cuadros Rojo', 'Camisa casual a cuadros', 28.00),
+(2, 1, 'Pantalón Jogger Negro', 'Pantalón deportivo casual', 35.90),
+(6, 1, 'Zapatillas Puma Classic', 'Zapatillas clásicas urbanas', 74.50),
+(15, 1, 'Bolso Cruzado Cuero', 'Bolso de cuero sintético marrón', 62.00),
+(8, 1, 'Casaca Rompevientos', 'Chaqueta ligera impermeable', 50.00);
+
 
 INSERT INTO tallas (nombre) VALUES 
 ('XS'),
@@ -338,25 +344,69 @@ INSERT INTO colores (nombre, codigo_hex) VALUES
 ('Gris', '#808080');
 
 INSERT INTO producto_variantes (id_producto, id_talla, id_color, stock) VALUES
-(1, 3, 1, 10),  
-(1, 4, 2, 5),   
-(2, 3, 3, 8),   
-(2, 4, 6, 12),  
-(3, 5, 2, 7),   
-(3, 5, 4, 6),   
-(4, 4, 5, 9),   
-(5, 2, 3, 14),  
-(5, 3, 1, 11),  
-(6, 2, 4, 4);   
+(1, 3, 1, 10),  -- Camisa blanca formal, M, Negro
+(1, 4, 2, 5),   -- Camisa blanca formal, L, Blanco
+(2, 3, 3, 8),   -- Jeans, M, Rojo
+(2, 4, 6, 12),  -- Jeans, L, Gris
+(3, 2, 4, 7),   -- Zapatillas, S, Azul
+(3, 3, 1, 6),   -- Zapatillas, M, Negro
+(4, 2, 5, 9),   -- Bolso de cuero, S, Verde
+(5, 3, 4, 14),  -- Sudadera, M, Azul
+(5, 4, 6, 11), -- Sudadera, L, Gris
+(6, 3, 1, 10),
+(6, 4, 2, 8),
+(7, 2, 6, 5),
+(7, 3, 3, 7),
+(8, 2, 4, 6),
+(8, 3, 1, 9),
+(9, 2, 5, 12),
+(9, 3, 6, 11),
+(10, 2, 2, 13),
+(10, 3, 1, 8),
+(11, 3, 4, 10),
+(11, 4, 2, 9),
+(12, 2, 3, 7),
+(12, 3, 6, 5),
+(13, 3, 1, 11),
+(13, 4, 5, 8),
+(14, 2, 2, 14),
+(14, 3, 4, 12),
+(15, 3, 3, 6),
+(15, 4, 5, 9);
+
 
 INSERT INTO imagenes_productos (id_producto, url_imagen, es_principal) VALUES
-(1, '/images/a1.webp', TRUE),
-(1, '/images/1b.webp', FALSE),
-(2, '/images/2a.webp', TRUE),
-(3, '/images/3a.webp', TRUE),
-(4, '/images/4a.webp', TRUE),
-(5, '/images/5a.webp', TRUE),
-(6, '/images/6a.webp', TRUE);
+(1, '/images/1_CamisaBlancaFormal_Negro.webp', TRUE),
+(1, '/images/1_CamisaBlancaFormal_Blanco.webp', FALSE),
+(2, '/images/2_JeansSlimFit_Rojo.webp', TRUE),
+(2, '/images/2_JeansSlimFit_Gris.webp', FALSE),
+(3, '/images/3_ZapatillasNikeAirMax_Azul.webp', TRUE),
+(3, '/images/3_ZapatillasNikeAirMax_Negro.webp', FALSE),
+(4, '/images/4_BolsoDeCuero_Verde.webp', TRUE),
+(5, '/images/5_SudaderaEstampada_Azul.webp', TRUE),
+(5, '/images/5_SudaderaEstampada_Gris.webp', FALSE),
+(6, '/images/6_CamisaOxfordAzul_Negro.webp', TRUE),
+(6, '/images/6_CamisaOxfordAzul_Blanco.webp', FALSE),
+(7, '/images/7_PantalonChinoBeige_Gris.webp', TRUE),
+(7, '/images/7_PantalonChinoBeige_Rojo.webp', FALSE),
+(8, '/images/8_ZapatillasAdidasRun_Azul.webp', TRUE),
+(8, '/images/8_ZapatillasAdidasRun_Negro.webp', FALSE),
+(9, '/images/9_MochilaUrbanaNegra_Verde.webp', TRUE),
+(9, '/images/9_MochilaUrbanaNegra_Gris.webp', FALSE),
+(10, '/images/10_CasacaDenimHombre_Azul.webp', TRUE),
+(10, '/images/10_CasacaDenimHombre_Negro.webp', FALSE),
+(11, '/images/11_CamisaCuadrosRojo_Azul.webp', TRUE),
+(11, '/images/11_CamisaCuadrosRojo_Gris.webp', FALSE),
+(12, '/images/12_PantalonJoggerNegro_Rojo.webp', TRUE),
+(12, '/images/12_PantalonJoggerNegro_Negro.webp', FALSE),
+(13, '/images/13_ZapatillasPumaClassic_Azul.webp', TRUE),
+(13, '/images/13_ZapatillasPumaClassic_Gris.webp', FALSE),
+(14, '/images/14_BolsoCruzadoCuero_Marron.webp', TRUE),
+(14, '/images/14_BolsoCruzadoCuero_Negro.webp', FALSE),
+(15, '/images/15_CasacaRompevientos_Gris.webp', TRUE),
+(15, '/images/15_CasacaRompevientos_Negro.webp', FALSE);
+
+
 
 INSERT INTO estados_carritos (nombre) VALUES 
 ('activo'),
