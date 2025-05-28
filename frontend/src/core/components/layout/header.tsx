@@ -2,6 +2,7 @@ import { buttonVariants } from '@/core/components/ui/button'
 import { Skeleton } from '@/core/components/ui/skeleton'
 import { APP_NAME } from '@/core/lib/constants'
 import UserDropdown from '@/features/auth/components/user-dropdown'
+import CarritoDrawer from '@/features/carrito/components/carrito-drawer'
 import BarraBusqueda from '@/features/productos/components/barra-busqueda'
 import Link from "next/link"
 import { Suspense } from 'react'
@@ -38,9 +39,12 @@ export default async function Header () {
         </div>
 
         {/* Dropdown de usuario */}
-        <Suspense fallback={<Skeleton className="w-8 h-8 rounded-full animate-pulse" />}>
-          <UserDropdown />
-        </Suspense>
+        <div className="flex items-center gap-3">
+          <CarritoDrawer />
+          <Suspense fallback={<Skeleton className="w-8 h-8 rounded-full animate-pulse" />}>
+            <UserDropdown />
+          </Suspense>
+        </div>
       </div>
     </header>
   )

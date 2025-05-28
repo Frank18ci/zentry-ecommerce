@@ -33,7 +33,7 @@ export default function RootLayout ({
           </main>
           <Footer />
         </div>
-        <Toaster />
+        <Toaster richColors />
       </body>
     </html>
   )

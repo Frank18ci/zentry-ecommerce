@@ -4,3 +4,6 @@ export const APP_DESCRIPTION = 'Zentry es una tienda virtual de prendas de vesti
 //* API
 export const API_BASE_URL = 'http://localhost:8080'
 export const COOKIE_NAME = 'Zentry-Session'
+
+//* PRODUCTOS
+export const PRECIO_ENVIO_GRATIS = 50

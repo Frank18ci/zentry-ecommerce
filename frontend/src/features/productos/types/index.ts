@@ -25,9 +25,18 @@ export interface IProducto {
   productosVariantes: IProductosVariante[]
 }
 
+export enum ENombreEstadoProducto {
+  DESCONTINUADO = 'descontinuado',
+  DISPONIBLE = 'disponible',
+  NUEVO = 'nuevo',
+  PREVENTA = 'preventa',
+  EN_OFERTA = 'en oferta',
+  AGOTADO = 'agotado'
+}
+
 export interface IEstadoProducto {
   id: number
-  nombre: string
+  nombre: ENombreEstadoProducto
 }
 
 export interface IProductosVariante {

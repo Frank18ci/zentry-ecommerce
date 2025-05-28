@@ -1,8 +1,9 @@
 import { actionGetProducts } from '@/features/productos/actions'
 import AsideCategorias from '@/features/productos/components/aside-categorias'
 import AsideOrdenamiento from '@/features/productos/components/aside-ordenamiento'
-import ListaProductos from '@/features/productos/components/lista-productos'
 import PaginacionProductos from '@/features/productos/components/paginacion-productos'
+import ProductList from '@/features/productos/components/product-list'
+import type { ICategoria } from '@/features/productos/types'
 
 interface IPageProductsProps {
   searchParams: Promise<{ query?: string, direction?: 'asc' | 'desc', page?: string, sortBy?: string }>
@@ -15,16 +16,20 @@ export default async function PageProducts ({
 
   const { data: productos, success, message } = await actionGetProducts({ query, direction, page, sortBy })
 
+  const categorias = productos?.content
+    .map(producto => producto.subCategoria)
+    .filter((categoria, index, self) => self.findIndex(c => c?.id === categoria?.id) === index) as ICategoria[]
+
   return (
     <main className='flex gap-5 grow'>
-      <AsideCategorias />
+      <AsideCategorias categorias={categorias} />
 
       <section className="flex flex-col gap-5 grow">
         {!success && (
           <p className='text-destructive'>{message}</p>
         )}
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col grow gap-2">
           {query && (
             <p>
               Mostrando {productos?.totalElements || 0} {
@@ -34,7 +39,7 @@ export default async function PageProducts ({
             </p>
           )}
 
-          <ListaProductos productos={productos?.content} />
+          <ProductList productos={productos?.content} />
         </div>
 
         <PaginacionProductos
