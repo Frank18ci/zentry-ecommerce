@@ -53,7 +53,7 @@ public class ProductoServiceImpl implements ProductoService{
 			pageProducto= productoRepository.findProductoByNombreContainingAndSubCategoria_Id(nombre, idSubCategoria, pageable);
 		} else{
 			System.out.println("condicion 4");
-			pageProducto = productoRepository.findProductoByNombreContaining(nombre, pageable);
+			pageProducto = productoRepository.findProductosConVariantesAndNombre(nombre, pageable);
 		}
 		return pageProducto.map(ProductoDto::productoToProductoDTO);
 	}

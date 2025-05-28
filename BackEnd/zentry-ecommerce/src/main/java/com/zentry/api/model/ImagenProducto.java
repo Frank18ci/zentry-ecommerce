@@ -30,7 +30,7 @@ public class ImagenProducto {
 	@JoinColumn(name = "id_producto")
 	private Producto producto;
 	@Column(name = "url_imagen")
-	private String urlImagen;
+	private String urlImagen; // {id_producto}_{nombre_sin_espacios}_{color}_{talla}.webp formato estandar
 	@Column(name = "es_principal")
 	private boolean principal;
 	//

@@ -43,4 +43,17 @@ public class UsuarioDto {
 	public static List<UsuarioDto> listUsuarioToListUsuarioDto(List<Usuario> usuarios){
 		return usuarios.stream().map(UsuarioDto::usuarioToUsuarioDto).collect(Collectors.toList());
 	}
+	public static Usuario usuarioDtoToUsuario(UsuarioDto usuarioDto) {
+		return Usuario.builder()
+				.id(usuarioDto.getId())
+				.rol(RolDto.listRolDTOToListRol(usuarioDto.getRol()))
+				.nombre(usuarioDto.getNombre())
+				.apellido(usuarioDto.getApellido())
+				.correoElectronico(usuarioDto.getCorreoElectronico())
+				.contraseña(usuarioDto.getContraseña())
+				.telefono(usuarioDto.getTelefono())
+				.fechaCreacion(usuarioDto.getFechaCreacion())
+				.direccion(DireccionDto.direccionDtoToDireccion(usuarioDto.getDireccion()))
+				.build();
+	}
 }
