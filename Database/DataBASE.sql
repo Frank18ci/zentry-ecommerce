@@ -381,4 +381,3 @@ INSERT INTO estados_pago (nombre) VALUES
 ('completado'),
 ('fallido'),
 ('pendiente');
-
