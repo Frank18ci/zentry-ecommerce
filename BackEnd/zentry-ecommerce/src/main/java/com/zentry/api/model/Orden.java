@@ -40,7 +40,7 @@ public class Orden {
 	@Column(name = "fecha_orden")
 	private LocalDateTime fechaOrden;
 	@Column(name = "direccion_envio")
-	private String direccionEmvio;
+	private String direccionEnvio;
 	//
 	@OneToMany(mappedBy = "orden")
 	private List<Pago> pagos;
