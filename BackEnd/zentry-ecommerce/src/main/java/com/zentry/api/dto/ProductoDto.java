@@ -24,6 +24,7 @@ public class ProductoDto {
 	private BigDecimal precio;
 	private Date fechaCreacion;
 	private List<ProductoVarianteCatalogoDto> productosVariantes;
+	private List<ImagenProductoCatalogoDto> imagenes;
 	
 	public static ProductoDto productoToProductoDTO(Producto producto)
 	{
@@ -36,6 +37,7 @@ public class ProductoDto {
 				.precio(producto.getPrecio())
 				.fechaCreacion(producto.getFechaCreacion())
 				.productosVariantes(ProductoVarianteCatalogoDto.listProductoVarianteCatalogoToListProductoVarianteCatalogoDto(producto.getProductoVariantes() != null ? producto.getProductoVariantes() : List.of()))
+				.imagenes(ImagenProductoCatalogoDto.listImagenProductoToListImagenProductoDto(producto.getImagenProductos() != null ? producto.getImagenProductos() : List.of()))
 				.build();
 	}
 	public static List<ProductoDto> listProductoToListProductoDto(List<Producto> listProducto){
