@@ -20,28 +20,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Table(name = "carritos")
+//@Builder
+//@Entity
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Data
+//@Table(name = "carritos")
 public class Carrito {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_carrito")
-	private Long id;
-	@ManyToOne
-	@JoinColumn(name = "id_usuario")
-	private Usuario usuario;
-	@ManyToOne
-	@JoinColumn(name = "id_estado")
-	private EstadoCarrito estadoCarrito;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date fechaCreacion;
-	//private LocalDateTime fechaCreacion;
-	//
-	@OneToMany(mappedBy = "carrito")
-	private List<CarritoItems> carritoItems;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Column(name = "id_carrito")
+//	private Long id;
+//	@ManyToOne
+//	@JoinColumn(name = "id_usuario")
+//	private Usuario usuario;
+//	@ManyToOne
+//	@JoinColumn(name = "id_estado")
+//	private EstadoCarrito estadoCarrito;
+//
+//	@Temporal(TemporalType.TIMESTAMP)
+//	private Date fechaCreacion;
+//	//private LocalDateTime fechaCreacion;
+//	//
+//	@OneToMany(mappedBy = "carrito")
+//	private List<CarritoItems> carritoItems;
 }

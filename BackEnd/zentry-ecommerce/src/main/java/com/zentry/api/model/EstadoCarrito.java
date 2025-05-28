@@ -14,19 +14,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Table(name = "estados_carritos")
+//@Builder
+//@Entity
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Data
+//@Table(name = "estados_carritos")
 public class EstadoCarrito {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_estado")
-	private Long id;
-	private String nombre;
-	//
-	@OneToMany(mappedBy = "estadoCarrito")
-	private List<Carrito> carritos;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Column(name = "id_estado")
+//	private Long id;
+//	private String nombre;
+//	//
+//	@OneToMany(mappedBy = "estadoCarrito")
+//	private List<Carrito> carritos;
 }

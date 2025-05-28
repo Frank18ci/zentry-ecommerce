@@ -34,10 +34,11 @@ public class ProductoVarianteController {
 	public ResponseEntity<?> getProductoPage(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size,
+			@RequestParam(defaultValue = "nombre") String sortBy,
 			@RequestParam(defaultValue = "asc") String direction,
 			@RequestParam String producto
 			) {
-		return ResponseEntity.status(200).body(productoVarianteService.listFiltro(page, size, direction,  producto));
+		return ResponseEntity.status(200).body(productoVarianteService.listFiltro(page, size, direction, sortBy, producto));
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getTarjetaByNumero(@PathVariable Long id) {

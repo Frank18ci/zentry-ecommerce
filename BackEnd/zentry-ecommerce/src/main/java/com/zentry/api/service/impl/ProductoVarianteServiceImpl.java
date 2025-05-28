@@ -30,12 +30,12 @@ public class ProductoVarianteServiceImpl implements ProductoVarianteService {
 	}
 
 	@Override
-	public Page<ProductoVarianteDto> listFiltro(int page, int size, String direction, String producto) {
+	public Page<ProductoVarianteDto> listFiltro(int page, int size, String sortBy, String direction, String producto) {
 		Direction sortDirection = Direction.ASC;
 		if(direction != null && "desc".equalsIgnoreCase(direction.trim())) {
 			sortDirection = Direction.DESC;
 		}
-		Sort sort = Sort.by(sortDirection, producto);
+		Sort sort = Sort.by(sortDirection, sortBy);
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<ProductoVariante> resultado = productoVarianteRepository.findByProducto_NombreContainingIgnoreCase(direction, pageable);
 		return resultado.map(ProductoVarianteDto::productoVarienteToProductoVarienteDto);

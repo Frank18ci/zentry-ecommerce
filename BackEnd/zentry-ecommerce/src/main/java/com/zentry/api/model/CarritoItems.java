@@ -14,23 +14,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Table(name = "carrito_items")
+//@Builder
+//@Entity
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Data
+//@Table(name = "carrito_items")
 public class CarritoItems {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_item")
-	private Long id;
-	@ManyToOne
-	@JoinColumn(name = "id_carrito")
-	private Carrito carrito;
-	@ManyToOne
-	@JoinColumn(name = "id_variante")
-	private ProductoVariante productoVariante;
-	private int cantidad;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Column(name = "id_item")
+//	private Long id;
+//	@ManyToOne
+//	@JoinColumn(name = "id_carrito")
+//	private Carrito carrito;
+//	@ManyToOne
+//	@JoinColumn(name = "id_variante")
+//	private ProductoVariante productoVariante;
+//	private int cantidad;
 	
 }

@@ -32,7 +32,7 @@ public class ProductoVariante {
 	//
 	@OneToMany(mappedBy = "productoVariante")
 	private List<OrdenItem> ordenItems;
-	@OneToMany(mappedBy = "productoVariante")
-	private List<CarritoItems> carritoItems;
+//	@OneToMany(mappedBy = "productoVariante")
+//	private List<CarritoItems> carritoItems;
 	
 }
