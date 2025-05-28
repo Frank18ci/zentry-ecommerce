@@ -47,6 +47,6 @@ public class EstadoPagoController {
     public ResponseEntity<?> deleteEstadoPago(@PathVariable Long id){
         Map<String, Object> mapper = new HashMap<>();
         mapper.put("message", estadoPagoService.delete(id));
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper);
+        return ResponseEntity.status(HttpStatus.OK).body(mapper);
     }
 }
