@@ -9,7 +9,7 @@ import com.zentry.api.dto.ColorDto;
 
 public interface ColorService {
 	public List<ColorDto> list();
-	public Page<ColorDto> listFiltro(int page, int size, String direction, String nombre);
+	public Page<ColorDto> listFiltro(int page, int size, String sortBy, String direction, String nombre);
 	public ColorDto findById(Long id);
 	//public ColorDTO findByAll(Long id);
 	public ColorDto save(ColorDto colorDTO);
