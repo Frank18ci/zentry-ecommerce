@@ -37,7 +37,7 @@ public class ColorServiceImpl implements ColorService {
 		}
 		Sort sort = Sort.by(sortDirection, nombre);
 		Pageable pageable = PageRequest.of(page, size, sort);
-		Page<Color> colorPage = colorRepository.findColorByNombre(nombre, pageable);
+		Page<Color> colorPage = colorRepository.findByNombreContaining(nombre, pageable);
 	    return colorPage.map(ColorDto::colorToColorDto);
 	}
 
