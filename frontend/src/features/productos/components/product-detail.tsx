@@ -15,20 +15,15 @@ export default async function ProductDetail ({ id }: ProductDetailProps) {
   if (!success) {
     return (
       <div className="flex flex-col items-center justify-center h-full">
-        <h2 className="text-2xl font-bold text-red-600">{message}</h2>
+        <h2 className="text-2xl font-bold text-destructive">{message}</h2>
       </div>
     )
   }
 
-  const nuevoProducto = {
-    ...producto,
-    imagenes: producto.imagenes || ["/vercel.svg", "/file.svg", "/globe.svg", "/next.svg", "/window.svg"]
-  }
-
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
       {/* Galería de imágenes */}
-      <ProductGallery producto={nuevoProducto} />
+      <ProductGallery producto={producto} />
 
       {/* Información del producto */}
       <section className="flex flex-col gap-5">

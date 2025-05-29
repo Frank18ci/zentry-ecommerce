@@ -1,108 +1,43 @@
-'use client'
-
-import Link from "next/link"
-
 import { Badge } from '@/core/components/ui/badge'
-import { Button, buttonVariants } from '@/core/components/ui/button'
 import { formatAmount } from '@/core/lib/helpers'
-import { useCarritoStore } from '@/features/carrito/store/carrito-store'
 import type { IProducto } from '@/features/productos/types'
-import { ChevronRightIcon, ImageIcon, ShoppingCartIcon } from 'lucide-react'
-import { toast } from 'sonner'
+import Image from 'next/image'
+import Link from "next/link"
 
 interface IProductCardProps {
   producto: IProducto
 }
 
 export default function ProductCard ({ producto }: IProductCardProps) {
-  const { addItem, openCart } = useCarritoStore()
+  const imgPrincipal = producto.imagenes.find(img => img.principal) || producto.imagenes[0] || { urlImagen: '/vercel.svg' }
 
-  const handleQuickAdd = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    // Encontrar la primera variante disponible
-    const primeraVarianteDisponible = producto.productosVariantes.find(v => v.stock > 0)
-
-    if (!primeraVarianteDisponible) {
-      toast.error('Producto sin stock disponible')
-      return
-    }
-
-    const carritoItem = {
-      productoId: producto.id,
-      varianteId: primeraVarianteDisponible.id,
-      nombre: producto.nombre,
-      precio: producto.precio,
-      cantidad: 1,
-      talla: primeraVarianteDisponible.talla.nombre,
-      color: primeraVarianteDisponible.color.nombre,
-      codigoHexColor: primeraVarianteDisponible.color.codigoHex,
-      stock: primeraVarianteDisponible.stock
-    }
-
-    addItem(carritoItem)
-
-    toast.success('Producto agregado al carrito', {
-      action: {
-        label: 'Ver carrito',
-        onClick: () => openCart()
-      }
-    })
-  }
-
-  const tieneStock = producto.productosVariantes.some(v => v.stock > 0)
   return (
-    <div className="flex flex-col justify-between group relative rounded-xl border overflow-hidden hover:shadow-xl hover:shadow-black/[0.04] hover:border-gray-300/60 transition-all duration-300">
-      {/* Product Image Placeholder */}
-      <div className="aspect-[4/3] grow relative overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
-            <ImageIcon />
-          </div>
-        </div>
+    <Link
+      href={`/productos/${producto.id}`}
+      className="flex flex-col group relative border-4 hover:shadow-xl hover:shadow-black/[0.04] hover:border-primary transition-all duration-300"
+    >
+      {/* Imagen del producto */}
+      <div className="relative overflow-hidden aspect-square">
+        <Image
+          src={imgPrincipal?.urlImagen}
+          alt={producto.nombre}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+        />
 
-        {/* Category Badge */}
-        <Badge variant='outline' className="absolute top-3 right-3">
+        {/* Categoría */}
+        <Badge variant='secondary' className="absolute z-10 top-3 right-3">
           {producto.subCategoria.nombre}
         </Badge>
-      </div>
 
-      <div className="p-5">
-        <Link href={`/productos/${producto.id}`} className="group/link">
-          <h3 className="font-semibold mb-2 group-hover/link:text-blue-600 transition-colors duration-200 line-clamp-1">
+        {/* Información de producto */}
+        <div className="absolute z-10 flex items-center justify-between gap-4 p-2 transition-all duration-300 border-2 rounded-full bottom-2 left-2 right-2 bg-background/70 backdrop-blur group-hover:bg-background">
+          <h3 className="text-xs font-bold line-clamp-1 text-balance">
             {producto.nombre}
           </h3>
-        </Link>
-
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
-          {producto.descripcion}
-        </p>
-
-        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-          <div className="flex flex-col">
-            <span className="text-lg font-bold">{formatAmount(producto.precio)}</span>
-            <span className="text-xs text-muted-foreground">Precio unitario</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {tieneStock && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleQuickAdd}
-                className="h-8 w-8 p-0"
-              >
-                <ShoppingCartIcon className="h-4 w-4" />
-              </Button>
-            )}
-            <Link href={`/productos/${producto.id}`} className={buttonVariants({ size: "sm" })}>
-              Ver más
-              <ChevronRightIcon />
-            </Link>
-          </div>
+          <span className="px-2 py-1 text-sm font-bold rounded-full bg-primary">{formatAmount(producto.precio)}</span>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

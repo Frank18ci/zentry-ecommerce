@@ -1,25 +1,20 @@
 //* Productos
 
-export interface IResponseProducto {
-  content: IProducto[]
-  pageable: IPageable
-  last: boolean
-  totalPages: number
-  totalElements: number
-  size: number
-  number: number
-  sort: ISort
-  first: boolean
-  numberOfElements: number
-  empty: boolean
+import type { ISubCategoria } from '@/features/categorias/types'
+
+export interface IImagen {
+  id: number
+  principal: boolean
+  urlImagen: string
 }
 
 export interface IProducto {
   id: number
-  subCategoria: ICategoria
+  subCategoria: ISubCategoria
   estadoProducto: IEstadoProducto
   nombre: string
   descripcion: string
+  imagenes: IImagen[]
   precio: number
   fechaCreacion: Date
   productosVariantes: IProductosVariante[]
@@ -37,39 +32,12 @@ export enum ENombreEstadoProducto {
 export interface IEstadoProducto {
   id: number
   nombre: ENombreEstadoProducto
+  codigoHex?: string
 }
 
 export interface IProductosVariante {
   id: number
   talla: IEstadoProducto
-  color: IColor
+  color: IEstadoProducto
   stock: number
-}
-
-export interface IColor {
-  id: number
-  nombre: string
-  codigoHex: string
-}
-
-export interface ICategoria {
-  id: number
-  categoria?: ICategoria
-  nombre: string
-  descripcion: string
-}
-
-export interface IPageable {
-  pageNumber: number
-  pageSize: number
-  sort: ISort
-  offset: number
-  paged: boolean
-  unpaged: boolean
-}
-
-export interface ISort {
-  empty: boolean
-  sorted: boolean
-  unsorted: boolean
 }

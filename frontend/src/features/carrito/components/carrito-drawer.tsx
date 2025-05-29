@@ -16,8 +16,11 @@ import { useCarritoStore } from '@/features/carrito/store/carrito-store'
 import { MinusIcon, PlusIcon, ShoppingCartIcon, TrashIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function CarritoDrawer () {
+  const [isHydrated, setIsHydrated] = useState(false)
+
   const {
     items,
     isOpen,
@@ -29,17 +32,21 @@ export default function CarritoDrawer () {
     getResumen
   } = useCarritoStore()
 
-  const resumen = getResumen()
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
+
+  const resumen = isHydrated ? getResumen() : { cantidadItems: 0, subtotal: 0, impuestos: 0, envio: 0, total: 0 }
 
   return (
     <Sheet open={isOpen} onOpenChange={toggleCart}>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="relative">
-          <ShoppingCartIcon className="h-5 w-5" />
+          <ShoppingCartIcon className="w-5 h-5" />
           {resumen.cantidadItems > 0 && (
             <Badge
               variant="destructive"
-              className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+              className="absolute flex items-center justify-center w-5 h-5 p-0 text-xs rounded-full -top-2 -right-2"
             >
               {resumen.cantidadItems}
             </Badge>
@@ -59,14 +66,14 @@ export default function CarritoDrawer () {
           </SheetDescription>
         </SheetHeader>
 
-        <div className='px-4 flex flex-col grow pb-5'>
+        <div className='flex flex-col px-4 pb-5 grow'>
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center flex-1 py-8">
-              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                <ShoppingCartIcon className="h-8 w-8 text-muted-foreground" />
+              <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-muted">
+                <ShoppingCartIcon className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-medium mb-2">Tu carrito está vacío</h3>
-              <p className="text-muted-foreground text-center mb-4">
+              <h3 className="mb-2 text-lg font-medium">Tu carrito está vacío</h3>
+              <p className="mb-4 text-center text-muted-foreground">
                 Agrega algunos productos para empezar
               </p>
               <Button asChild onClick={closeCart}>
@@ -78,34 +85,34 @@ export default function CarritoDrawer () {
           ) : (
             <div className="flex flex-col flex-1">
               {/* Lista de productos */}
-              <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+              <div className="flex-1 mb-4 space-y-4 overflow-y-auto">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-3 p-3 border rounded-lg">
                     {/* Imagen del producto */}
-                    <div className="w-16 h-16 rounded-md overflow-hidden bg-muted flex-shrink-0">
+                    <div className="flex-shrink-0 w-16 h-16 overflow-hidden rounded-md bg-muted">
                       {item.imagen ? (
                         <Image
                           src={item.imagen}
                           alt={item.nombre}
                           width={64}
                           height={64}
-                          className="w-full h-full object-cover"
+                          className="object-cover w-full h-full"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <ShoppingCartIcon className="h-6 w-6 text-muted-foreground" />
+                        <div className="flex items-center justify-center w-full h-full">
+                          <ShoppingCartIcon className="w-6 h-6 text-muted-foreground" />
                         </div>
                       )}
                     </div>
 
                     {/* Información del producto */}
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-sm truncate mb-1">{item.nombre}</h4>
+                      <h4 className="mb-1 text-sm font-medium truncate">{item.nombre}</h4>
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-xs text-muted-foreground">Talla: {item.talla}</span>
                         <div className="flex items-center gap-1">
                           <div
-                            className="w-3 h-3 rounded-full border border-gray-300"
+                            className="w-3 h-3 border border-gray-300 rounded-full"
                             style={{ backgroundColor: item.codigoHexColor }}
                           />
                           <span className="text-xs text-muted-foreground">{item.color}</span>
@@ -113,7 +120,7 @@ export default function CarritoDrawer () {
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <span className="font-medium text-sm">
+                        <span className="text-sm font-medium">
                           {formatAmount(item.precio)}
                         </span>
 
@@ -125,10 +132,10 @@ export default function CarritoDrawer () {
                             className="h-7 w-7"
                             onClick={() => updateQuantity(item.id, item.cantidad - 1)}
                           >
-                            <MinusIcon className="h-3 w-3" />
+                            <MinusIcon className="w-3 h-3" />
                           </Button>
 
-                          <span className="w-8 text-center text-sm font-medium">
+                          <span className="w-8 text-sm font-medium text-center">
                             {item.cantidad}
                           </span>
 
@@ -139,7 +146,7 @@ export default function CarritoDrawer () {
                             onClick={() => updateQuantity(item.id, item.cantidad + 1)}
                             disabled={item.cantidad >= item.stock}
                           >
-                            <PlusIcon className="h-3 w-3" />
+                            <PlusIcon className="w-3 h-3" />
                           </Button>
 
                           <Button
@@ -148,7 +155,7 @@ export default function CarritoDrawer () {
                             className="h-7 w-7 text-destructive hover:text-destructive"
                             onClick={() => removeItem(item.id)}
                           >
-                            <TrashIcon className="h-3 w-3" />
+                            <TrashIcon className="w-3 h-3" />
                           </Button>
                         </div>
                       </div>
@@ -160,7 +167,7 @@ export default function CarritoDrawer () {
               <Separator className="my-4" />
 
               {/* Resumen de precios */}
-              <div className="space-y-2 mb-4">
+              <div className="mb-4 space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Subtotal:</span>
                   <span>{formatAmount(resumen.subtotal)}</span>

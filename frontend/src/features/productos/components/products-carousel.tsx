@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   Carousel,
@@ -7,18 +7,25 @@ import {
   CarouselNext,
   CarouselPrevious
 } from "@/core/components/ui/carousel"
-import type { IProducto } from '@/features/productos/types'
+import type { IResponseProducto } from '@/features/productos/types'
 import Autoplay from "embla-carousel-autoplay"
+import { use } from 'react'
 import ProductCard from './product-card'
 
-interface ProductsCarouselProps {
-  productos: IProducto[]
-}
-
 export default function ProductsCarousel ({
-  productos
-}: ProductsCarouselProps) {
-  if (!productos.length) return null
+  productosPromise
+}: {
+  productosPromise: Promise<{ success: boolean; data: IResponseProducto; message?: undefined } | { success: boolean; message: string; data?: undefined }>
+}) {
+  const { data: productos, success } = use(productosPromise)
+
+  if (!success || !productos || !productos.content || productos.content.length === 0) {
+    return (
+      <div className='flex flex-col items-center justify-center w-full h-64'>
+        <p className='text-muted-foreground'>No hay productos destacados disponibles en este momento.</p>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -45,7 +52,7 @@ export default function ProductsCarousel ({
         className='w-full container mx-auto'
       >
         <CarouselContent>
-          {productos.map((producto) => (
+          {productos?.content?.map((producto) => (
             <CarouselItem key={producto.id} className='md:basis-1/2 lg:basis-1/3 xl:basis-1/4 select-none cursor-move'>
               <ProductCard producto={producto} />
             </CarouselItem>
