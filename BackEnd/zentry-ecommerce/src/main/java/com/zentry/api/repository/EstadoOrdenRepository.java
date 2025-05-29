@@ -1,6 +1,5 @@
 package com.zentry.api.repository;
 
-import com.zentry.api.model.Color;
 import com.zentry.api.model.EstadoOrden;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
