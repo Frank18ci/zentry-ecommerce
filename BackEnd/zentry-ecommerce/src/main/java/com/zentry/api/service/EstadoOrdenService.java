@@ -1,7 +1,6 @@
 package com.zentry.api.service;
 
 import com.zentry.api.dto.EstadoOrdenDto;
-import com.zentry.api.dto.OrdenDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

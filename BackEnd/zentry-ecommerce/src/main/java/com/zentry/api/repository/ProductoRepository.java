@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.zentry.api.model.Producto;
 
-import java.util.List;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long>{
