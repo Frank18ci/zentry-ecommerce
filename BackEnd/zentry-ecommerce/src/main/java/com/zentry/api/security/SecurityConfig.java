@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,10 +39,12 @@ public class SecurityConfig {
 		jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 		
 		return httpSecurity
-				.csrf(config -> config.disable())
+				.csrf(AbstractHttpConfigurer::disable)
 				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers("/usuario/saveCliente", "/usuario/saveAdmin").permitAll();
+					//For swagger login
+					auth.requestMatchers("/auth-docs/login").permitAll();
 					auth.requestMatchers(HttpMethod.GET, "/**").permitAll();
 					auth.requestMatchers("/producto/**").hasAuthority("ROLE_CLIENTE");
 					auth.requestMatchers("/usuario/**").hasAuthority("ROLE_ADMIN");
