@@ -36,7 +36,7 @@ public class EstadoOrdenServiceImpl implements EstadoOrdenService{
         }
         Sort sort = Sort.by(sortDirection, sortBy);
         Pageable pageable = PageRequest.of(page,size,sort);
-        Page<EstadoOrden> estadoOrden = estadoOrdenRepository.findByNombre(nombre, pageable);
+        Page<EstadoOrden> estadoOrden = estadoOrdenRepository.findByNombreContaining(nombre, pageable);
         return  estadoOrden.map(EstadoOrdenDto::estadoOrdenToEstadoOrdenDto);
 	}
 

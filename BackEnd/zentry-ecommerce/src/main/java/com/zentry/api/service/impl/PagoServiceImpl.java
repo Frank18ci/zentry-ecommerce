@@ -40,7 +40,7 @@ public class PagoServiceImpl implements PagoService{
         }
         Sort sort = Sort.by(sortDirection, sortBy);
         Pageable pageable = PageRequest.of(page,size,sort);
-        Page<Pago> pago = pagoRepository.findByOrden_Usuario_Nombre(nombreUsuario, pageable);
+        Page<Pago> pago = pagoRepository.findByOrden_Usuario_NombreContaining(nombreUsuario, pageable);
         return pago.map(PagoDto::pagoToPagoDto);
 	}
 

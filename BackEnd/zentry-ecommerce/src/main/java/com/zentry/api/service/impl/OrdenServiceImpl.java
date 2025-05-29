@@ -39,7 +39,7 @@ public class OrdenServiceImpl implements OrdenService{
 		}
 		Sort sort = Sort.by(sortDirection, sortBy);
         Pageable pageable = PageRequest.of(page,size,sort);
-        Page<Orden> orden = ordenRepository.findByUsuario_Nombre(nombreUsuario, pageable);
+        Page<Orden> orden = ordenRepository.findByUsuario_NombreContaining(nombreUsuario, pageable);
         return orden.map(OrdenDto::ordenToOrdenDto);
 	}
 
