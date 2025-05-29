@@ -23,13 +23,11 @@ public class EstadoOrdenServiceImpl implements EstadoOrdenService{
 
 	@Override
 	public List<EstadoOrdenDto> list() {
-		// TODO Auto-generated method stub
         return EstadoOrdenDto.listEstadoOrdenToListEstadoOrdenDto(estadoOrdenRepository.findAll());
 	}
 
 	@Override
 	public Page<EstadoOrdenDto> listFiltro(int page, int size, String sortBy, String direction, String nombre) {
-		// TODO Auto-generated method stub
 		Sort.Direction sortDirection = Sort.Direction.ASC;
         if(direction != null && "desc".equalsIgnoreCase(direction.trim())) {
             sortDirection = Sort.Direction.DESC;
@@ -42,7 +40,6 @@ public class EstadoOrdenServiceImpl implements EstadoOrdenService{
 
 	@Override
 	public EstadoOrdenDto findById(Long id) {
-		// TODO Auto-generated method stub
 		return EstadoOrdenDto.estadoOrdenToEstadoOrdenDto(estadoOrdenRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Estado Orden no encontrado con id" + id)));
 	}
@@ -67,12 +64,11 @@ public class EstadoOrdenServiceImpl implements EstadoOrdenService{
 
 	@Override
 	public String deleteById(Long id) {
-		// TODO Auto-generated method stub
 		if(id == null){
             throw new BadRequestParam("Falta el dato id");
         }
         estadoOrdenRepository.deleteById(id);
-        return "Estado Pago con id " + id + " eliminado";
+        return "Estado Orden con id " + id + " eliminado";
 	}
 	
 	

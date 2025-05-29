@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenItemRepository extends JpaRepository<OrdenItem, Long> {
-    Page<OrdenItem> findByOrden_Usuario_NombreContaining(String nombre, Pageable pageable);
+    Page<OrdenItem> findByOrden_Usuario_NombreContaining(String nombreUsuario, Pageable pageable);
 }

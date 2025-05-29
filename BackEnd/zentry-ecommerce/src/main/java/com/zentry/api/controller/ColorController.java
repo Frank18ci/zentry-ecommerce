@@ -32,10 +32,11 @@ public class ColorController {
 	public ResponseEntity<?> getColorPage(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size,
+			@RequestParam(defaultValue = "nombre") String sortBy,
 			@RequestParam(defaultValue = "asc") String direction,
 			@RequestParam String Color
 			) {
-		return ResponseEntity.status(200).body(colorService.listFiltro(page, size, direction,  Color));
+		return ResponseEntity.status(200).body(colorService.listFiltro(page, size, sortBy, direction,  Color));
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getColorById(@PathVariable Long id) {

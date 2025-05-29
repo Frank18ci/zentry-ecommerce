@@ -12,9 +12,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.zentry.api.model.Color;
 
+import java.util.Optional;
+
 
 public interface ColorRepository extends JpaRepository<Color, Long> {
 	Page<Color> findByNombreContaining(String nombre, Pageable pageable);
-	Color findColorById(Long id);
-	
+	Optional<Color> findColorById(Long id);
+
 }

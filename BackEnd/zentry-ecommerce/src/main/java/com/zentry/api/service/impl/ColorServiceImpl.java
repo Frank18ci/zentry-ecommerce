@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.zentry.api.excepcion.BadRequestParam;
+import com.zentry.api.excepcion.ResourceNotFound;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,12 +31,12 @@ public class ColorServiceImpl implements ColorService {
 	}
 
 	@Override
-	public Page<ColorDto> listFiltro(int page, int size, String direction, String nombre) {
+	public Page<ColorDto> listFiltro(int page, int size, String sortBy, String direction, String nombre) {
 		Direction sortDirection = Direction.ASC;
 		if(direction != null && "desc".equalsIgnoreCase(direction.trim())) {
 			sortDirection = Direction.DESC;
 		}
-		Sort sort = Sort.by(sortDirection, nombre);
+		Sort sort = Sort.by(sortDirection, sortBy);
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<Color> colorPage = colorRepository.findByNombreContaining(nombre, pageable);
 	    return colorPage.map(ColorDto::colorToColorDto);
@@ -43,14 +44,10 @@ public class ColorServiceImpl implements ColorService {
 
 	@Override
 	public ColorDto findById(Long id) {
-		return ColorDto.colorToColorDto(colorRepository.findColorById(id));
+		return ColorDto.colorToColorDto(colorRepository.findColorById(id)
+				.orElseThrow(() -> new ResourceNotFound("Color no encontrado con id " + id)));
 	}
 
-	/*@Override
-	public ColorDTO findByAll(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
 
 	@Override
 	public ColorDto save(ColorDto colorDTO) {
@@ -73,7 +70,7 @@ public class ColorServiceImpl implements ColorService {
 			throw new BadRequestParam("Falta el dato id");
 		}
 		colorRepository.deleteById(id);
-		return "Color Eliminado";
+		return "Color con id " + id + " eliminado";
 	}
 
 }
