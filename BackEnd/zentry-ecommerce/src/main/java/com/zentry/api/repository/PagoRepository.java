@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PagoRepository extends JpaRepository<Pago, Long> {
-    Page<Pago> findByOrden_Usuario_Nombre(String nombre, Pageable pageable);
+    Page<Pago> findByOrden_Usuario_NombreContaining(String nombre, Pageable pageable);
 }

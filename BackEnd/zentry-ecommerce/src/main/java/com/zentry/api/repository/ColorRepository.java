@@ -14,7 +14,7 @@ import com.zentry.api.model.Color;
 
 
 public interface ColorRepository extends JpaRepository<Color, Long> {
-	Page<Color> findColorByNombre(String nombre, Pageable pageable);
+	Page<Color> findByNombreContaining(String nombre, Pageable pageable);
 	Color findColorById(Long id);
 	
 }

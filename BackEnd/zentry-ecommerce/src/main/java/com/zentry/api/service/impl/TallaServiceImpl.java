@@ -39,7 +39,7 @@ public class TallaServiceImpl implements TallaService {
 		}
 		Sort sort = Sort.by(sortDirection, nombre);
 		Pageable pageable = PageRequest.of(page, size, sort);
-		Page<Talla> tallaPage = tallaRepository.findByNombre(nombre, pageable);
+		Page<Talla> tallaPage = tallaRepository.findByNombreContaining(nombre, pageable);
 	    return tallaPage.map(TallaDto::tallaToTallaDto);
 	}
 
