@@ -11,7 +11,6 @@ interface AgregarCarritoButtonProps {
   producto: IProducto
   variante?: IProductosVariante | null
   cantidad: number
-  className?: string
   disabled?: boolean
 }
 
@@ -19,10 +18,9 @@ export default function AgregarCarritoButton ({
   producto,
   variante,
   cantidad,
-  className,
   disabled
 }: AgregarCarritoButtonProps) {
-  const { addItem, openCart, isItemInCart } = useCarritoStore()
+  const { addItem, isItemInCart } = useCarritoStore()
   const [isAdding, setIsAdding] = useState(false)
 
   const handleAddToCart = async () => {
@@ -31,26 +29,28 @@ export default function AgregarCarritoButton ({
     setIsAdding(true)
 
     try {
+      const principalImagen = producto.imagenes.find(img => img.principal)?.urlImagen || producto.imagenes[0]?.urlImagen
+
       const carritoItem = {
-        productoId: producto.id,
-        varianteId: variante?.id,
-        nombre: producto.nombre,
-        precio: producto.precio,
-        cantidad: cantidad,
-        talla: variante?.talla.nombre,
-        color: variante?.color.nombre,
-        codigoHexColor: variante?.color.codigoHex,
-        stock: variante?.stock
+        productoId: producto.id || 0,
+        varianteId: variante?.id || 0,
+        nombre: producto.nombre || '',
+        precio: producto.precio || 0,
+        cantidad: cantidad || 1,
+        talla: variante?.talla.nombre || '',
+        color: variante?.color.nombre || '',
+        codigoHexColor: variante?.color.codigoHex || '',
+        stock: variante?.stock || 0,
+        imagen: principalImagen
       }
 
       addItem(carritoItem)
 
+      const talla = variante?.talla.nombre ? `Talla: ${variante.talla.nombre}` : ''
+      const color = variante?.color.nombre ? `Color: ${variante.color.nombre}` : ''
+
       toast.success('Producto agregado al carrito', {
-        description: `${producto.nombre} ${variante?.talla.nombre || ''} ${variante?.color.nombre || ''}`,
-        action: {
-          label: 'Ver carrito',
-          onClick: () => openCart()
-        }
+        description: `${producto.nombre} ${talla} ${color}`
       })
     } catch (error) {
       const msg = error instanceof Error ? error.message : 'Error desconocido'
@@ -59,12 +59,13 @@ export default function AgregarCarritoButton ({
   }
 
   const estaEnCarrito = isItemInCart(producto.id, variante?.id)
-  const sinStock = variante?.stock === 0
+  const noDisponible = disabled || (variante && variante.stock === 0)
 
-  if (sinStock) {
+  if (noDisponible) {
     return (
-      <Button disabled className={className}>
-        Sin Stock
+      <Button variant='ghost' disabled className='cursor-not-allowed'>
+        <ShoppingCartIcon />
+        {disabled ? 'No está disponible' : 'Sin Stock'}
       </Button>
     )
   }
@@ -73,22 +74,17 @@ export default function AgregarCarritoButton ({
     <Button
       onClick={handleAddToCart}
       disabled={disabled || isAdding}
-      className={className}
+      className='w-full'
     >
       {isAdding ? (
         <>
-          <CheckIcon className="mr-2 h-4 w-4" />
+          <CheckIcon />
           Agregado
-        </>
-      ) : estaEnCarrito ? (
-        <>
-          <ShoppingCartIcon className="mr-2 h-4 w-4" />
-          Agregar Más
         </>
       ) : (
         <>
-          <ShoppingCartIcon className="mr-2 h-4 w-4" />
-          Agregar al Carrito
+          <ShoppingCartIcon />
+          {estaEnCarrito ? 'En el Carrito' : 'Agregar al Carrito'}
         </>
       )}
     </Button>

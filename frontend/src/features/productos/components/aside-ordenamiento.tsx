@@ -13,19 +13,17 @@ const sortOptions = [
 export default function AsideOrdenamiento () {
   const searchParams = useSearchParams()
 
-  const direction = searchParams.get('direction') || 'asc'
-  const query = searchParams.get('query') || ''
-  const sortBy = searchParams.get('sortBy') || 'nombre'
+  const existentParams = searchParams.toString()
 
   return (
-    <aside className='flex flex-col gap-2 w-40'>
+    <aside className='flex flex-col w-40 gap-2'>
       <h2 className='text-sm text-muted-foreground'>Ordenar por</h2>
       <ul>
         {sortOptions.map((option) => (
           <li key={option.id}>
             <Link
-              href={`/productos?query=${query}&direction=${option.direction}&sortBy=${option.sortBy}`}
-              className={`text-sm ${direction === option.direction && sortBy === option.sortBy ? 'font-bold underline' : ''}`}
+              href={`/productos?${existentParams}&direction=${option.direction}&sortBy=${option.sortBy}`}
+              className={`text-sm ${existentParams.includes(`direction=${option.direction}`) && existentParams.includes(`sortBy=${option.sortBy}`) ? 'font-bold underline' : ''}`}
             >
               {option.label}
             </Link>

@@ -8,18 +8,34 @@ interface IGetProductsParams {
   direction?: 'asc' | 'desc'
   page?: string
   sortBy?: string
+  idCategoria?: string
+  idSubCategoria?: string
 }
 
-export async function actionGetProducts ({ query, direction, page, sortBy }: IGetProductsParams | undefined = {}) {
+export async function actionGetProducts (props: IGetProductsParams | undefined = {}) {
+  const { query, direction, page, sortBy, idCategoria, idSubCategoria } = props
+
   try {
     const params = new URLSearchParams()
+
+    //* 1. Agregar parámetros de búsqueda
+    params.append('size', '6')
+
     if (query) params.append('nombre', query)
+
     if (direction) {
       params.append('sortBy', sortBy || 'nombre')
       params.append('direction', direction)
     }
-    if (page) params.append('page', (Number(page) - 1).toString())
 
+    if (page) {
+      params.append('page', (Number(page) - 1).toString())
+    }
+
+    if (idCategoria) params.append('idCategoria', idCategoria)
+    if (idSubCategoria) params.append('idSubCategoria', idSubCategoria)
+
+    //* 2. Realizar la solicitud a la API
     const res = await fetch(`${API_BASE_URL}/producto/page?${params.toString()}`)
 
     if (!res.ok) {

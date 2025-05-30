@@ -2,17 +2,19 @@ import { buttonVariants } from '@/core/components/ui/button'
 import { Skeleton } from '@/core/components/ui/skeleton'
 import { APP_NAME } from '@/core/lib/constants'
 import UserDropdown from '@/features/auth/components/user-dropdown'
-import CarritoDrawer from '@/features/carrito/components/carrito-drawer'
 import BarraBusqueda from '@/features/productos/components/barra-busqueda'
+import dynamic from 'next/dynamic'
 import Link from "next/link"
 import { Suspense } from 'react'
+
+const CarritoDrawer = dynamic(() => import('@/features/carrito/components/carrito-drawer'))
 
 const linkVariant = buttonVariants({ variant: 'link', size: 'sm' })
 
 export default async function Header () {
   return (
-    <header className="sticky top-0 z-50 bg-background border-b">
-      <div className="flex gap-5 items-center justify-between h-16">
+    <header className="sticky top-0 z-50 border-b bg-background">
+      <div className="flex items-center justify-between h-16 gap-5">
         <div className="flex items-center gap-5">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold">
@@ -34,7 +36,7 @@ export default async function Header () {
         </div>
 
         {/* Barra de búsqueda */}
-        <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
+        <div className="items-center flex-1 hidden max-w-md mx-8 md:flex">
           <BarraBusqueda />
         </div>
 

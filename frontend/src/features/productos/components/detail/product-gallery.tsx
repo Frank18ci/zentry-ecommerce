@@ -1,7 +1,7 @@
 'use client'
 
 import { Badge } from '@/core/components/ui/badge'
-import { ENombreEstadoProducto, type IProducto } from '@/features/productos/types'
+import { ENombreEstadoProducto, type IImagen, type IProducto } from '@/features/productos/types'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -17,22 +17,22 @@ const variantsBadgeEstadoProducto = {
 export default function ProductGallery ({
   producto
 }: {
-  producto: IProducto & {
-    imagenes: string[]
-  }
+  producto: IProducto
 }) {
-  const [selectedImage, setSelectedImage] = useState(0)
+  const principalImage = producto.imagenes.find(imagen => imagen.principal) || producto.imagenes[0] || { urlImagen: '/vercel.svg' }
+
+  const [selectedImage, setSelectedImage] = useState<IImagen>(principalImage)
 
   return (
     <div className="space-y-4">
       <div className="aspect-[4/5] relative overflow-hidden rounded-lg bg-gray-100">
         <Image
-          src={producto.imagenes[selectedImage] || "/vercel.svg"}
+          src={selectedImage?.urlImagen || principalImage.urlImagen || "/vercel.svg"}
           alt={producto.nombre}
           fill
           className="object-cover"
         />
-        <Badge variant={variantsBadgeEstadoProducto[producto.estadoProducto.nombre]} className='capitalize absolute top-3 left-3 z-10'>
+        <Badge variant={variantsBadgeEstadoProducto[producto.estadoProducto.nombre]} className='absolute z-10 capitalize top-3 left-3'>
           {producto.estadoProducto.nombre}
         </Badge>
       </div>
@@ -41,12 +41,12 @@ export default function ProductGallery ({
         {producto.imagenes.map((imagen, index) => (
           <button
             key={index}
-            onClick={() => setSelectedImage(index)}
-            className={`aspect-square relative overflow-hidden rounded-md border-2 transition-colors ${selectedImage === index ? "border-primary" : "border-muted"
+            onClick={() => setSelectedImage(imagen)}
+            className={`aspect-square relative overflow-hidden rounded-md border-2 transition-colors ${selectedImage.id === imagen.id ? "border-primary" : "border-muted"
               }`}
           >
             <Image
-              src={imagen || "/vercel.svg"}
+              src={imagen.urlImagen || "/vercel.svg"}
               alt={`${producto.nombre} ${index + 1}`}
               fill
               className="object-cover"

@@ -5,22 +5,20 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function PaginacionProductos ({
-  currentPage = 1,
   maxPage = 1,
   totalItems = 0,
-  query = '',
-  direction = 'asc'
 }: {
-  currentPage?: number | string
   maxPage?: number
   totalItems?: number
-  query?: string
-  direction?: 'asc' | 'desc'
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const current = Number(currentPage)
+  const page = searchParams.get('page') || '1'
+  const query = searchParams.get('query') || ''
+  const direction = searchParams.get('direction') || ''
+
+  const current = Number(page)
 
   const navigateToPage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -82,16 +80,16 @@ export default function PaginacionProductos ({
           size="sm"
           onClick={() => navigateToPage(current - 1)}
           disabled={current <= 1}
-          className="h-8 w-8 p-0"
+          className="w-8 h-8 p-0"
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="w-4 h-4" />
         </Button>
 
         <div className="flex items-center gap-1">
           {getVisiblePages().map((page, index) => (
             page === '...' ? (
-              <div key={`ellipsis-${index}`} className="flex h-8 w-8 items-center justify-center">
-                <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+              <div key={`ellipsis-${index}`} className="flex items-center justify-center w-8 h-8">
+                <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
               </div>
             ) : (
               <Button
@@ -99,7 +97,7 @@ export default function PaginacionProductos ({
                 variant={current === page ? "default" : "outline"}
                 size="sm"
                 onClick={() => navigateToPage(page as number)}
-                className="h-8 w-8 p-0"
+                className="w-8 h-8 p-0"
               >
                 {page}
               </Button>
@@ -112,9 +110,9 @@ export default function PaginacionProductos ({
           size="sm"
           onClick={() => navigateToPage(current + 1)}
           disabled={current >= maxPage}
-          className="h-8 w-8 p-0"
+          className="w-8 h-8 p-0"
         >
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="w-4 h-4" />
         </Button>
       </div>
 

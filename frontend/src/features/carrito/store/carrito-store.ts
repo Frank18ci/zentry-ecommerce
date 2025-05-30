@@ -20,11 +20,10 @@ export const useCarritoStore = create<ICarritoStore>()(
           const existingItem = state.items.find(item => item.id === existingItemId)
 
           if (existingItem) {
-            // Si el item ya existe, actualizar cantidad
             return {
               items: state.items.map(item =>
                 item.id === existingItemId
-                  ? { ...item, cantidad: Math.min(item.cantidad + newItem.cantidad, item.stock) }
+                  ? { ...item, cantidad: Math.min(item.cantidad + (newItem.cantidad ?? 1), item.stock) }
                   : item
               )
             }
@@ -33,7 +32,7 @@ export const useCarritoStore = create<ICarritoStore>()(
             const itemWithId = {
               ...newItem,
               id: existingItemId,
-              cantidad: Math.min(newItem.cantidad, newItem.stock)
+              cantidad: Math.min((newItem.cantidad ?? 1), (newItem.stock ?? 1))
             }
             return {
               items: [...state.items, itemWithId]

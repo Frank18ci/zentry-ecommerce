@@ -30,11 +30,11 @@ export async function actionLogin (initialState: unknown, formData: FormData) {
       body: JSON.stringify({ correoElectronico, contraseña }),
     })
 
-    const session = await response.json() as ISession
-
     if (!response.ok) {
       throw new Error("El correo electrónico o la contraseña son incorrectos")
     }
+
+    const session = await response.json() as ISession
 
     if (!session.token) {
       throw new Error('Token no recibido')

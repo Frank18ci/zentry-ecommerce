@@ -25,7 +25,7 @@ export interface ICarritoStore {
   isOpen: boolean
 
   // Acciones
-  addItem: (item: Omit<Partial<ICarritoItem>, 'id'>) => void
+  addItem: (item: Omit<ICarritoItem, 'id'>) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, cantidad: number) => void
   clearCart: () => void

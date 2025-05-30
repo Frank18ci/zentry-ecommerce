@@ -1,35 +1,55 @@
+import { ScrollArea, ScrollBar } from '@/core/components/ui/scroll-area'
+import { Skeleton } from '@/core/components/ui/skeleton'
+import AsideCategorias from '@/features/categorias/components/aside-categorias'
 import { actionGetProducts } from '@/features/productos/actions'
-import AsideCategorias from '@/features/productos/components/aside-categorias'
 import AsideOrdenamiento from '@/features/productos/components/aside-ordenamiento'
 import PaginacionProductos from '@/features/productos/components/paginacion-productos'
 import ProductList from '@/features/productos/components/product-list'
-import type { ICategoria } from '@/features/productos/types'
+import { Suspense } from 'react'
 
 interface IPageProductsProps {
-  searchParams: Promise<{ query?: string, direction?: 'asc' | 'desc', page?: string, sortBy?: string }>
+  searchParams: Promise<{
+    query?: string,
+    direction?: 'asc' | 'desc',
+    page?: string,
+    sortBy?: string,
+    idCategoria?: string,
+    idSubCategoria?: string
+  }>
 }
 
 export default async function PageProducts ({
   searchParams
 }: IPageProductsProps) {
-  const { query, direction, page, sortBy } = await searchParams
+  const { query, direction, page, sortBy, idCategoria, idSubCategoria } = await searchParams
 
-  const { data: productos, success, message } = await actionGetProducts({ query, direction, page, sortBy })
-
-  const categorias = productos?.content
-    .map(producto => producto.subCategoria)
-    .filter((categoria, index, self) => self.findIndex(c => c?.id === categoria?.id) === index) as ICategoria[]
+  const { data: productos, success, message } = await actionGetProducts({ query, direction, page, sortBy, idCategoria, idSubCategoria })
 
   return (
-    <main className='flex gap-5 grow'>
-      <AsideCategorias categorias={categorias} />
+    <main className='flex flex-col gap-5 xs:flex-row grow'>
+      <div className='flex flex-col gap-5 max-h-dvh'>
+        <Suspense fallback={<Skeleton className='xs:w-36' />}>
+          <ScrollArea className="w-full whitespace-nowrap xs:w-36">
+            <AsideCategorias />
+            <div className='flex xs:hidden'>
+              <ScrollBar orientation="horizontal" />
+            </div>
+            <div className='hidden xs:flex'>
+              <ScrollBar orientation="vertical" />
+            </div>
+          </ScrollArea>
+        </Suspense>
+        <div className="flex xs:w-36 md:hidden">
+          <AsideOrdenamiento />
+        </div>
+      </div>
 
       <section className="flex flex-col gap-5 grow">
         {!success && (
           <p className='text-destructive'>{message}</p>
         )}
 
-        <div className="flex flex-col grow gap-2">
+        <div className="flex flex-col gap-2 grow">
           {query && (
             <p>
               Mostrando {productos?.totalElements || 0} {
@@ -43,15 +63,14 @@ export default async function PageProducts ({
         </div>
 
         <PaginacionProductos
-          currentPage={page}
           maxPage={productos?.totalPages}
           totalItems={productos?.totalElements}
-          query={query}
-          direction={direction}
         />
       </section>
 
-      <AsideOrdenamiento />
+      <div className="hidden md:flex">
+        <AsideOrdenamiento />
+      </div>
     </main>
   )
 }
