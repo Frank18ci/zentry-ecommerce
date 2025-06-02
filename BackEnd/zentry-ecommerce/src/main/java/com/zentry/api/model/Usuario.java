@@ -50,7 +50,7 @@ public class Usuario {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaCreacion;
 	
-	@ManyToOne
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "id_direccion")
 	private Direccion direccion;
 	

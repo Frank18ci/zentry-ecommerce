@@ -30,8 +30,13 @@ public class UsuarioController {
 	public ResponseEntity<?> getById(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.find(id));
 	}
-	
 	private final PasswordEncoder passwordEncoder;
+	@PostMapping
+	public ResponseEntity<?> saveDefault(@RequestBody UsuarioDto usuarioDto) {
+		usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.save(usuarioDto));
+	}
+
 	@PostMapping("/saveCliente")
 	public ResponseEntity<?> save(@RequestBody UsuarioDto usuarioDto) {
 		usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
