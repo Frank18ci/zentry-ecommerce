@@ -4,7 +4,7 @@ import { Button } from '@/core/components/ui/button'
 import { useCarritoStore } from '@/features/carrito/store/carrito-store'
 import type { IProducto, IProductosVariante } from '@/features/productos/types'
 import { CheckIcon, ShoppingCartIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 interface AgregarCarritoButtonProps {
@@ -22,6 +22,14 @@ export default function AgregarCarritoButton ({
 }: AgregarCarritoButtonProps) {
   const { addItem, isItemInCart } = useCarritoStore()
   const [isAdding, setIsAdding] = useState(false)
+
+  const estaEnCarrito = isItemInCart(producto.id, variante?.id)
+
+  useEffect(() => {
+    if (!estaEnCarrito && isAdding) {
+      setIsAdding(false)
+    }
+  }, [estaEnCarrito, isAdding])
 
   const handleAddToCart = async () => {
     if (disabled || variante?.stock === 0) return
@@ -58,7 +66,6 @@ export default function AgregarCarritoButton ({
     }
   }
 
-  const estaEnCarrito = isItemInCart(producto.id, variante?.id)
   const noDisponible = disabled || (variante && variante.stock === 0)
 
   if (noDisponible) {

@@ -72,11 +72,10 @@ export default function ProductVariantSelector ({ producto }: ProductVariantSele
   }, [tallasDisponibles, coloresDisponibles, hasMultipleTallas, hasMultipleColors, selectedTalla, selectedColor])
 
   const stockDisponible = varianteSeleccionada?.stock || 0
-  const maxQuantity = Math.min(10, stockDisponible)
 
   const handleQuantityChange = useCallback((delta: number) => {
-    setQuantity(prev => Math.max(1, Math.min(maxQuantity, prev + delta)))
-  }, [maxQuantity])
+    setQuantity(prev => Math.max(1, Math.min(stockDisponible, prev + delta)))
+  }, [stockDisponible])
 
   return (
     <div className="space-y-6">
@@ -162,16 +161,11 @@ export default function ProductVariantSelector ({ producto }: ProductVariantSele
               variant="outline"
               size="icon"
               onClick={() => handleQuantityChange(1)}
-              disabled={quantity >= maxQuantity}
+              disabled={quantity >= stockDisponible}
             >
               +
             </Button>
           </div>
-          {maxQuantity < stockDisponible && (
-            <p className="mt-1 text-xs text-muted-foreground">
-              Máximo {maxQuantity} unidades por compra
-            </p>
-          )}
         </div>
       )}
 

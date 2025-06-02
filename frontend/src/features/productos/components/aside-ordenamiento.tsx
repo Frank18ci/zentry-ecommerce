@@ -13,7 +13,12 @@ const sortOptions = [
 export default function AsideOrdenamiento () {
   const searchParams = useSearchParams()
 
-  const existentParams = searchParams.toString()
+  const createHref = (direction: string, sortBy: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('direction', direction)
+    params.set('sortBy', sortBy)
+    return `/productos?${params.toString()}`
+  }
 
   return (
     <aside className='flex flex-col w-40 gap-2'>
@@ -22,8 +27,8 @@ export default function AsideOrdenamiento () {
         {sortOptions.map((option) => (
           <li key={option.id}>
             <Link
-              href={`/productos?${existentParams}&direction=${option.direction}&sortBy=${option.sortBy}`}
-              className={`text-sm ${existentParams.includes(`direction=${option.direction}`) && existentParams.includes(`sortBy=${option.sortBy}`) ? 'font-bold underline' : ''}`}
+              href={createHref(option.direction, option.sortBy)}
+              className={`text-sm ${searchParams.get('direction') === option.direction && searchParams.get('sortBy') === option.sortBy ? 'font-bold underline' : ''}`}
             >
               {option.label}
             </Link>

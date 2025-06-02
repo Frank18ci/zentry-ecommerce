@@ -16,3 +16,29 @@ export interface ISession {
   Message: string
   token: string
 }
+
+export interface IUsuario {
+  id: number
+  rol: Rol[]
+  nombre: string
+  apellido: string
+  correoElectronico: string
+  contraseña: string
+  telefono: string
+  direccion: Direccion
+  fechaCreacion: Date
+}
+
+export interface Direccion {
+  id: number
+  direccion: string
+  ciudad: string
+  provincia: string
+  codigoPostal: string
+  pais: string
+}
+
+export interface Rol {
+  id: number
+  nombre: ERole
+}

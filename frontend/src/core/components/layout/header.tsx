@@ -29,9 +29,6 @@ export default async function Header () {
             <Link href="/categorias" className={linkVariant}>
               Categorías
             </Link>
-            <Link href="/ofertas" className={linkVariant}>
-              Ofertas
-            </Link>
           </nav>
         </div>
 
