@@ -63,7 +63,6 @@ public class UsuarioController {
 		UserDetailsSession uds = UserDetailsSession.builder()
 				.id(usuarioDto.getId())
 				.username(user.getUsername())
-				.password(user.getPassword())
 				.authorities(user.getAuthorities())
 				.accountNonExpired(user.isAccountNonExpired())
 				.accountNonLocked(user.isAccountNonLocked())
