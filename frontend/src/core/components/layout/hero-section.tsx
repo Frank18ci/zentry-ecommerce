@@ -19,10 +19,6 @@ export function HeroSection () {
             <Button asChild size="lg" className="px-8">
               <Link href="/productos">Explorar Colección</Link>
             </Button>
-
-            <Button asChild variant="outline" size="lg" className="px-8">
-              <Link href="/ofertas">Ver Ofertas</Link>
-            </Button>
           </div>
         </div>
       </div>

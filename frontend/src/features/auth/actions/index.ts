@@ -1,20 +1,11 @@
 'use server'
 
 import { API_BASE_URL, COOKIE_NAME } from '@/core/lib/constants'
-import type { ISession } from '@/features/auth/types'
+import type { IRol, ISession, IUsuario } from '@/features/auth/types'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-async function setCookie (value: string) {
-  const cookieStore = await cookies()
-  cookieStore.set({
-    name: COOKIE_NAME,
-    value,
-    path: '/',
-    maxAge: 3600,
-  })
-}
-
+//* LOGIN
 export async function actionLogin (initialState: unknown, formData: FormData) {
   let success = false
 
@@ -87,6 +78,91 @@ export async function actionLogout () {
   }
 }
 
+//* REGISTER
+export async function actionRegister (initialState: unknown, formData: FormData) {
+  let success = false
+
+  //* Datos de usuario
+  const nombre = formData.get('nombre') as string
+  const apellido = formData.get('apellido') as string
+  const correoElectronico = formData.get('correoElectronico') as string
+  const contraseña = formData.get('contraseña') as string
+  const telefono = formData.get('telefono') as string
+
+  //* Construcción del objeto de usuario
+  const usuario: Partial<IUsuario> = {
+    nombre,
+    apellido,
+    correoElectronico,
+    contraseña,
+    telefono
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/usuario`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(usuario),
+    })
+
+    if (!response.ok) {
+      throw new Error("Error al registrar el usuario")
+    }
+
+    success = true
+
+    return {
+      success,
+      message: 'Registro exitoso',
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Error al registrar el usuario'
+    success = false
+    return {
+      success,
+      message,
+    }
+  } finally {
+    if (success) redirect('/login')
+  }
+}
+
+//* ROLES
+export async function actionGetRoles () {
+  try {
+    const response = await fetch(`${API_BASE_URL}/rol`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al obtener los roles')
+    }
+
+    const roles = await response.json() as IRol[]
+
+    return roles
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+//* SESSION
+async function setCookie (value: string) {
+  const cookieStore = await cookies()
+  cookieStore.set({
+    name: COOKIE_NAME,
+    value,
+    path: '/',
+    maxAge: 3600,
+  })
+}
+
 export async function actionCheckSession () {
   try {
     const cookieStore = await cookies()
@@ -144,6 +220,45 @@ export async function actionGetSession () {
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Error al obtener la sesión'
+    return {
+      success: false,
+      message,
+    }
+  }
+}
+
+export async function actionGetUser () {
+  try {
+    const cookieStore = await cookies()
+    const sessionCookie = cookieStore.get(COOKIE_NAME)
+
+    if (!sessionCookie) {
+      return {
+        success: false,
+        message: 'No hay sesión activa',
+      }
+    }
+
+    const response = await fetch(`${API_BASE_URL}/usuario`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${sessionCookie.value}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al obtener el usuario')
+    }
+
+    const usuario = await response.json() as IUsuario[]
+
+    return {
+      success: true,
+      message: 'Usuario obtenido exitosamente',
+      data: usuario[0],
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Error al obtener el usuario'
     return {
       success: false,
       message,
