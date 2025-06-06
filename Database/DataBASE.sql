@@ -19,13 +19,12 @@ CREATE TABLE direcciones (
 -- Usuarios (sin id_rol, ahora N:N)
 CREATE TABLE usuarios (
     id_usuario BIGINT AUTO_INCREMENT PRIMARY KEY,
-    id_direccion BIGINT NOT NULL,
+    id_direccion BIGINT,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
     correo_electronico VARCHAR(100) UNIQUE NOT NULL,
     contraseña VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
-    direccion TEXT,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_direccion) REFERENCES direcciones(id_direccion)
 );
@@ -433,3 +432,4 @@ INSERT INTO estados_pago (nombre) VALUES
 ('completado'),
 ('fallido'),
 ('pendiente');
+

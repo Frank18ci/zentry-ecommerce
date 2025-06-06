@@ -43,6 +43,7 @@ public class SecurityConfig {
 				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers("/usuario/saveCliente", "/usuario/saveAdmin").permitAll();
+					auth.requestMatchers(HttpMethod.POST, "/usuario").permitAll();
 					//For swagger login
 					auth.requestMatchers("/auth-docs/login").permitAll();
 					auth.requestMatchers(HttpMethod.GET, "/**").permitAll();

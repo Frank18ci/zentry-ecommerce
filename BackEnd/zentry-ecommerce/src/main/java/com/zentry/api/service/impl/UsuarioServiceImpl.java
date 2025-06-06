@@ -55,32 +55,29 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	}
 
 	@Override
+	public UsuarioDto save(UsuarioDto usuarioDto) {
+		Usuario usuario = UsuarioDto.usuarioDtoToUsuario(usuarioDto);
+		usuario.setFechaCreacion(new Date());
+		Usuario usuarioSaved = usuarioRepository.save(usuario);
+		return UsuarioDto.usuarioToUsuarioDto(usuarioSaved);
+	}
+
+	@Override
 	public UsuarioDto saveCliente(UsuarioDto usuarioDto) {
-		Usuario usuario = Usuario.builder()
-				// Cambiar a un filtrado mas adelante
-				.rol(List.of(Rol.builder().id(1L).build()))
-				.nombre(usuarioDto.getNombre())
-				.apellido(usuarioDto.getApellido())
-				.correoElectronico(usuarioDto.getCorreoElectronico())
-				.contraseña(usuarioDto.getContraseña())
-				.telefono(usuarioDto.getTelefono()).fechaCreacion(new Date())
-				.direccion(DireccionDto.direccionDtoToDireccion(usuarioDto.getDireccion())).build();
+		Usuario usuario = UsuarioDto.usuarioDtoToUsuario(usuarioDto);
+		usuario.setRol(List.of(Rol.builder().id(1L).build()));
+		usuario.setFechaCreacion(new Date());
+
 		Usuario usuarioSaved = usuarioRepository.save(usuario);
 		return UsuarioDto.usuarioToUsuarioDto(usuarioSaved);
 	}
 
 	@Override
 	public UsuarioDto saveAdmin(UsuarioDto usuarioDto) {
-		Usuario usuario = Usuario.builder()
-				// Cambiar a un filtrado mas adelante
-				.rol(List.of(Rol.builder().id(1L).build(),Rol.builder().id(2L).build()))
-				.nombre(usuarioDto.getNombre())
-				.apellido(usuarioDto.getApellido())
-				.correoElectronico(usuarioDto.getCorreoElectronico())
-				.contraseña(usuarioDto.getContraseña())
-				.telefono(usuarioDto.getTelefono())
-				.fechaCreacion(new Date())
-				.direccion(DireccionDto.direccionDtoToDireccion(usuarioDto.getDireccion())).build();
+		Usuario usuario = UsuarioDto.usuarioDtoToUsuario(usuarioDto);
+		usuario.setRol(List.of(Rol.builder().id(1L).build(), Rol.builder().id(2L).build()));
+		usuario.setFechaCreacion(new Date());
+
 		Usuario usuarioSaved = usuarioRepository.save(usuario);
 		return UsuarioDto.usuarioToUsuarioDto(usuarioSaved);
 	}
