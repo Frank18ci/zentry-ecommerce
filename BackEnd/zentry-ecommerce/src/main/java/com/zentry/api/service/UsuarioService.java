@@ -12,4 +12,5 @@ public interface UsuarioService {
 	public UsuarioDto saveAdmin(UsuarioDto usuarioDto);
 	public UsuarioDto update(UsuarioDto usuarioDto);
 	public String delete(Long id);
+	public UsuarioDto findByUsernameCorreo(String usernameCorreo);
 }

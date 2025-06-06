@@ -4,10 +4,12 @@ package com.zentry.api.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.zentry.api.dto.UserDetailsSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,7 +58,20 @@ public class UsuarioController {
 	public ResponseEntity<?> getPerfilUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Map<String, Object> mapeo = new HashMap<>();
-		mapeo.put("User", authentication.getPrincipal());
+		UserDetails user = (UserDetails) authentication.getPrincipal();
+		UsuarioDto usuarioDto = usuarioService.findByUsernameCorreo(user.getUsername());
+		UserDetailsSession uds = UserDetailsSession.builder()
+				.id(usuarioDto.getId())
+				.username(user.getUsername())
+				.password(user.getPassword())
+				.authorities(user.getAuthorities())
+				.accountNonExpired(user.isAccountNonExpired())
+				.accountNonLocked(user.isAccountNonLocked())
+				.credentialsNonExpired(user.isCredentialsNonExpired())
+				.enabled(user.isEnabled())
+				.build();
+		mapeo.put("User", uds);
+
         return ResponseEntity.status(HttpStatus.OK).body(mapeo);
 	}
 	@DeleteMapping("/{id}")
