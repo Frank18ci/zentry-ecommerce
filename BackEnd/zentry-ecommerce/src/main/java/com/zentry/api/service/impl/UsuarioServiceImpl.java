@@ -44,6 +44,12 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 				.build();
 	}
 
+	public UsuarioDto findByUsernameCorreo(String usernameCorreo) {
+		Usuario usuario = usuarioRepository.findUsuarioByCorreoElectronico(usernameCorreo)
+				.orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado " + usernameCorreo));
+		return UsuarioDto.usuarioToUsuarioDto(usuario);
+	}
+
 	@Override
 	public List<UsuarioDto> list() {
 		return UsuarioDto.listUsuarioToListUsuarioDto(usuarioRepository.findAll());
