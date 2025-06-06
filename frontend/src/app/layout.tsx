@@ -2,14 +2,8 @@ import { Footer } from '@/app/footer'
 import Header from '@/core/components/layout/header'
 import { APP_DESCRIPTION, APP_NAME } from '@/core/lib/constants'
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import { Toaster } from 'sonner'
 import "./globals.css"
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-})
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -24,7 +18,7 @@ export default function RootLayout ({
   return (
     <html lang="es" suppressHydrationWarning>
       <body
-        className={`${inter.variable} antialiased dark`}
+        className={'antialiased dark'}
       >
         <div className='flex flex-col gap-10 px-5 min-h-dvh'>
           <Header />

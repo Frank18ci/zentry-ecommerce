@@ -46,12 +46,7 @@ export function Footer () {
               </Link>
             </li>
             <li>
-              <Link href="/ofertas" className={linkVariant}>
-                Ofertas
-              </Link>
-            </li>
-            <li>
-              <Link href="/nosotros" className={linkVariant}>
+              <Link href="#" className={linkVariant}>
                 Nosotros
               </Link>
             </li>
@@ -63,22 +58,17 @@ export function Footer () {
           <h4 className="font-semibold mb-4">Atención al Cliente</h4>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/contacto" className={linkVariant}>
+              <Link href="#" className={linkVariant}>
                 Contacto
               </Link>
             </li>
             <li>
-              <Link href="/envios" className={linkVariant}>
+              <Link href="#" className={linkVariant}>
                 Envíos
               </Link>
             </li>
             <li>
-              <Link href="/devoluciones" className={linkVariant}>
-                Devoluciones
-              </Link>
-            </li>
-            <li>
-              <Link href="/faq" className={linkVariant}>
+              <Link href="#" className={linkVariant}>
                 Preguntas Frecuentes
               </Link>
             </li>
@@ -90,17 +80,17 @@ export function Footer () {
           <h4 className="font-semibold mb-4">Legal</h4>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/privacidad" className={linkVariant}>
+              <Link href="#" className={linkVariant}>
                 Política de Privacidad
               </Link>
             </li>
             <li>
-              <Link href="/terminos" className={linkVariant}>
+              <Link href="#" className={linkVariant}>
                 Términos y Condiciones
               </Link>
             </li>
             <li>
-              <Link href="/cookies" className={linkVariant}>
+              <Link href="#" className={linkVariant}>
                 Política de Cookies
               </Link>
             </li>

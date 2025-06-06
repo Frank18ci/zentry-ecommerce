@@ -1,11 +1,12 @@
 'use client'
 
-import { Button } from '@/core/components/ui/button'
+import { Button, buttonVariants } from '@/core/components/ui/button'
 import { Input } from '@/core/components/ui/input'
 import { Label } from '@/core/components/ui/label'
 import useToastState from '@/core/hooks/use-toast-state'
 import { actionLogin } from '@/features/auth/actions'
 import Form from 'next/form'
+import Link from 'next/link'
 import { useActionState } from 'react'
 
 export default function LoginForm () {
@@ -29,6 +30,10 @@ export default function LoginForm () {
           {isPending ? 'Iniciando sesión...' : 'Iniciar sesión'}
         </Button>
       </Form>
+
+      <Link href="/register" className={buttonVariants({ variant: 'link', size: 'sm' })}>
+        ¿No tienes una cuenta? Regístrate aquí
+      </Link>
     </section>
   )
 }

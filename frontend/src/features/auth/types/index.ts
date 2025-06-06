@@ -1,13 +1,13 @@
 export enum ERole {
-  ADMIN = "ROLE_ADMIN",
-  CLIENTE = "ROLE_CLIENTE"
+  ADMIN = "admin",
+  CLIENTE = "cliente"
 }
 
 export interface ISession {
   User: {
     password: string | null
     username: string
-    authorities: Array<{ authority: "ROLE_ADMIN" | "ROLE_CLIENTE" }>
+    authorities: Array<{ authority: "admin" | "cliente" }>
     accountNonExpired: boolean
     accountNonLocked: boolean
     credentialsNonExpired: boolean
@@ -19,17 +19,17 @@ export interface ISession {
 
 export interface IUsuario {
   id: number
-  rol: Rol[]
+  rol: IRol[]
   nombre: string
   apellido: string
   correoElectronico: string
   contraseña: string
   telefono: string
-  direccion: Direccion
+  direccion: IDireccion
   fechaCreacion: Date
 }
 
-export interface Direccion {
+export interface IDireccion {
   id: number
   direccion: string
   ciudad: string
@@ -38,7 +38,7 @@ export interface Direccion {
   pais: string
 }
 
-export interface Rol {
+export interface IRol {
   id: number
   nombre: ERole
 }
