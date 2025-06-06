@@ -24,9 +24,12 @@ export enum ENombreEstadoProducto {
   DESCONTINUADO = 'descontinuado',
   DISPONIBLE = 'disponible',
   NUEVO = 'nuevo',
-  PREVENTA = 'preventa',
   EN_OFERTA = 'en oferta',
-  AGOTADO = 'agotado'
+  AGOTADO = 'agotado',
+  EDICION_LIMITADA = 'edición limitada',
+  EN_REVISION = 'en revisión',
+  LIQUIDACION = 'liquidación',
+  PROXIMAMENTE = 'próximamente',
 }
 
 export interface IEstadoProducto {
@@ -35,9 +38,15 @@ export interface IEstadoProducto {
   codigoHex?: string
 }
 
+export interface ITallaColor {
+  id: number
+  nombre: string
+  codigoHex?: string
+}
+
 export interface IProductosVariante {
   id: number
-  talla: IEstadoProducto
-  color: IEstadoProducto
+  talla: ITallaColor
+  color: ITallaColor
   stock: number
 }

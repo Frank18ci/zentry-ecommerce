@@ -7,7 +7,8 @@ import {
   CarouselNext,
   CarouselPrevious
 } from "@/core/components/ui/carousel"
-import type { IResponseProducto } from '@/features/productos/types'
+import type { IResponse } from '@/core/types'
+import type { IProducto } from '@/features/productos/types'
 import Autoplay from "embla-carousel-autoplay"
 import { use } from 'react'
 import ProductCard from './product-card'
@@ -15,7 +16,7 @@ import ProductCard from './product-card'
 export default function ProductsCarousel ({
   productosPromise
 }: {
-  productosPromise: Promise<{ success: boolean; data: IResponseProducto; message?: undefined } | { success: boolean; message: string; data?: undefined }>
+  productosPromise: Promise<{ success: boolean; data: IResponse<IProducto>; message?: undefined } | { success: boolean; message: string; data?: undefined }>
 }) {
   const { data: productos, success } = use(productosPromise)
 

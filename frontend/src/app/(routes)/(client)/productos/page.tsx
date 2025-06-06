@@ -1,4 +1,3 @@
-import { ScrollArea, ScrollBar } from '@/core/components/ui/scroll-area'
 import { Skeleton } from '@/core/components/ui/skeleton'
 import AsideCategorias from '@/features/categorias/components/aside-categorias'
 import { actionGetProducts } from '@/features/productos/actions'
@@ -29,15 +28,7 @@ export default async function PageProducts ({
     <main className='flex flex-col gap-5 xs:flex-row grow'>
       <div className='flex flex-col gap-5 max-h-dvh'>
         <Suspense fallback={<Skeleton className='xs:w-36' />}>
-          <ScrollArea className="w-full whitespace-nowrap xs:w-36">
-            <AsideCategorias />
-            <div className='flex xs:hidden'>
-              <ScrollBar orientation="horizontal" />
-            </div>
-            <div className='hidden xs:flex'>
-              <ScrollBar orientation="vertical" />
-            </div>
-          </ScrollArea>
+          <AsideCategorias />
         </Suspense>
         <div className="flex xs:w-36 md:hidden">
           <AsideOrdenamiento />

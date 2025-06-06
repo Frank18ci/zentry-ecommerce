@@ -1,20 +1,14 @@
 import { buttonVariants } from '@/core/components/ui/button'
-import { Skeleton } from '@/core/components/ui/skeleton'
 import { APP_NAME } from '@/core/lib/constants'
-import { actionGetUser } from '@/features/auth/actions'
 import UserDropdown from '@/features/auth/components/user-dropdown'
 import BarraBusqueda from '@/features/productos/components/barra-busqueda'
 import dynamic from 'next/dynamic'
 import Link from "next/link"
-import { Suspense } from 'react'
 
 const CarritoDrawer = dynamic(() => import('@/features/carrito/components/carrito-drawer'))
-
 const linkVariant = buttonVariants({ variant: 'link', size: 'sm' })
 
 export default function Header () {
-  const usuarioPromise = actionGetUser()
-
   return (
     <header className="sticky top-0 z-50 border-b bg-background">
       <div className="flex items-center justify-between h-16 gap-5">
@@ -43,9 +37,7 @@ export default function Header () {
         {/* Dropdown de usuario */}
         <div className="flex items-center gap-3">
           <CarritoDrawer />
-          <Suspense fallback={<Skeleton className="w-8 h-8 rounded-full animate-pulse" />}>
-            <UserDropdown usuarioPromise={usuarioPromise} />
-          </Suspense>
+          <UserDropdown />
         </div>
       </div>
     </header>

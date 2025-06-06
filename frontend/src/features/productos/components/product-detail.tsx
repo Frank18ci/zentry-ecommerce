@@ -15,7 +15,8 @@ export default async function ProductDetail ({ id }: ProductDetailProps) {
   if (!success) {
     return (
       <div className="flex flex-col items-center justify-center h-full">
-        <h2 className="text-2xl font-bold text-destructive">{message}</h2>
+        <h2 className="text-2xl font-bold">Producto no encontrado</h2>
+        <p className="text-muted-foreground mt-2">{message || 'No se pudo encontrar el producto solicitado.'}</p>
       </div>
     )
   }

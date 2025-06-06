@@ -8,9 +8,18 @@ export default function MainCategorias ({
   categorias,
   subCategorias
 }: {
-  categorias: ICategoria[]
-  subCategorias: ISubCategoria[]
+  categorias?: ICategoria[]
+  subCategorias?: ISubCategoria[]
 }) {
+  if (!categorias || categorias.length === 0) {
+    return (
+      <div className='text-center p-6'>
+        <h2 className='text-2xl font-bold mb-4'>No hay categorías disponibles</h2>
+        <p className='text-muted-foreground'>Por favor, vuelve más tarde.</p>
+      </div>
+    )
+  }
+
   const categoriasAgrupadas = categorias?.reduce((acc, categoria) => {
     acc[categoria.id] = {
       categoria,

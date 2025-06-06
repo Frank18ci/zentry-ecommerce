@@ -6,7 +6,11 @@ import { SearchIcon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
-export default function BarraBusqueda () {
+export default function BarraBusqueda ({
+  endpoint = '/productos',
+}: {
+  endpoint?: string
+}) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -22,7 +26,7 @@ export default function BarraBusqueda () {
         params.delete('query')
       }
 
-      router.push(`/productos?${params.toString()}`)
+      router.push(`${endpoint}?${params.toString()}`)
     }, 300)
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
