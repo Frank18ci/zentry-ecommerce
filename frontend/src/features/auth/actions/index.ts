@@ -2,8 +2,70 @@
 
 import { API_BASE_URL, COOKIE_NAME } from '@/core/lib/constants'
 import type { IRol, ISession, IUsuario } from '@/features/auth/types'
+import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+
+//* USERS
+export async function actionGetUsers () {
+  try {
+    const response = await fetch(`${API_BASE_URL}/usuario`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al obtener los usuarios')
+    }
+
+    const usuarios = await response.json() as IUsuario[]
+
+    return {
+      success: true,
+      message: 'Usuarios obtenidos exitosamente',
+      data: usuarios,
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Error al obtener los usuarios'
+    return {
+      success: false,
+      message,
+      data: null,
+    }
+  }
+}
+
+export async function actionGetUser (id: number) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/usuario/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al obtener el usuario')
+    }
+
+    const usuario = await response.json() as IUsuario
+
+    return {
+      success: true,
+      message: 'Usuario obtenido exitosamente',
+      data: usuario,
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Error al obtener el usuario'
+    return {
+      success: false,
+      message,
+      data: null,
+    }
+  }
+}
 
 //* LOGIN
 export async function actionLogin (initialState: unknown, formData: FormData) {
@@ -227,41 +289,111 @@ export async function actionGetSession () {
   }
 }
 
-export async function actionGetUser () {
+//* USERS CRUD
+export async function actionCreateUser (userData: Partial<IUsuario>) {
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get(COOKIE_NAME)
+
+  // Eliminar campos vacíos del objeto userData
+  const cleanedUserData: Partial<IUsuario> = Object.fromEntries(
+    Object.entries(userData).filter(([, value]) => value !== undefined && value !== '')
+  )
+
   try {
-    const cookieStore = await cookies()
-    const sessionCookie = cookieStore.get(COOKIE_NAME)
-
-    if (!sessionCookie) {
-      return {
-        success: false,
-        message: 'No hay sesión activa',
-      }
-    }
-
-    const response = await fetch(`${API_BASE_URL}/usuario`, {
-      method: 'GET',
+    const response = await fetch(`${API_BASE_URL}/usuario/saveAdmin`, {
+      method: 'POST',
       headers: {
-        'Authorization': `Bearer ${sessionCookie.value}`,
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionCookie?.value || ''}`,
       },
+      body: JSON.stringify(cleanedUserData),
     })
 
     if (!response.ok) {
-      throw new Error('Error al obtener el usuario')
+      throw new Error('Error al crear el usuario')
     }
-
-    const usuario = await response.json() as IUsuario[]
 
     return {
       success: true,
-      message: 'Usuario obtenido exitosamente',
-      data: usuario[0],
+      message: 'Usuario creado exitosamente',
     }
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Error al obtener el usuario'
+    const message = error instanceof Error ? error.message : 'Error al crear el usuario'
     return {
       success: false,
       message,
     }
+  } finally {
+    revalidatePath('/admin')
+  }
+}
+
+export async function actionUpdateUser (id: number, userData: Partial<IUsuario>) {
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get(COOKIE_NAME)
+
+  // Eliminar campos vacíos del objeto userData
+  const cleanedUserData: Partial<IUsuario> = Object.fromEntries(
+    Object.entries(userData).filter(([, value]) => value !== undefined && value !== '')
+  )
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/usuario`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionCookie?.value || ''}`
+      },
+      body: JSON.stringify({ ...cleanedUserData, id }),
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al actualizar el usuario')
+    }
+
+    return {
+      success: true,
+      message: 'Usuario actualizado exitosamente',
+    }
+  } catch (error) {
+    console.error('Error al actualizar el usuario:', error)
+    const message = error instanceof Error ? error.message : 'Error al actualizar el usuario'
+    return {
+      success: false,
+      message,
+    }
+  } finally {
+    revalidatePath('/admin')
+  }
+}
+
+export async function actionDeleteUser (id: number) {
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get(COOKIE_NAME)
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/usuario/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${sessionCookie?.value || ''}`,
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al eliminar el usuario')
+    }
+
+    return {
+      success: true,
+      message: 'Usuario eliminado exitosamente',
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Error al eliminar el usuario'
+    return {
+      success: false,
+      message,
+    }
+  } finally {
+    revalidatePath('/admin')
   }
 }

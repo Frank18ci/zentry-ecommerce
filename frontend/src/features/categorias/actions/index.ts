@@ -1,20 +1,15 @@
 import { API_BASE_URL } from '@/core/lib/constants'
-import type { IResponse } from '@/core/types'
 import type { ICategoria, ISubCategoria } from '@/features/categorias/types'
 
 export async function actionGetCategorias () {
   try {
-    const res = await fetch(`${API_BASE_URL}/categoria/page`)
+    const res = await fetch(`${API_BASE_URL}/categoria`)
 
     if (!res.ok) {
       throw new Error('Error al cargar las categorías')
     }
 
-    const data = await res.json() as IResponse<ICategoria>
-
-    if (!Array.isArray(data.content) || !data.content.every(cat => cat.id && cat.nombre)) {
-      throw new Error('Datos de categorías no válidos')
-    }
+    const data = await res.json() as ICategoria[]
 
     return {
       success: true,
@@ -31,17 +26,13 @@ export async function actionGetCategorias () {
 
 export async function actionGetSubCategorias () {
   try {
-    const res = await fetch(`${API_BASE_URL}/subCategoria/page`)
+    const res = await fetch(`${API_BASE_URL}/subCategoria`)
 
     if (!res.ok) {
       throw new Error('Error al cargar las sub-categorías')
     }
 
-    const data = await res.json() as IResponse<ISubCategoria>
-
-    if (!Array.isArray(data.content) || !data.content.every(sub => sub.id && sub.nombre)) {
-      throw new Error('Datos de sub-categorías no válidos')
-    }
+    const data = await res.json() as ISubCategoria[]
 
     return {
       success: true,

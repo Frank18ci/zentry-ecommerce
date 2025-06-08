@@ -7,9 +7,11 @@ import { useRouter, useSearchParams } from 'next/navigation'
 export default function PaginacionProductos ({
   maxPage = 1,
   totalItems = 0,
+  endpoint = '/productos',
 }: {
   maxPage?: number
   totalItems?: number
+  endpoint?: string
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -32,7 +34,7 @@ export default function PaginacionProductos ({
       params.delete('page')
     }
 
-    router.push(`/productos?${params.toString()}`)
+    router.push(`${endpoint}?${params.toString()}`)
   }
 
   const getVisiblePages = () => {
@@ -73,7 +75,7 @@ export default function PaginacionProductos ({
   if (maxPage <= 1) return null
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center">
       <div className="flex items-center gap-2">
         <Button
           variant="outline"

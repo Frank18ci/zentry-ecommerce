@@ -5,6 +5,7 @@ export enum ERole {
 
 export interface ISession {
   User: {
+    id: number
     password: string | null
     username: string
     authorities: Array<{ authority: "admin" | "cliente" }>

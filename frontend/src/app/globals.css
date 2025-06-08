@@ -136,4 +136,18 @@
   button {
     @apply cursor-pointer;
   }
+
+  ::-webkit-scrollbar {
+    background-color: var(--background);
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: var(--radius);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--muted);
+  }
 }

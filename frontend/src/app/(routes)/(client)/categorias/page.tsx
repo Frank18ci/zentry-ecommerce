@@ -1,7 +1,6 @@
 import { Button } from '@/core/components/ui/button'
 import { actionGetCategorias, actionGetSubCategorias } from '@/features/categorias/actions'
 import MainCategorias from '@/features/categorias/components/main-categorias'
-import type { ICategoria, ISubCategoria } from '@/features/categorias/types'
 import Link from 'next/link'
 
 export default async function PageCategorias () {
@@ -32,8 +31,8 @@ export default async function PageCategorias () {
     )
   }
 
-  const categorias = dataCategorias.data?.content as ICategoria[]
-  const subCategorias = dataSubCategorias.data?.content as ISubCategoria[]
+  const categorias = dataCategorias.data
+  const subCategorias = dataSubCategorias.data
 
   return (
     <main className='flex flex-col gap-5 grow'>
