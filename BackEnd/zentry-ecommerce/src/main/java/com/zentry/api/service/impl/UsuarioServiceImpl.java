@@ -1,5 +1,6 @@
 package com.zentry.api.service.impl;
 
+import com.zentry.api.model.Direccion;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -95,12 +96,20 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		usuarioFound.setRol(RolDto.listRolDTOToListRol(usuarioDto.getRol()));
 		usuarioFound.setApellido(usuarioDto.getApellido());
 		usuarioFound.setCorreoElectronico(usuarioDto.getCorreoElectronico());
-		usuarioFound.setContraseña(usuarioDto.getContraseña());
+		if(usuarioDto.getContraseña() != null) {
+			if (!usuarioDto.getContraseña().isEmpty()) {
+				usuarioFound.setContraseña(usuarioDto.getContraseña());
+			}
+		}
 		usuarioFound.setTelefono(usuarioDto.getTelefono());
-		usuarioFound.setDireccion(DireccionDto.direccionDtoToDireccion(usuarioDto.getDireccion()));
+
+		if(usuarioDto.getDireccion() != null){
+			usuarioFound.setDireccion(DireccionDto.direccionDtoToDireccion(usuarioDto.getDireccion()));
+		}
+
 
 		Usuario usuarioSaved = usuarioRepository.save(usuarioFound);
-		return UsuarioDto.usuarioToUsuarioDto(usuarioSaved);
+		return find(usuarioSaved.getId());
 	}
 
 	@Override

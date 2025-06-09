@@ -75,8 +75,12 @@ public class ProductoServiceImpl implements ProductoService{
 	public ProductoDto updateProducto(ProductoDto productoDto) {
 		Producto producto = productoRepository.findById(productoDto.getId())
 				.orElseThrow(() -> new ResourceNotFound("Producto no encontrado con id" + productoDto.getId()));
-		producto.setSubCategoria(SubCategoriaDto.subCategoriaDtoToSubCategoria(productoDto.getSubCategoria()));
-		producto.setEstadoProducto(EstadoProductoDto.estadoProductoDtoToEstadoProducto(productoDto.getEstadoProducto()));
+		if(productoDto.getSubCategoria() != null){
+			producto.setSubCategoria(SubCategoriaDto.subCategoriaDtoToSubCategoria(productoDto.getSubCategoria()));
+		}
+		if(productoDto.getEstadoProducto() != null){
+			producto.setEstadoProducto(EstadoProductoDto.estadoProductoDtoToEstadoProducto(productoDto.getEstadoProducto()));
+		}
 		producto.setNombre(productoDto.getNombre());
 		producto.setDescripcion(productoDto.getDescripcion());
 		producto.setPrecio(productoDto.getPrecio());

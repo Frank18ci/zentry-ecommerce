@@ -51,7 +51,11 @@ public class UsuarioController {
 	}
 	@PutMapping
 	public ResponseEntity<?> updateUsuario(@RequestBody UsuarioDto usuarioDto){
-		usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
+		if(usuarioDto.getContraseña() != null) {
+			if(!usuarioDto.getContraseña().isEmpty()){
+				usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
+			}
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.update(usuarioDto));
 	}
 	@GetMapping("/session")
