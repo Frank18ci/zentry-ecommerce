@@ -1,9 +1,9 @@
 import { Label } from '@/core/components/ui/label'
-import type { IEstadoProducto } from '@/features/productos/types'
+import type { ITallaColor } from '@/features/productos/types'
 
 interface ProductVariantOptionProps {
   type: 'talla' | 'color'
-  item: IEstadoProducto
+  item: ITallaColor
   selected: string
   onSelect: (value: string) => void
   hasStock: boolean

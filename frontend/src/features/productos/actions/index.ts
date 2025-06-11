@@ -189,6 +189,8 @@ export async function actualizarProducto (id: number, productData: Partial<IProd
   const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)
 
+  console.dir(productData, { depth: null })
+
   try {
     const res = await fetch(`${API_BASE_URL}/producto`, {
       method: 'PUT',
@@ -198,8 +200,6 @@ export async function actualizarProducto (id: number, productData: Partial<IProd
       },
       body: JSON.stringify({ ...productData, id }),
     })
-
-    console.log(res)
 
     if (!res.ok) {
       throw new Error('Error al actualizar el producto')

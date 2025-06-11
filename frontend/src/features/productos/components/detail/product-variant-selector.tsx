@@ -6,7 +6,7 @@ import { Label } from '@/core/components/ui/label'
 import { RadioGroup } from '@/core/components/ui/radio-group'
 import AgregarCarritoButton from '@/features/carrito/components/agregar-carrito-button'
 import ProductVariantOption from '@/features/productos/components/detail/product-variant-option'
-import type { IEstadoProducto, IProducto } from '@/features/productos/types'
+import type { IProducto, ITallaColor } from '@/features/productos/types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 interface ProductVariantSelectorProps {
@@ -20,7 +20,7 @@ export default function ProductVariantSelector ({ producto }: ProductVariantSele
 
   const { tallasDisponibles, coloresDisponibles } = useMemo(() => {
     const getUniqueVariants = (
-      variants: IEstadoProducto[]
+      variants: ITallaColor[]
     ) => {
       const uniqueMap = new Map(variants.map(v => [v.id, v]))
       return Array.from(uniqueMap.values()).filter(v => v.nombre?.trim())
