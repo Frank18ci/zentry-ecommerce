@@ -9,9 +9,12 @@ const variantsBadgeEstadoProducto = {
   [ENombreEstadoProducto.DESCONTINUADO]: "destructive",
   [ENombreEstadoProducto.DISPONIBLE]: "default",
   [ENombreEstadoProducto.NUEVO]: "default",
-  [ENombreEstadoProducto.PREVENTA]: "warning",
+  [ENombreEstadoProducto.EDICION_LIMITADA]: "warning",
   [ENombreEstadoProducto.EN_OFERTA]: "success",
-  [ENombreEstadoProducto.AGOTADO]: "destructive"
+  [ENombreEstadoProducto.AGOTADO]: "destructive",
+  [ENombreEstadoProducto.EN_REVISION]: "secondary",
+  [ENombreEstadoProducto.LIQUIDACION]: "destructive",
+  [ENombreEstadoProducto.PROXIMAMENTE]: "secondary",
 } as const
 
 export default function ProductGallery ({
@@ -32,7 +35,9 @@ export default function ProductGallery ({
           fill
           className="object-cover"
         />
-        <Badge variant={variantsBadgeEstadoProducto[producto.estadoProducto.nombre]} className='absolute z-10 capitalize top-3 left-3'>
+        <Badge
+          variant={variantsBadgeEstadoProducto[producto.estadoProducto.nombre]}
+          className='absolute z-10 capitalize top-3 left-3'>
           {producto.estadoProducto.nombre}
         </Badge>
       </div>

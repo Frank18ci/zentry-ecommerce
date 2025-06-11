@@ -1,11 +1,11 @@
-import type { IEstadoProducto, IProducto, IProductosVariante } from '@/features/productos/types'
+import type { IEstadoProducto, IProducto, IProductosVariante, ITallaColor } from '@/features/productos/types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 interface UseProductVariantsReturn {
   selectedTalla: string
   selectedColor: string
-  tallasDisponibles: IEstadoProducto[]
-  coloresDisponibles: IEstadoProducto[]
+  tallasDisponibles: ITallaColor[]
+  coloresDisponibles: ITallaColor[]
   varianteSeleccionada?: IProductosVariante | null
   stockDisponible: number
   hasMultipleTallas: boolean
@@ -20,7 +20,7 @@ export function useProductVariants (producto: IProducto): UseProductVariantsRetu
   const [selectedColor, setSelectedColor] = useState<string>('')
 
   const { tallasDisponibles, coloresDisponibles } = useMemo(() => {
-    const getUniqueVariants = (variants: IEstadoProducto[]) => {
+    const getUniqueVariants = (variants: ITallaColor[]) => {
       const uniqueMap = new Map(variants.map(v => [v.id, v]))
       return Array.from(uniqueMap.values()).filter(v => v.nombre?.trim())
     }
