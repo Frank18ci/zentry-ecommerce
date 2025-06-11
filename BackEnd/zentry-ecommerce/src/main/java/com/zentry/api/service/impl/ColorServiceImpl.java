@@ -48,6 +48,11 @@ public class ColorServiceImpl implements ColorService {
 				.orElseThrow(() -> new ResourceNotFound("Color no encontrado con id " + id)));
 	}
 
+	@Override
+	public Color findEntityById(Long id) {
+		return colorRepository.findColorById(id)
+				.orElseThrow(() -> new ResourceNotFound("Color no encontrado con id " + id));
+	}
 
 	@Override
 	public ColorDto save(ColorDto colorDTO) {
@@ -57,10 +62,12 @@ public class ColorServiceImpl implements ColorService {
 
 	@Override
 	public ColorDto update(ColorDto colorDTO) {
-		if(colorDTO.getId() == null){
-			throw new BadRequestParam("Falta el dato id");
-		}
-		Color color = ColorDto.colorDtoToColor(colorDTO);
+		Color color = colorRepository.findColorById(colorDTO.getId())
+				.orElseThrow(() -> new ResourceNotFound("Color no encontrado con id " + colorDTO.getId()));
+
+		color.setNombre(colorDTO.getNombre());
+		color.setCodigoHex(colorDTO.getCodigoHex());
+
 		return ColorDto.colorToColorDto(colorRepository.save(Objects.requireNonNull(color)));
 	}
 

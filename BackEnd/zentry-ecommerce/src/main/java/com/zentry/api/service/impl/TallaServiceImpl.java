@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.zentry.api.excepcion.BadRequestParam;
+import com.zentry.api.excepcion.ResourceNotFound;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +46,8 @@ public class TallaServiceImpl implements TallaService {
 
 	@Override
 	public TallaDto findById(Long id) {
-		return TallaDto.tallaToTallaDto(tallaRepository.findTallaById(id));
+		return TallaDto.tallaToTallaDto(tallaRepository.findTallaById(id)
+				.orElseThrow(() -> new ResourceNotFound("Talla no encontrada con id " + id)));
 	}
 
 	/*@Override
@@ -62,10 +64,10 @@ public class TallaServiceImpl implements TallaService {
 
 	@Override
 	public TallaDto update(TallaDto tallaDTO) {
-		if(tallaDTO.getId() == null){
-			throw new BadRequestParam("Falta el dato id");
-		}
-		Talla talla = Objects.requireNonNull(TallaDto.tallaDtoToTalla(tallaDTO));
+		Talla talla = tallaRepository.findTallaById(tallaDTO.getId())
+				.orElseThrow(() -> new ResourceNotFound("Talla no encontrada con id " + tallaDTO.getId()));
+		talla.setNombre(tallaDTO.getNombre());
+
 		return TallaDto.tallaToTallaDto(tallaRepository.save(talla));
 	}
 
