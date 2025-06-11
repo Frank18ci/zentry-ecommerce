@@ -2,9 +2,9 @@ package com.zentry.api.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.zentry.api.dto.EstadoProductoDto;
-import com.zentry.api.dto.SubCategoriaDto;
+import com.zentry.api.dto.*;
 import com.zentry.api.excepcion.BadRequestParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.zentry.api.dto.ProductoDto;
 import com.zentry.api.excepcion.ResourceNotFound;
 import com.zentry.api.model.Producto;
 import com.zentry.api.repository.ProductoRepository;
@@ -28,11 +27,11 @@ public class ProductoServiceImpl implements ProductoService{
 	private final ProductoRepository productoRepository;
 	
 	@Override
-	public List<ProductoDto> list() {
-		return ProductoDto.listProductoToListProductoDto(productoRepository.findAll());
+	public List<ProductoListadoDto> list() {
+		return ProductoListadoDto.listProductoToListProductoDto(productoRepository.findAll());
 	}
 	@Override
-	public Page<ProductoDto> listFiltro(int page, int size, String sortBy, String direction, String nombre, Long idCategoria, Long idSubCategoria) {
+	public Page<ProductoListadoDto> listFiltro(int page, int size, String sortBy, String direction, String nombre, Long idCategoria, Long idSubCategoria) {
 		Direction sortDirection = Direction.ASC;
 		if(direction != null && "desc".equalsIgnoreCase(direction.trim())) {
 			sortDirection = Direction.DESC;
@@ -55,11 +54,11 @@ public class ProductoServiceImpl implements ProductoService{
 			System.out.println("condicion 4");
 			pageProducto = productoRepository.findProductosConVariantesAndNombre(nombre, pageable);
 		}
-		return pageProducto.map(ProductoDto::productoToProductoDTO);
+		return pageProducto.map(ProductoListadoDto::productoToProductoDTO);
 	}
 	@Override
-	public ProductoDto findById(Long id) {
-		return ProductoDto.productoToProductoDTO(productoRepository.findById(id)
+	public ProductoListadoDto findById(Long id) {
+		return ProductoListadoDto.productoToProductoDTO(productoRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFound("Producto no encontrado con id" + id)));
 	}
 
@@ -68,6 +67,7 @@ public class ProductoServiceImpl implements ProductoService{
 		Producto producto = ProductoDto.productoDtoToProducto(productoDto);
 		producto.setFechaCreacion(new Date());
 		Producto productoCreated = productoRepository.save(producto);
+
 		return ProductoDto.productoToProductoDTO(productoCreated);
 	}
 
@@ -84,6 +84,7 @@ public class ProductoServiceImpl implements ProductoService{
 		producto.setNombre(productoDto.getNombre());
 		producto.setDescripcion(productoDto.getDescripcion());
 		producto.setPrecio(productoDto.getPrecio());
+
 
 		Producto productoUpdated = productoRepository.save(producto);
 		return ProductoDto.productoToProductoDTO(productoUpdated);

@@ -36,9 +36,9 @@ public class TallaController {
 			) {
 		return ResponseEntity.status(200).body(tallaService.listFiltro(page, size, direction,  nombre));
 	}
-	@GetMapping("/buscar/{id}")
-	public ResponseEntity<?> getTallaById(@PathVariable Long numeroTarjeta) {
-		return ResponseEntity.status(200).body(tallaService.findById(numeroTarjeta));
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getTallaById(@PathVariable Long id) {
+		return ResponseEntity.status(200).body(tallaService.findById(id));
 	}
 	@PostMapping
 	public ResponseEntity<?> createProductoVariante(@RequestBody TallaDto tallaDTO  ){

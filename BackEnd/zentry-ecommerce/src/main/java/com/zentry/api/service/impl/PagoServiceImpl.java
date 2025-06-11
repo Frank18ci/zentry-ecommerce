@@ -48,7 +48,7 @@ public class PagoServiceImpl implements PagoService{
 	public PagoDto findById(Long id) {
 		// TODO Auto-generated method stub
 		return PagoDto.pagoToPagoDto(pagoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFound("Pago no encontrado con id" + id)));
+                .orElseThrow(() -> new ResourceNotFound("Pago no encontrado con id " + id)));
 	}
 
 	@Override

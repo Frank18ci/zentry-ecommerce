@@ -23,5 +23,5 @@ public interface ProductoVarianteRepository extends JpaRepository<ProductoVarian
     // Buscar todas las variantes (paginado)
     //Page<ProductoVariante> findProductoVariante(Pageable pageable);
     Page<ProductoVariante> findByProducto_NombreContainingIgnoreCase(String nombre, Pageable pageable);
-    ProductoVariante findProductoVarianteById(Long id);
+    Optional<ProductoVariante> findProductoVarianteById(Long id);
 }
