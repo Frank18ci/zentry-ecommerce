@@ -5,8 +5,10 @@ import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
 import com.zentry.api.model.EstadoOrden;
 import com.zentry.api.model.EstadoProducto;
+import com.zentry.api.model.Producto;
 import com.zentry.api.repository.EstadoProductoRepository;
 import com.zentry.api.service.EstadoProductoService;
+import com.zentry.api.service.ProductoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -62,11 +64,21 @@ public class EstadoProductoServiceImpl implements EstadoProductoService {
         return EstadoProductoDto.estadoProductoToEstadoProductoDto(estadoProductoUpdated);
     }
 
+    private final ProductoService productoService;
+
     @Override
     public String deleteById(Long id) {
         if(id == null){
             throw new BadRequestParam("Falta el dato id");
         }
+
+        EstadoProducto estadoProducto = estadoProductoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Estado Producto no encontrado con id " + id));
+
+        for(Producto producto : estadoProducto.getProductos()){
+            productoService.deleteProductoById(producto.getId());
+        }
+
         estadoProductoRepository.deleteById(id);
         return "Estado Producto con id " + id + " eliminado";
     }

@@ -5,8 +5,10 @@ import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
 import com.zentry.api.model.Categoria;
 import com.zentry.api.model.EstadoPago;
+import com.zentry.api.model.SubCategoria;
 import com.zentry.api.repository.CategoriaRepository;
 import com.zentry.api.service.CategoriaService;
+import com.zentry.api.service.SubCategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -61,11 +63,21 @@ public class CategoriaServiceImpl implements CategoriaService {
         return CategoriaDto.categoriaToCategoriaDto(categoriaUpdated);
     }
 
+    private final SubCategoriaService subCategoriaService;
+
     @Override
     public String deleteById(Long id) {
         if(id == null){
             throw new BadRequestParam("Falta el dato id");
         }
+
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Categoria no encontrado con id" + id));
+
+        for(SubCategoria subCategoria : categoria.getSubCategorias()){
+            subCategoriaService.deleteById(subCategoria.getId());
+        }
+
         categoriaRepository.deleteById(id);
         return "Categoria con id " + id + " eliminado";
     }

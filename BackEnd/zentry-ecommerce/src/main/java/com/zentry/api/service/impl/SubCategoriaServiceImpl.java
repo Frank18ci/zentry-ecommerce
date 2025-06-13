@@ -6,8 +6,10 @@ import com.zentry.api.dto.SubCategoriaDto;
 import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
 import com.zentry.api.model.EstadoPago;
+import com.zentry.api.model.Producto;
 import com.zentry.api.model.SubCategoria;
 import com.zentry.api.repository.SubCategoriaRepository;
+import com.zentry.api.service.ProductoService;
 import com.zentry.api.service.SubCategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -66,11 +68,21 @@ public class SubCategoriaServiceImpl implements SubCategoriaService {
         return SubCategoriaDto.subCategoriaToSubCategoriaDto(subCategoriaUpdated);
     }
 
+    private final ProductoService productoService;
+
     @Override
     public String deleteById(Long id) {
         if(id == null){
             throw new BadRequestParam("Falta el dato id");
         }
+
+        SubCategoria subCategoria = subCategoriaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Sub Categoria no encontrado con id " + id));
+
+        for(Producto producto : subCategoria.getProductos()){
+            productoService.deleteProductoById(producto.getId());
+        }
+
         subCategoriaRepository.deleteById(id);
         return "Sub Categoria con id " + id + " eliminado";
     }

@@ -6,9 +6,12 @@ import java.util.Objects;
 import com.zentry.api.dto.ColorDto;
 import com.zentry.api.dto.ProductoDto;
 import com.zentry.api.dto.TallaDto;
+import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
 import com.zentry.api.model.Color;
+import com.zentry.api.model.OrdenItem;
 import com.zentry.api.service.ColorService;
+import com.zentry.api.service.OrdenItemService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
@@ -30,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductoVarianteServiceImpl implements ProductoVarianteService {
 
 	public final ProductoVarianteRepository productoVarianteRepository;
-	public final ColorService colorService;
+	
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -88,11 +91,22 @@ public class ProductoVarianteServiceImpl implements ProductoVarianteService {
 		ProductoVariante productoVarianteSaved = productoVarianteRepository.save(productoVariante);
 		return ProductoVarianteDto.productoVarienteToProductoVarienteDto(productoVarianteSaved);
 	}
+	private final OrdenItemService ordenItemService;
 
 	@Override
 	public String delete(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		if(id == null){
+			throw new BadRequestParam("Falta el dato id");
+		}
+		ProductoVariante productoVariante = productoVarianteRepository.findProductoVarianteById(id)
+				.orElseThrow(() -> new ResourceNotFound("Producto variante no encontrado con id " + id));
+
+		for(OrdenItem ordenItem : productoVariante.getOrdenItems()){
+			ordenItemService.deleteById(ordenItem.getId());
+		}
+
+		productoVarianteRepository.deleteById(id);
+		return "Producto variante con id " + id + " eliminado";
 	}
 
 }

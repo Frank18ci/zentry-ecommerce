@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
+import com.zentry.api.model.ProductoVariante;
+import com.zentry.api.service.ProductoVarianteService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -71,11 +73,21 @@ public class ColorServiceImpl implements ColorService {
 		return ColorDto.colorToColorDto(colorRepository.save(Objects.requireNonNull(color)));
 	}
 
+	private final ProductoVarianteService productoVarianteService;
+
 	@Override
 	public String delete(Long id) {
 		if(id == null){
 			throw new BadRequestParam("Falta el dato id");
 		}
+
+		Color color = colorRepository.findColorById(id)
+				.orElseThrow(() -> new ResourceNotFound("Color no encontrado con id " + id));
+
+		for(ProductoVariante productoVariante : color.getProductoVariantes()){
+			productoVarianteService.delete(productoVariante.getId());
+		}
+
 		colorRepository.deleteById(id);
 		return "Color con id " + id + " eliminado";
 	}

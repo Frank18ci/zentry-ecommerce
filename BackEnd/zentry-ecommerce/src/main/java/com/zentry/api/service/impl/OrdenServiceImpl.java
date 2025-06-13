@@ -2,6 +2,10 @@ package com.zentry.api.service.impl;
 
 import java.util.List;
 
+import com.zentry.api.model.OrdenItem;
+import com.zentry.api.model.Pago;
+import com.zentry.api.service.OrdenItemService;
+import com.zentry.api.service.PagoService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,14 +49,12 @@ public class OrdenServiceImpl implements OrdenService{
 
 	@Override
 	public OrdenDto findById(Long id) {
-		// TODO Auto-generated method stub
 		return OrdenDto.ordenToOrdenDto(ordenRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Orden no encontrado con id" + id)));
 	}
 
 	@Override
 	public OrdenDto save(OrdenDto ordenDto) {
-		// TODO Auto-generated method stub
 		Orden orden = OrdenDto.ordenDtoToOrden(ordenDto);
         Orden ordenCreated = ordenRepository.save(orden);
         return OrdenDto.ordenToOrdenDto(ordenCreated);
@@ -60,7 +62,6 @@ public class OrdenServiceImpl implements OrdenService{
 
 	@Override
 	public OrdenDto update(OrdenDto ordenDto) {
-		// TODO Auto-generated method stub
 		Orden orden = ordenRepository.findById(ordenDto.getId())
                 .orElseThrow(() -> new ResourceNotFound("Orden no encontrado con id" + ordenDto.getId()));
         orden.setUsuario(UsuarioDto.usuarioDtoToUsuario(ordenDto.getUsuario()));
@@ -72,13 +73,21 @@ public class OrdenServiceImpl implements OrdenService{
         Orden ordenUpdated = ordenRepository.save(orden);
         return OrdenDto.ordenToOrdenDto(ordenUpdated);
 	}
-
+	private final OrdenItemService ordenItemService;
+	private final PagoService pagoService;
 	@Override
 	public String deleteById(Long id) {
-		// TODO Auto-generated method stub
 		if(id == null){
             throw new BadRequestParam("Falta el dato id");
         }
+		Orden orden = ordenRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFound("Orden no encontrado con id" + id));
+		for(OrdenItem ordenItem: orden.getOrdenItems()){
+			ordenItemService.deleteById(ordenItem.getId());
+		}
+		for(Pago pago: orden.getPagos()){
+			pagoService.deleteById(pago.getId());
+		}
         ordenRepository.deleteById(id);
         return "Orden con id " + id + " eliminado";
 	}

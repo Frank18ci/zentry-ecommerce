@@ -6,6 +6,12 @@ import java.util.stream.Collectors;
 
 import com.zentry.api.dto.*;
 import com.zentry.api.excepcion.BadRequestParam;
+import com.zentry.api.model.ComentarioProducto;
+import com.zentry.api.model.ImagenProducto;
+import com.zentry.api.model.ProductoVariante;
+import com.zentry.api.service.ComentarioProductoService;
+import com.zentry.api.service.ImagenProductoService;
+import com.zentry.api.service.ProductoVarianteService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -90,11 +96,27 @@ public class ProductoServiceImpl implements ProductoService{
 		return ProductoDto.productoToProductoDTO(productoUpdated);
 	}
 
+	private final ComentarioProductoService comentarioProductoService;
+	private final ImagenProductoService imagenProductoService;
+	private final ProductoVarianteService productoVarianteService;
 	@Override
 	public String deleteProductoById(Long id) {
 		if(id == null){
 			throw new BadRequestParam("Falta el dato id");
 		}
+		Producto producto = productoRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFound("Producto no encontrado con id" + id));
+
+		for(ComentarioProducto comentario : producto.getComentarioProductos()){
+			comentarioProductoService.deleteById(comentario.getId());
+		}
+		for(ImagenProducto imagenProducto : producto.getImagenProductos()){
+			imagenProductoService.deleteById(imagenProducto.getId());
+		}
+		for(ProductoVariante productoVariante : producto.getProductoVariantes()){
+			productoVarianteService.delete(productoVariante.getId());
+		}
+
 		productoRepository.deleteById(id);
 		return "Producto con id " + id + " eliminado";
 	}
