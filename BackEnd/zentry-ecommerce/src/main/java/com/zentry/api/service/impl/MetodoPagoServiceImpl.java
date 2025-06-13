@@ -4,8 +4,10 @@ import com.zentry.api.dto.MetodoPagoDto;
 import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
 import com.zentry.api.model.MetodoPago;
+import com.zentry.api.model.Pago;
 import com.zentry.api.repository.MetodoPagoRepository;
 import com.zentry.api.service.MetodoPagoService;
+import com.zentry.api.service.PagoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,11 +62,21 @@ public class MetodoPagoServiceImpl implements MetodoPagoService {
         return MetodoPagoDto.metodoPagoToMetadoPagoDto(metodoPagoUpdated);
     }
 
+    private final PagoService pagoService;
+
     @Override
     public String delete(Long id) {
     	if(id == null){
             throw new BadRequestParam("Falta el dato id");
         }
+
+        MetodoPago metodoPago = metodoPagoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Metodo Pago no encontrado con id" + id));
+
+        for(Pago pago : metodoPago.getPagos()){
+            pagoService.deleteById(pago.getId());
+        }
+
         metodoPagoRepository.deleteById(id);
         return "Estado Pago con id " + id + " eliminado";
     }

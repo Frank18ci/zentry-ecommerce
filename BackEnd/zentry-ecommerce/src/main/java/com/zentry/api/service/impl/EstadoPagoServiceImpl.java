@@ -4,8 +4,10 @@ import com.zentry.api.dto.EstadoPagoDto;
 import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
 import com.zentry.api.model.EstadoPago;
+import com.zentry.api.model.Pago;
 import com.zentry.api.repository.EstadoPagoRepository;
 import com.zentry.api.service.EstadoPagoService;
+import com.zentry.api.service.PagoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -59,11 +61,21 @@ public class EstadoPagoServiceImpl implements EstadoPagoService {
         return EstadoPagoDto.estadoPagoToEstadoPagoDto(estadoPagoUpdated);
     }
 
+    private final PagoService pagoService;
+
     @Override
     public String delete(Long id) {
         if(id == null){
             throw new BadRequestParam("Falta el dato id");
         }
+
+        EstadoPago estadoPago = estadoPagoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Estado Pago no encontrado con id" + id));
+
+        for(Pago pago : estadoPago.getPagos()){
+            pagoService.deleteById(pago.getId());
+        }
+
         estadoPagoRepository.deleteById(id);
         return "Estado Pago con id " + id + " eliminado";
     }

@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
+import com.zentry.api.model.ProductoVariante;
+import com.zentry.api.service.ProductoVarianteService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -62,6 +64,8 @@ public class TallaServiceImpl implements TallaService {
 		return TallaDto.tallaToTallaDto(tallaRepository.save(talla));
 	}
 
+
+
 	@Override
 	public TallaDto update(TallaDto tallaDTO) {
 		Talla talla = tallaRepository.findTallaById(tallaDTO.getId())
@@ -71,11 +75,21 @@ public class TallaServiceImpl implements TallaService {
 		return TallaDto.tallaToTallaDto(tallaRepository.save(talla));
 	}
 
+	private final ProductoVarianteService productoVarianteService;
+
 	@Override
 	public String delete(Long id) {
 		if(id == null){
 			throw new BadRequestParam("Falta el dato id");
 		}
+
+		Talla talla = tallaRepository.findTallaById(id)
+				.orElseThrow(() -> new ResourceNotFound("Talla no encontrada con id " + id));
+
+		for(ProductoVariante productoVariante : talla.getProductoVariantes()){
+			productoVarianteService.delete(productoVariante.getId());
+		}
+
 		tallaRepository.deleteById(id);
 		return "Talla Eliminado";
 	}

@@ -6,6 +6,7 @@ import com.zentry.api.excepcion.ResourceNotFound;
 import com.zentry.api.model.Rol;
 import com.zentry.api.repository.RolRepository;
 import com.zentry.api.service.RolService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,12 +61,17 @@ public class RolServiceImpl implements RolService {
         Rol rolSaved = rolRepository.save(rol);
         return RolDto.rolToRolDto(rolSaved);
     }
-
+    @Transactional
     @Override
     public String deleteById(Long id) {
         if(id == null){
             throw new BadRequestParam("Falta el dato id");
         }
+        Rol rol = rolRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Rol no encontrado con id " + id));
+
+        rol.getUsuarios().clear();
+
         rolRepository.deleteById(id);
         return "Rol con id " + id + " eliminado";
     }

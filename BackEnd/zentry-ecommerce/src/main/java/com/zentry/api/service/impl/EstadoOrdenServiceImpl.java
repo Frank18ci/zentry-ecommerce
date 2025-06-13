@@ -1,6 +1,9 @@
 package com.zentry.api.service.impl;
 
 import java.util.List;
+
+import com.zentry.api.model.Orden;
+import com.zentry.api.service.OrdenService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -62,11 +65,21 @@ public class EstadoOrdenServiceImpl implements EstadoOrdenService{
         return EstadoOrdenDto.estadoOrdenToEstadoOrdenDto(estadoOrdenUpdated);
 	}
 
+	private final OrdenService ordenService;
+
 	@Override
 	public String deleteById(Long id) {
 		if(id == null){
             throw new BadRequestParam("Falta el dato id");
         }
+
+		EstadoOrden estadoOrden = estadoOrdenRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFound("Estado Orden no encontrado con id" + id));
+
+		for(Orden orden : estadoOrden.getOrdenes()){
+			ordenService.deleteById(orden.getId());
+		}
+
         estadoOrdenRepository.deleteById(id);
         return "Estado Orden con id " + id + " eliminado";
 	}

@@ -1,6 +1,9 @@
 package com.zentry.api.service.impl;
 
-import com.zentry.api.model.Direccion;
+import com.zentry.api.model.*;
+import com.zentry.api.service.ComentarioProductoService;
+import com.zentry.api.service.OrdenService;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,8 +22,6 @@ import com.zentry.api.dto.RolDto;
 import com.zentry.api.dto.UsuarioDto;
 import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
-import com.zentry.api.model.Rol;
-import com.zentry.api.model.Usuario;
 import com.zentry.api.repository.UsuarioRepository;
 import com.zentry.api.service.UsuarioService;
 
@@ -111,12 +112,26 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		Usuario usuarioSaved = usuarioRepository.save(usuarioFound);
 		return find(usuarioSaved.getId());
 	}
-
+	private final ComentarioProductoService comentarioProductoService;
+	private final OrdenService ordenService;
+	@Transactional
 	@Override
 	public String delete(Long id) {
 		if(id == null){
 			throw new BadRequestParam("Falta el dato id");
 		}
+		Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Usuario no encontrado " + id));
+
+		for(ComentarioProducto comentarioProducto : usuario.getComentarioProductos()){
+			comentarioProductoService.deleteById(comentarioProducto.getId());
+		}
+		for(Orden orden : usuario.getOrdenes()){
+			ordenService.deleteById(orden.getId());
+		}
+
+		//Eliminacion de tabla intermediaria de roles
+		usuario.getRol().clear();
+
 		usuarioRepository.deleteById(id);
 		return "Usuario Eliminado";
 	}

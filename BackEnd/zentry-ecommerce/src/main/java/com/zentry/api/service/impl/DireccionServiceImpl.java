@@ -4,8 +4,10 @@ import com.zentry.api.dto.DireccionDto;
 import com.zentry.api.excepcion.BadRequestParam;
 import com.zentry.api.excepcion.ResourceNotFound;
 import com.zentry.api.model.Direccion;
+import com.zentry.api.model.Usuario;
 import com.zentry.api.repository.DireccionRepository;
 import com.zentry.api.service.DireccionService;
+import com.zentry.api.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -66,10 +68,17 @@ public class DireccionServiceImpl implements DireccionService {
         return DireccionDto.direccionToDireccionDto(direccionUpdated);
     }
 
+    private final UsuarioService usuarioService;
+
     @Override
     public String deleteById(Long id) {
         if(id == null){
             throw new BadRequestParam("Falta el dato id");
+        }
+        Direccion direccion = direccionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Direccion no encontrado con id " + id));
+        for(Usuario usuario : direccion.getUsuarios()){
+            usuarioService.delete(usuario.getId());
         }
         direccionRepository.deleteById(id);
         return "Direccion con id " + id + " eliminado";
