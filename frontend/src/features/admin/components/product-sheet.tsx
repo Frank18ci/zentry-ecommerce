@@ -29,8 +29,12 @@ const productSchema = z.object({
   estado: z.number().min(0, 'El estado es requerido'),
   precio: z.number().min(0, 'El precio debe ser positivo'),
   subCategoriaId: z.number().min(0, 'La subcategoría es requerida'),
-  imagenes: z.array(z.string()).min(1, 'Al menos una imagen es requerida').max(10, 'Máximo 10 imágenes'),
-  productosVariantes: z.array(z.object({
+  imagenes: z.array(z.object({
+    id: z.number().optional(),
+    urlImagen: z.string().min(1, 'La URL de la imagen es requerida'),
+    principal: z.boolean(),
+  })).min(1, 'Al menos una imagen es requerida').max(10, 'Máximo 10 imágenes'), productosVariantes: z.array(z.object({
+    id: z.number().optional(),
     tallaId: z.number().min(1, 'La talla es requerida'),
     colorId: z.number().min(1, 'El color es requerido'),
     stock: z.number().min(0, 'El stock debe ser positivo'),
@@ -56,13 +60,12 @@ export default function ProductSheet ({ open, onOpenChange, mode, product, subCa
   const [loading, setLoading] = useState(false)
 
   const form = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
-    defaultValues: {
+    resolver: zodResolver(productSchema), defaultValues: {
       nombre: '',
       descripcion: '',
       precio: 0,
       subCategoriaId: 0,
-      imagenes: [''],
+      imagenes: [{ urlImagen: '', principal: true }],
       estado: 0,
       productosVariantes: [{ tallaId: 0, colorId: 0, stock: 0 }],
     },
@@ -76,14 +79,20 @@ export default function ProductSheet ({ open, onOpenChange, mode, product, subCa
         precio: product.precio,
         estado: product.estadoProducto?.id || 0,
         subCategoriaId: product.subCategoria?.id || 0,
-        imagenes: product.imagenes?.map(img => img.urlImagen) || [''],
-        productosVariantes: product.productosVariantes?.length > 0
-          ? product.productosVariantes.map(variant => ({
-            tallaId: variant.talla.id,
-            colorId: variant.color.id,
-            stock: variant.stock,
+        imagenes: product.imagenes?.length > 0
+          ? product.imagenes.map(img => ({
+            id: img.id,
+            urlImagen: img.urlImagen,
+            principal: img.principal
           }))
-          : [{ tallaId: 0, colorId: 0, stock: 0 }],
+          : [{ urlImagen: '', principal: true }], productosVariantes: product.productosVariantes?.length > 0
+            ? product.productosVariantes.map(variant => ({
+              id: variant.id,
+              tallaId: variant.talla.id,
+              colorId: variant.color.id,
+              stock: variant.stock,
+            }))
+            : [{ tallaId: 0, colorId: 0, stock: 0 }],
       })
     } else if (mode === 'create') {
       form.reset({
@@ -92,7 +101,7 @@ export default function ProductSheet ({ open, onOpenChange, mode, product, subCa
         precio: 0,
         estado: 0,
         subCategoriaId: 0,
-        imagenes: [''],
+        imagenes: [{ urlImagen: '', principal: true }],
         productosVariantes: [{ tallaId: 0, colorId: 0, stock: 0 }],
       })
     }
@@ -114,15 +123,9 @@ export default function ProductSheet ({ open, onOpenChange, mode, product, subCa
         descripcion: data.descripcion,
         precio: data.precio,
         estadoProducto: selectedEstado,
-        subCategoria: selectedSubCategory || {
-          id: 0,
-          nombre: '',
-          descripcion: '',
-          categoria: { id: 0, nombre: '', descripcion: '' }
-        },
-        imagenes: data.imagenes.filter(url => url.trim() !== ''),
-        productosVariantes: data.productosVariantes.map(variant => ({
-          id: 0,
+        subCategoria: selectedSubCategory,
+        imagenes: data.imagenes.filter(img => img.urlImagen.trim() !== ''), productosVariantes: data.productosVariantes.map(variant => ({
+          ...(variant.id && { id: variant.id }),
           talla: {
             id: variant.tallaId,
             nombre: tallas ? tallas.find(t => t.id === variant.tallaId)?.nombre || '' : ''
@@ -131,30 +134,15 @@ export default function ProductSheet ({ open, onOpenChange, mode, product, subCa
             id: variant.colorId,
             nombre: colores ? colores.find(c => c.id === variant.colorId)?.nombre || '' : '',
             codigoHex: colores ? colores.find(c => c.id === variant.colorId)?.codigoHex : undefined,
-          },
-          stock: variant.stock,
+          }, stock: variant.stock,
         })),
       }
 
       if (mode === 'create') {
-        await crearProducto({
-          ...productData,
-          imagenes: data.imagenes.filter(url => url.trim() !== '').map((url, i) => ({
-            id: i + 1,
-            urlImagen: url,
-            principal: i === 0
-          })),
-        })
+        await crearProducto(productData)
         toast.success('Producto creado exitosamente')
       } else if (mode === 'edit' && product) {
-        await actualizarProducto(product.id, {
-          ...productData,
-          imagenes: data.imagenes.filter(url => url.trim() !== '').map((url, i) => ({
-            id: i + 1,
-            urlImagen: url,
-            principal: i === 0
-          })),
-        })
+        await actualizarProducto(product.id, productData)
         toast.success('Producto actualizado exitosamente')
       }
 

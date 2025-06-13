@@ -3,7 +3,7 @@
 import type { ISubCategoria } from '@/features/categorias/types'
 
 export interface IImagen {
-  id: number
+  id?: number
   principal: boolean
   urlImagen: string
 }
@@ -45,7 +45,7 @@ export interface ITallaColor {
 }
 
 export interface IProductosVariante {
-  id: number
+  id?: number
   talla: ITallaColor
   color: ITallaColor
   stock: number

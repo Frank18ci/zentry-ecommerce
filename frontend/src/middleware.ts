@@ -1,22 +1,47 @@
 import { COOKIE_NAME } from '@/core/lib/constants'
+import { actionGetSession } from '@/features/auth/actions'
+import type { ISession } from '@/features/auth/types'
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware (request: NextRequest) {
-  const token = request.cookies.get(COOKIE_NAME)?.value
-
-  // Check if the request is for admin routes
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+export async function middleware (request: NextRequest): Promise<NextResponse> {
+  try {
+    // Verificar si existe el token de autenticación
+    const token = request.cookies.get(COOKIE_NAME)?.value
     if (!token) {
-      // Redirect to login if no token
-      return NextResponse.redirect(new URL('/login', request.url))
+      return redirectToLogin(request)
     }
 
-    // TODO: Add role verification here when needed
-    // For now, we'll assume any authenticated user can access admin
-    // In a real implementation, you'd verify the JWT token and check for ADMIN role
+    // Obtener la sesión del usuario
+    const sessionResponse = await actionGetSession()
+    const session = sessionResponse?.data as ISession
+
+    // Validar sesión y permisos de administrador
+    if (!isValidAdminSession(session)) {
+      return redirectToLogin(request)
+    }
+
+    return NextResponse.next()
+  } catch (error) {
+    console.error('Middleware error:', error)
+    return redirectToLogin(request)
+  }
+}
+
+function isValidAdminSession (session: ISession | null): boolean {
+  if (!session?.User) {
+    return false
   }
 
-  return NextResponse.next()
+  const authorities = session.User.authorities
+  if (!Array.isArray(authorities)) {
+    return false
+  }
+
+  return authorities.some(auth => auth?.authority === 'admin')
+}
+
+function redirectToLogin (request: NextRequest): NextResponse {
+  return NextResponse.redirect(new URL('/login', request.url))
 }
 
 export const config = {

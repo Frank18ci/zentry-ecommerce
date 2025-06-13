@@ -59,6 +59,7 @@ export default function ProductsTable ({
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>ID</TableHead>
             <TableHead>Imagen</TableHead>
             <TableHead>Nombre</TableHead>
             <TableHead>Categoría</TableHead>
@@ -75,6 +76,10 @@ export default function ProductsTable ({
 
             return (
               <TableRow key={product.id}>
+                <TableCell>
+                  {product.id}
+                </TableCell>
+
                 <TableCell>
                   <Image
                     width={150}

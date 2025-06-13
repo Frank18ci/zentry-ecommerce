@@ -90,59 +90,49 @@ export default function ProductVariantSelector ({ producto }: ProductVariantSele
         </div>
       )}
 
-      {hasMultipleTallas && (
-        <div>
-          <Label className="block mb-3 text-base font-medium uppercase">
-            Talla: {selectedTalla && <span className="font-normal">{selectedTalla}</span>}
-          </Label>
-          <RadioGroup
-            value={selectedTalla}
-            onValueChange={setSelectedTalla}
-            className="flex flex-wrap gap-2"
-          >
-            {tallasDisponibles.map(talla => (
-              <ProductVariantOption
-                key={talla.id}
-                type="talla"
-                item={talla}
-                selected={selectedTalla}
-                onSelect={setSelectedTalla}
-                hasStock={producto.productosVariantes.some(v => v.talla.id === talla.id && v.stock > 0)}
-              />
-            ))}
-          </RadioGroup>
-        </div>
-      )}
+      <div>
+        <Label className="block mb-3 text-base font-medium uppercase">
+          Talla: {selectedTalla && <span className="font-normal">{selectedTalla}</span>}
+        </Label>
+        <RadioGroup
+          value={selectedTalla}
+          onValueChange={setSelectedTalla}
+          className="flex flex-wrap gap-2"
+        >
+          {tallasDisponibles.map(talla => (
+            <ProductVariantOption
+              key={talla.id}
+              type="talla"
+              item={talla}
+              selected={selectedTalla}
+              onSelect={setSelectedTalla}
+              hasStock={producto.productosVariantes.some(v => v.talla.id === talla.id && v.stock > 0)}
+            />
+          ))}
+        </RadioGroup>
+      </div>
 
-      {hasMultipleColors && (
-        <div>
-          <Label className="block mb-3 text-base font-medium uppercase">
-            Color: {selectedColor && <span className="font-normal">{selectedColor}</span>}
-          </Label>
-          <RadioGroup
-            value={selectedColor}
-            onValueChange={setSelectedColor}
-            className="flex flex-wrap gap-3"
-          >
-            {coloresDisponibles.map(color => (
-              <ProductVariantOption
-                key={color.id}
-                type="color"
-                item={color}
-                selected={selectedColor}
-                onSelect={setSelectedColor}
-                hasStock={producto.productosVariantes.some(v => v.color.id === color.id && v.stock > 0)}
-              />
-            ))}
-          </RadioGroup>
-        </div>
-      )}
-
-      {!hasMultipleTallas && !hasMultipleColors && varianteSeleccionada && (
-        <div className="text-sm text-muted-foreground">
-          Este producto no tiene variantes de talla o color.
-        </div>
-      )}
+      <div>
+        <Label className="block mb-3 text-base font-medium uppercase">
+          Color: {selectedColor && <span className="font-normal">{selectedColor}</span>}
+        </Label>
+        <RadioGroup
+          value={selectedColor}
+          onValueChange={setSelectedColor}
+          className="flex flex-wrap gap-3"
+        >
+          {coloresDisponibles.map(color => (
+            <ProductVariantOption
+              key={color.id}
+              type="color"
+              item={color}
+              selected={selectedColor}
+              onSelect={setSelectedColor}
+              hasStock={producto.productosVariantes.some(v => v.color.id === color.id && v.stock > 0)}
+            />
+          ))}
+        </RadioGroup>
+      </div>
 
       {varianteSeleccionada && stockDisponible > 0 && (
         <div>

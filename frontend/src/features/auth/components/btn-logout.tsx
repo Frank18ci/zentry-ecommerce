@@ -13,6 +13,7 @@ export default function BtnLogout () {
   return (
     <Form action={formAction} className='w-full'>
       <Button
+        className='w-full'
         type='submit'
         variant='destructive'
         disabled={isPending}

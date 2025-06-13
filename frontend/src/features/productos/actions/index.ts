@@ -2,7 +2,7 @@
 
 import { API_BASE_URL, COOKIE_NAME } from '@/core/lib/constants'
 import type { IResponse } from '@/core/types'
-import type { IEstadoProducto, IProducto } from '@/features/productos/types'
+import type { IEstadoProducto, IImagen, IProducto, IProductosVariante } from '@/features/productos/types'
 import console from 'console'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
@@ -156,19 +156,22 @@ export async function actionGetTallas () {
   }
 }
 
-//* Acciones CRUD para productos
+//* ACCIONES PARA PRODUCTOS - CREATE
 export async function crearProducto (productData: Partial<IProducto>) {
   const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)
 
+  const { productosVariantes, imagenes, ...restoProducto } = productData
+
   try {
+    // Crear el producto
     const res = await fetch(`${API_BASE_URL}/producto`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token?.value || ''}`,
       },
-      body: JSON.stringify(productData),
+      body: JSON.stringify(restoProducto),
     })
 
     if (!res.ok) {
@@ -176,7 +179,36 @@ export async function crearProducto (productData: Partial<IProducto>) {
     }
 
     const data = await res.json()
-    return data
+    const productoCreado = data
+
+    // Crear las imágenes del producto si existen
+    if (imagenes && imagenes.length > 0) {
+      const imagenesPromises = imagenes.map((imagen, index) => {
+        const imagenSinId = {
+          urlImagen: imagen.urlImagen,
+          principal: imagen.principal || index === 0 // La primera imagen es principal por defecto
+        }
+        return crearProductoImagen(productoCreado.id, imagenSinId)
+      })
+
+      await Promise.all(imagenesPromises)
+    }
+
+    // Crear las variantes del producto si existen
+    if (productosVariantes && productosVariantes.length > 0) {
+      const variantesPromises = productosVariantes.map(variante => {
+        const varianteSinId = {
+          talla: variante.talla,
+          color: variante.color,
+          stock: variante.stock
+        }
+        return crearProductoVariante(productoCreado.id, varianteSinId)
+      })
+
+      await Promise.all(variantesPromises)
+    }
+
+    return productoCreado
   } catch (error) {
     console.error('Error creando producto: ', error)
     throw error
@@ -185,27 +217,158 @@ export async function crearProducto (productData: Partial<IProducto>) {
   }
 }
 
-export async function actualizarProducto (id: number, productData: Partial<IProducto>) {
+// Función separada para crear una nueva variante de producto
+export async function crearProductoVariante (idProducto: number, variante: Omit<IProductosVariante, 'id'>) {
   const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)
 
-  console.dir(productData, { depth: null })
+  try {
+    const res = await fetch(`${API_BASE_URL}/productoVariante`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token?.value || ''}`,
+      },
+      body: JSON.stringify({
+        producto: { id: idProducto },
+        ...variante
+      }),
+    })
+
+    if (!res.ok) {
+      throw new Error('Error al crear la variante del producto')
+    }
+
+    return await res.json()
+  } catch (error) {
+    console.error('Error creando variante de producto: ', error)
+    throw error
+  }
+}
+
+// Función para crear una nueva imagen de producto
+export async function crearProductoImagen (idProducto: number, imagen: Omit<IImagen, 'id'>) {
+  const cookieStore = await cookies()
+  const token = cookieStore.get(COOKIE_NAME)
 
   try {
-    const res = await fetch(`${API_BASE_URL}/producto`, {
+    const res = await fetch(`${API_BASE_URL}/imagenProducto`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token?.value || ''}`,
+      },
+      body: JSON.stringify({
+        producto: { id: idProducto },
+        urlImagen: imagen.urlImagen,
+        principal: imagen.principal
+      }),
+    })
+
+    if (!res.ok) {
+      throw new Error('Error al crear la imagen del producto')
+    }
+
+    return await res.json()
+  } catch (error) {
+    console.error('Error creando imagen de producto: ', error)
+    throw error
+  }
+}
+
+//* ACCIONES - UPDATE
+// Función separada para actualizar una variante de producto
+export async function actualizarProductoVariante (idProducto: number, variante: IProductosVariante) {
+  const cookieStore = await cookies()
+  const token = cookieStore.get(COOKIE_NAME)
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/productoVariante`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token?.value || ''}`,
       },
-      body: JSON.stringify({ ...productData, id }),
+      body: JSON.stringify({
+        producto: { id: idProducto },
+        ...variante
+      }),
     })
 
     if (!res.ok) {
+      throw new Error('Error al actualizar la variante del producto')
+    }
+
+    return await res.json()
+  } catch (error) {
+    console.error('Error actualizando variante de producto: ', error)
+    throw error
+  }
+}
+
+// Función actualizada para actualizar producto
+export async function actualizarProducto (id: number, productData: Partial<IProducto>) {
+  const cookieStore = await cookies()
+  const token = cookieStore.get(COOKIE_NAME)
+
+  // Separar los datos del producto, las variantes y las imágenes
+  const { productosVariantes, imagenes, ...restoProducto } = productData
+
+  try {
+    // Actualizar el producto
+    const resProducto = await fetch(`${API_BASE_URL}/producto`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token?.value || ''}`,
+      },
+      body: JSON.stringify({ ...restoProducto, id }),
+    })
+
+    if (!resProducto.ok) {
       throw new Error('Error al actualizar el producto')
     }
 
-    const data = await res.json()
+    // Actualizar las imágenes del producto with Promise.all
+    if (imagenes && imagenes.length > 0) {
+      const imagenesPromises = imagenes.map((imagen, index) => {
+        if (imagen.id) {
+          // Si la imagen tiene ID, actualizarla
+          return actualizarProductoImagen(id, imagen as IImagen)
+        } else {
+          // Si la imagen no tiene ID, crearla
+          const imagenSinId = {
+            urlImagen: imagen.urlImagen,
+            principal: imagen.principal || index === 0 // La primera imagen es principal por defecto
+          }
+          return crearProductoImagen(id, imagenSinId)
+        }
+      })
+
+      await Promise.all(imagenesPromises)
+    }
+
+    // Actualizar las variantes del producto with Promise.all
+    if (productosVariantes && productosVariantes.length > 0) {
+      const variantesPromises = productosVariantes.map(variante => {
+        if (variante.id) {
+          // Si la variante tiene ID, actualizarla
+          return actualizarProductoVariante(id, variante as IProductosVariante)
+        } else {
+          // Si la variante no tiene ID, crearla
+          const varianteSinId = {
+            talla: variante.talla,
+            color: variante.color,
+            stock: variante.stock
+          }
+          return crearProductoVariante(id, varianteSinId)
+        }
+      })
+
+      await Promise.all(variantesPromises)
+    }
+
+    const data = await resProducto.json()
     return data
   } catch (error) {
     console.error('Error actualizando producto: ', error)
@@ -215,6 +378,38 @@ export async function actualizarProducto (id: number, productData: Partial<IProd
   }
 }
 
+// Función para actualizar una imagen de producto
+export async function actualizarProductoImagen (idProducto: number, imagen: IImagen) {
+  const cookieStore = await cookies()
+  const token = cookieStore.get(COOKIE_NAME)
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/imagenProducto`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token?.value || ''}`,
+      },
+      body: JSON.stringify({
+        id: imagen.id,
+        producto: { id: idProducto },
+        urlImagen: imagen.urlImagen,
+        principal: imagen.principal
+      }),
+    })
+
+    if (!res.ok) {
+      throw new Error('Error al actualizar la imagen del producto')
+    }
+
+    return await res.json()
+  } catch (error) {
+    console.error('Error actualizando imagen de producto: ', error)
+    throw error
+  }
+}
+
+//! ACCIONES - DELETE
 export async function eliminarProducto (id: number) {
   const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)
