@@ -11,7 +11,7 @@ import {
 import { Input } from '@/core/components/ui/input'
 import { Plus, Trash2, X } from 'lucide-react'
 import { UseFormReturn } from 'react-hook-form'
-import { ProductFormData } from './product-form-types'
+import { ImagenType, ProductFormData } from './product-form-types'
 
 interface ProductFormImagesProps {
   form: UseFormReturn<ProductFormData>
@@ -25,11 +25,10 @@ export default function ProductFormImages ({ form }: ProductFormImagesProps) {
         <Button
           type="button"
           variant="outline"
-          size="sm"
-          onClick={() => {
+          size="sm" onClick={() => {
             const currentImages = form.getValues('imagenes')
             if (currentImages.length < 10) {
-              form.setValue('imagenes', [...currentImages, ''])
+              form.setValue('imagenes', [...currentImages, { urlImagen: '', principal: false }])
             }
           }}
           disabled={form.watch('imagenes').length >= 10}
@@ -40,11 +39,11 @@ export default function ProductFormImages ({ form }: ProductFormImagesProps) {
       </div>
 
       <div className="space-y-2">
-        {form.watch('imagenes').map((imagen: string, index: number) => (
+        {form.watch('imagenes').map((imagen: ImagenType, index: number) => (
           <FormField
             key={index}
             control={form.control}
-            name={`imagenes.${index}`}
+            name={`imagenes.${index}.urlImagen`}
             render={({ field }) => (
               <FormItem>
                 <div className="flex items-center space-x-2">
@@ -62,8 +61,8 @@ export default function ProductFormImages ({ form }: ProductFormImagesProps) {
                       size="sm"
                       onClick={() => {
                         const currentImages = form.getValues('imagenes')
-                        const newImages = currentImages.filter((img: string, i: number) => i !== index)
-                        form.setValue('imagenes', newImages.length > 0 ? newImages : [''])
+                        const newImages = currentImages.filter((img: ImagenType, i: number) => i !== index)
+                        form.setValue('imagenes', newImages.length > 0 ? newImages : [{ urlImagen: '', principal: true }])
                       }}
                     >
                       <X className="h-4 w-4" />
@@ -76,7 +75,7 @@ export default function ProductFormImages ({ form }: ProductFormImagesProps) {
                       size="sm"
                       onClick={() => {
                         const currentImages = form.getValues('imagenes')
-                        form.setValue('imagenes', currentImages.filter((img: string, i: number) => i !== index))
+                        form.setValue('imagenes', currentImages.filter((img: ImagenType, i: number) => i !== index))
                       }}
                     >
                       <Trash2 className="h-4 w-4" />

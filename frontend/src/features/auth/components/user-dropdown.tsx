@@ -34,6 +34,8 @@ export default async function UserDropdown ({
     apellido: usuario?.apellido || ''
   })
 
+  const esAdmin = usuario?.rol.some(rol => rol.nombre === 'admin')
+
   return (
     <div className="flex items-center space-x-4">
       {usuario ? (
@@ -76,6 +78,15 @@ export default async function UserDropdown ({
                 <span className='text-muted-foreground'>Teléfono: </span>
                 <span className='truncate'>{usuario.telefono}</span>
               </p>
+
+              {esAdmin && (
+                <Link
+                  className={buttonVariants()}
+                  href='/admin'
+                >
+                  Panel de administración
+                </Link>
+              )}
 
               <BtnLogout />
             </div>

@@ -1,7 +1,14 @@
 export type VariantType = {
+  id?: number
   tallaId: number
   colorId: number
   stock: number
+}
+
+export type ImagenType = {
+  id?: number
+  urlImagen: string
+  principal: boolean
 }
 
 export type ProductFormData = {
@@ -10,6 +17,6 @@ export type ProductFormData = {
   estado: number
   precio: number
   subCategoriaId: number
-  imagenes: string[]
+  imagenes: ImagenType[]
   productosVariantes: VariantType[]
 }
