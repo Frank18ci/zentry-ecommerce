@@ -4,7 +4,6 @@ import { cn } from '@/core/lib/utils'
 import {
   Home,
   Package,
-  Settings,
   Users
 } from 'lucide-react'
 import Link from 'next/link'
@@ -13,8 +12,7 @@ import { usePathname } from 'next/navigation'
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: Home },
   { name: 'Productos', href: '/admin/products', icon: Package },
-  { name: 'Usuarios', href: '/admin/users', icon: Users },
-  { name: 'Configuraciones', href: '/admin/settings', icon: Settings },
+  { name: 'Usuarios', href: '/admin/users', icon: Users }
 ]
 
 export function Sidebar () {

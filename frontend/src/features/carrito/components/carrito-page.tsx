@@ -210,11 +210,9 @@ export default function CarritoPage () {
                         formatAmount(resumen.envio)
                       )}
                     </span>
-                  </div>
-
-                  {resumen.subtotal > 0 && resumen.subtotal < 50 && (
+                  </div>                  {resumen.subtotal > 0 && (resumen.subtotal + resumen.impuestos) < 50 && (
                     <div className="text-xs text-muted-foreground">
-                      Agrega {formatAmount(50 - resumen.subtotal)} más para envío gratis
+                      Agrega {formatAmount(50 - (resumen.subtotal + resumen.impuestos))} más para envío gratis
                     </div>
                   )}
                 </div>

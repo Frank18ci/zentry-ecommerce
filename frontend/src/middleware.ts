@@ -37,7 +37,7 @@ function isValidAdminSession (session: ISession | null): boolean {
     return false
   }
 
-  return authorities.some(auth => auth?.authority === 'admin')
+  return authorities.some(auth => auth?.authority === 'ROLE_ADMIN' || auth.authority === 'admin')
 }
 
 function redirectToLogin (request: NextRequest): NextResponse {

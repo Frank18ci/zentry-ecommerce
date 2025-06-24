@@ -76,14 +76,14 @@ export const useCarritoStore = create<ICarritoStore>()(
 
       closeCart: () => {
         set({ isOpen: false })
-      },
-
-      getResumen: (): ICarritoResumen => {
+      }, getResumen: (): ICarritoResumen => {
         const { items } = get()
-        const subtotal = items.reduce((total, item) => total + (item.precio * item.cantidad), 0)
-        const impuestos = subtotal * IMPUESTO_PORCENTAJE
-        const envio = subtotal >= ENVIO_GRATIS_MINIMO ? 0 : COSTO_ENVIO
-        const total = subtotal + impuestos + envio
+        // El precio ya incluye IGV, calculamos el subtotal sin IGV
+        const totalConIGV = items.reduce((total, item) => total + (item.precio * item.cantidad), 0)
+        const subtotal = totalConIGV / (1 + IMPUESTO_PORCENTAJE) // Precio sin IGV
+        const impuestos = totalConIGV - subtotal // IGV ya incluido en el precio
+        const envio = totalConIGV >= ENVIO_GRATIS_MINIMO ? 0 : COSTO_ENVIO
+        const total = totalConIGV + envio
         const cantidadItems = items.reduce((total, item) => total + item.cantidad, 0)
 
         return {
