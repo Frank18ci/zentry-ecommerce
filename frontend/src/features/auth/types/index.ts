@@ -8,7 +8,7 @@ export interface ISession {
     id: number
     password: string | null
     username: string
-    authorities: Array<{ authority: "admin" | "cliente" }>
+    authorities: Array<{ authority: "ROLE_ADMIN" | "ROLE_CLIENTE" | "admin" | "cliente" }>
     accountNonExpired: boolean
     accountNonLocked: boolean
     credentialsNonExpired: boolean
