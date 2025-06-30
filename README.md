@@ -19,3 +19,8 @@ Este proyecto consiste en un backend desarrollado con **Spring Boot** y una base
 
 1. Cambia los datos de application.properties si tiene usuario y contraseña diferente
 2. Ejecute el proyecto
+
+## Configura el proyecto de front end 
+
+1, Instala las dependencias con "npm install"
+2. Ejecuta mediante "npm run dev" y entra al puerto indicado
